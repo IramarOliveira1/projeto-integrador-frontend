@@ -3,37 +3,64 @@
         <div class="image-login h-screen">
             <img src="../../assets/images/login.png" alt="">
         </div>
-        <div class="form-login d-flex justify-center w-50 align-center h-screen">
-            <v-form @submit.prevent>
-                <v-sheet width="300" class="mx-auto" color="#F8F9FC">
-                    <h3 class="mb-2">LOGO DA EMPRESA</h3>
 
-                    <v-text-field label="Email" type="email" variant="underlined" v-model="email" clearable
-                        :rules="[() => !!email || 'Campo email √© obrigat√≥rio']" />
+        <div class="form-login ">
+            <a-col :span="14">
+                <a-form layout="vertical" name="basic" :model="data" @finish="login" :hideRequiredMark="true">
+                    <h3>Logo da empresa</h3>
+                    <a-form-item label="E-mail" name="email"
+                        :rules="[{ required: true, message: 'Campo e-mail È obrigatÛrio' }]">
+                        <a-input v-model:value="data.email" size="large" />
+                    </a-form-item>
 
-                    <v-text-field label="Senha" type="password" variant="underlined" v-model="password"
-                        :rules="[() => !!password || 'Campo senha √© obrigat√≥rio']" />
+                    <a-form-item label="Senha" name="password"
+                        :rules="[{ required: true, message: 'Campo senha È obrigatÛrio!' }]">
+                        <a-input-password v-model:value="data.password" size="large" />
+                    </a-form-item>
 
-                    <router-link to="/recuperar-senha" class="d-flex justify-end align-end text-caption mb-2 link-forgot">
+                    <router-link to="/recuperar-senha" class="link-forgot">
                         esqueceu sua senha?
                     </router-link>
 
-                    <v-btn class="w-100 mt-2" color="indigo-darken-3" type="submit">Entrar</v-btn>
+                    <a-form-item>
+                        <a-button type="primary" html-type="submit" class="button-login" size="large">Entrar</a-button>
+                    </a-form-item>
 
-                    <div class="d-flex justify-end align-end text-caption mt-2">
-                        <span class="mr-1">n√£o tem cadastro?</span>
+                    <div class="link-register">
+                        <span>n√£o tem cadastro?</span>
                         <router-link to="/cadastro">
                             <strong>clique aqui</strong>
                         </router-link>
                     </div>
-                </v-sheet>
-            </v-form>
+                </a-form>
+            </a-col>
         </div>
     </div>
 </template>
 
 <script>
-import './login.css'
-import login from './login.js';
-export default login;
+import './login.css';
+
+import axios from '../../services/api.js';
+
+export default {
+    data() {
+        return {
+            data: {
+                email: null,
+                password: null
+            }
+        }
+    },
+    methods: {
+        async login(data) {
+            try {
+                const response = await axios.post('/login', data);
+                console.log(response);
+            } catch (error) {
+                console.log(this.error);
+            }
+        },
+    },
+}
 </script>

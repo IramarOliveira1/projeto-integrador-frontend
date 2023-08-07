@@ -1,13 +1,11 @@
 <template>
-    <v-card>
-        <v-layout>
-            <v-app-bar color="primary">
-                <v-toolbar-title>My files</v-toolbar-title>
+    <a-layout class="layout">
+        <a-layout-header>
+            <a-menu theme="dark" mode="horizontal">
                 <router-link to="/login">
-                    <v-list-item title="Login" value="Login"></v-list-item>
+                    <a-menu-item key="1">login</a-menu-item>
                 </router-link>
-            </v-app-bar>
-            <v-main />
-        </v-layout>
-    </v-card>
+            </a-menu>
+        </a-layout-header>
+    </a-layout>
 </template>
