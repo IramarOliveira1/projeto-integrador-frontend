@@ -1,15 +1,11 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
 
-// Vuetify
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import './css/global.css';
 
-const vuetify = createVuetify({
-    components,
-    directives,
-})
+import App from './App.vue';
 
-createApp(App).use(vuetify).mount('#app')
+import router from './router/router';
+
+import 'ant-design-vue/dist/reset.css';
+
+createApp(App).use(router).mount('#app');

@@ -1,0 +1,18 @@
+.link-forgot:hover {
+    color: #8f95c2;
+}
+
+.link-forgot {
+    color: #303D97;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.link-register span {
+    margin-right: 5px;
+}
+
+.link-register strong {
+    color: #303D97;
+}
