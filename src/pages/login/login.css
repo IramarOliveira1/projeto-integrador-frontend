@@ -1,0 +1,57 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 98vh;
+}
+
+.image-login img {
+    width: 100%;
+    height: 98vh;
+}
+
+.button-login {
+    width: 100%;
+    margin-top: 10px;
+    background-color: #303D97;
+}
+
+.button-login:hover {
+    background-color: #404dac !important;
+}
+
+.link-forgot:hover {
+    color: #8f95c2;
+}
+
+.form-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    background-color: #F8F9FC;
+}
+
+.link-forgot {
+    color: #303D97;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.link-register span {
+    margin-right: 5px;
+}
+
+.link-register strong{
+    color: #303D97;
+}
+
+@media only screen and (max-width: 768px) {
+    .image-login {
+        display: none;
+    }
+
+    .form-login {
+        width: 100% !important;
+    }
+}
