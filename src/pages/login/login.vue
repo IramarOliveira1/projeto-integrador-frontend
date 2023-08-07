@@ -1,10 +1,10 @@
 <template>
-    <div class="container">
-        <div class="image-login h-screen">
+    <div class="container-init">
+        <div class="image-init">
             <img src="../../assets/images/login.png" alt="">
         </div>
 
-        <div class="form-login ">
+        <div class="form-init">
             <a-col :span="14">
                 <a-form layout="vertical" name="basic" :model="data" @finish="login" :hideRequiredMark="true">
                     <h3>Logo da empresa</h3>
@@ -18,12 +18,12 @@
                         <a-input-password v-model:value="data.password" size="large" />
                     </a-form-item>
 
-                    <router-link to="/recuperar-senha" class="link-forgot">
+                    <router-link to="/esqueceu-senha" class="link-forgot">
                         esqueceu sua senha?
                     </router-link>
 
                     <a-form-item>
-                        <a-button type="primary" html-type="submit" class="button-login" size="large">Entrar</a-button>
+                        <a-button type="primary" html-type="submit" class="button-init" size="large">Entrar</a-button>
                     </a-form-item>
 
                     <div class="link-register">

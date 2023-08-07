@@ -1,0 +1,45 @@
+.container-init {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+
+.image-init img {
+    width: 100%;
+    height: 100vh;
+}
+
+.form-init {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    background-color: #F8F9FC;
+}
+
+.link-forgot {
+    color: #303D97;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.button-init {
+    width: 100%;
+    margin-top: 10px;
+    background-color: #303D97;
+}
+
+.button-init:hover {
+    background-color: #404dac !important;
+}
+
+@media only screen and (max-width: 768px) {
+    .image-init {
+        display: none;
+    }
+
+    .form-init {
+        width: 100% !important;
+    }
+}
