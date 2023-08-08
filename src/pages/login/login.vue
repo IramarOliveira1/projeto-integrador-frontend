@@ -28,7 +28,7 @@
 
                     <div class="link-register">
                         <span>não tem cadastro?</span>
-                        <router-link to="/cadastro">
+                        <router-link to="/cadastrar-cliente">
                             <strong>clique aqui</strong>
                         </router-link>
                     </div>

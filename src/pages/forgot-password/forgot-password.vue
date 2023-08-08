@@ -7,8 +7,10 @@
         <div class="form-init">
             <a-col :span="14">
                 <a-form layout="vertical" name="basic" :model="data" @finish="forgotPassword" :hideRequiredMark="true">
-                    <h3 style="color: #222358">Esqueceu sua senha?</h3>
-                    <h5 style="color: #808fa3;">Para recuperar seu acesso, precisamos do seu E-mail.</h5>
+                    <div class="title">
+                        <h2>Esqueceu sua senha?</h2>
+                        <h5>Para recuperar seu acesso, precisamos do seu e-mail.</h5>
+                    </div>
                     <a-form-item label="E-mail" name="email"
                         :rules="[{ required: true, message: 'Campo e-mail é obrigatório' }]">
                         <a-input v-model:value="data.email" size="large" />
@@ -31,7 +33,6 @@
 </template>
 
 <script>
-
 import axios from '../../services/api.js';
 
 export default {

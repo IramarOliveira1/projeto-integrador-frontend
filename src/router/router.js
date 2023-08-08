@@ -8,6 +8,9 @@ const routes = [
         path: '/esqueceu-senha', component: () => import('../pages/forgot-password/forgot-password.vue'),
     },
     {
+        path: '/cadastrar-cliente', component: () => import('../pages/register/client/client.vue'),
+    },
+    {
         path: '/',
         component: () => import('../pages/home/home.vue'),
     },
