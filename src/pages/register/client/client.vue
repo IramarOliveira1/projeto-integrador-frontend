@@ -6,7 +6,7 @@
 
         <div class="form-init">
             <a-col :span="20" class="register-client">
-                <a-form layout="vertical" name="basic" :model="data" @finish="save" :hideRequiredMark="true">
+                <a-form layout="vertical" name="basic" :model="{...data, data}" @finish="save" :hideRequiredMark="true">
                     <div class="title">
                         <h2>Cadastre-se</h2>
                         <h5>Cadastre-se e tenha acesso as melhores ofertas de veículos do Brasil.</h5>
@@ -45,27 +45,28 @@
                     <a-row :gutter="[8, 16]">
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="Telefone" name="phone"
-                                :rules="[{ required: true, message: 'Campo cpf é obrigatório' }]">
-                                <a-input v-model:value="data.cpf" />
+                                :rules="[{ required: true, message: 'Campo telefone é obrigatório' }]">
+                                <a-input v-model:value="data.phone" />
                             </a-form-item>
                         </a-col>
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                            <a-form-item label="CEP" name="cep"
+                            <a-form-item label="CEP" name="zipcode"
                                 :rules="[{ required: true, message: 'Campo cep é obrigatório' }]">
-                                <a-input v-model:value="data.cep" />
+                                <a-input v-model:value="data.address.zipcode" @blur="viaCep" />
                             </a-form-item>
+                            {{ data.address.zipcode }}
                         </a-col>
                     </a-row>
 
                     <a-row :gutter="[8, 16]">
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="Endereço" name="address">
-                                <a-input v-model:value="data.address" disabled />
+                                <a-input v-model:value="data.address.address" disabled />
                             </a-form-item>
                         </a-col>
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="Complemento" name="complement">
-                                <a-input v-model:value="data.complement" />
+                                <a-input v-model:value="data.address.complement" />
                             </a-form-item>
                         </a-col>
                     </a-row>
@@ -73,12 +74,12 @@
                     <a-row :gutter="[8, 16]">
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="UF" name="uf">
-                                <a-input v-model:value="data.uf" disabled />
+                                <a-input v-model:value="data.address.uf" disabled />
                             </a-form-item>
                         </a-col>
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                            <a-form-item label="cidade" name="city">
-                                <a-input v-model:value="data.city" disabled />
+                            <a-form-item label="Cidade" name="city">
+                                <a-input v-model:value="data.address.city" disabled />
                             </a-form-item>
                         </a-col>
                     </a-row>
@@ -86,14 +87,15 @@
                     <a-row :gutter="[8, 16]">
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="Bairro" name="neighborhood">
-                                <a-input v-model:value="data.neighborhood" disabled />
+                                <a-input v-model:value="data.address.neighborhood" disabled />
                             </a-form-item>
                         </a-col>
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="Número" name="number"
                                 :rules="[{ required: true, message: 'Campo número é obrigatório' }]">
-                                <a-input v-model:value="data.number" />
+                                <a-input v-model:value="data.address.number" />
                             </a-form-item>
+                            {{ data.address.number }}
                         </a-col>
                     </a-row>
 
@@ -119,30 +121,63 @@ export default {
     data() {
         return {
             data: {
-                name: null,
-                email: null,
-                password: null,
-                cpf: null,
-                phone: null,
-                cep: null,
-                address: null,
-                complement: null,
-                uf: null,
-                city: null,
-                neighborhood: null,
-                number: null,
+                name: "testando",
+                email: "testando@teste2.com",
+                password: "123456",
+                cpf: "000.222.333-66",
+                phone: "99 22222-3333",
+                address: {
+                    complement: "casa",
+                    uf: null,
+                    city: null,
+                    neighborhood: null,
+                    number: 10,
+                    zipcode: "41219-600",
+                    address: null
+                },
             }
         }
     },
     methods: {
         async save(data) {
             try {
-                const response = await axios.post('/client', data);
-                console.log(response);
+
+                console.log(data);
+                // const response = await axios.post('/user/register', data);
+
+                // console.log(response);
+                // this.$notification.notification(respons, 'olá')
+
+                // console.log(response);
             } catch (error) {
-                console.log(this.error);
+                console.log(error);
             }
         },
+
+        async viaCep() {
+            try {
+                if (this.data.address.zipcode.length >= 9) {
+                    const response = await this.$axios.get(`https://viacep.com.br/ws/${this.data.address.zipcode}/json/`);
+                    this.data.address.address = response.data.logradouro;
+                    this.data.address.uf = response.data.uf;
+                    this.data.address.city = response.data.localidade;
+                    this.data.address.neighborhood = response.data.bairro;
+                }
+            } catch (error) {
+                console.log(error.message);
+                this.clearForm({
+                    zipcode: null,
+                    address: null,
+                    uf: null,
+                    city: null,
+                    neighborhood: null,
+                });
+            }
+        },
+
+        clearForm(clear) {
+            this.data.address = { clear };
+        }
     },
 }
 </script>
