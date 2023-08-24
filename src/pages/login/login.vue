@@ -7,7 +7,9 @@
         <div class="form-init">
             <a-col :span="14">
                 <a-form layout="vertical" name="basic" :model="data" @finish="login" :hideRequiredMark="true">
-                    <h3>Logo da empresa</h3>
+                    <div >
+                        <img class="image-login" src="../../assets/images/logo_blue.png" alt="">
+                    </div>
                     <a-form-item label="E-mail" name="email"
                         :rules="[{ required: true, message: 'Campo e-mail é obrigatório' }]">
                         <a-input v-model:value="data.email" size="large" />
@@ -18,7 +20,7 @@
                         <a-input-password v-model:value="data.password" size="large" />
                     </a-form-item>
 
-                    <router-link to="/esqueceu-senha" class="link-forgot">
+                    <router-link to="/recuperar-senha" class="link-forgot">
                         esqueceu sua senha?
                     </router-link>
 

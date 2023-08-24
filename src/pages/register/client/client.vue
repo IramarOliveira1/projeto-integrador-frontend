@@ -102,7 +102,7 @@
                     </router-link>
 
                     <a-form-item>
-                        <a-button type="primary" html-type="submit" class="button-init">Cadastrar</a-button>
+                        <a-button type="primary" html-type="submit" class="button-init button-register">Cadastrar</a-button>
                     </a-form-item>
                 </a-form>
             </a-col>
