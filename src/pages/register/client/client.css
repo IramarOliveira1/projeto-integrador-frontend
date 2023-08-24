@@ -10,14 +10,14 @@
     margin-left: 50%;
 }
 
-.button-init {
+.button-register {
     margin-bottom: 30px;
 }
 
-@media only screen and (max-width: 1199px) {
+@media only screen and (max-width: 1300px) {
     .register-client {
         height: 100vh;
-        margin-top: 40px;
+        margin-top: 20%;
     }
 }
 
