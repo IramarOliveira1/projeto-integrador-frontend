@@ -5,6 +5,9 @@ const routes = [
         path: '/login', component: () => import('../pages/login/login.vue'),
     },
     {
+        path: '/recuperar-senha', component: () => import('../pages/forgot-password/send-mail-forgot-password.vue'),
+    },
+    {
         path: '/esqueceu-senha', component: () => import('../pages/forgot-password/forgot-password.vue'),
     },
     {
