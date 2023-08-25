@@ -7,7 +7,7 @@
         <div class="form-init">
             <a-col :span="14">
                 <a-form layout="vertical" name="basic" :model="data" @finish="login" :hideRequiredMark="true">
-                    <div >
+                    <div>
                         <img class="image-login" src="../../assets/images/logo_blue.png" alt="">
                     </div>
                     <a-form-item label="E-mail" name="email"
@@ -57,10 +57,10 @@ export default {
     methods: {
         async login(data) {
             try {
-                const response = await axios.post('/login', data);
-                console.log(response);
+                await axios.post('/user/login', data);
+
             } catch (error) {
-                console.log(this.error);
+                this.$notification.notification(error.response.status, error.response.data.message);
             }
         },
     },

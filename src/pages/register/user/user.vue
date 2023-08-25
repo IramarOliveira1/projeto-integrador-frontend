@@ -6,7 +6,8 @@
 
         <div class="form-init">
             <a-col :span="20" class="register-client">
-                <a-form layout="vertical" name="basic" :model="{...data, data}" @finish="save" :hideRequiredMark="true">
+                <a-form layout="vertical" name="basic" :model="{ ...data.address, ...data }" @finish="save"
+                    :hideRequiredMark="true">
                     <div class="title">
                         <h2>Cadastre-se</h2>
                         <h5>Cadastre-se e tenha acesso as melhores ofertas de veículos do Brasil.</h5>
@@ -54,7 +55,6 @@
                                 :rules="[{ required: true, message: 'Campo cep é obrigatório' }]">
                                 <a-input v-model:value="data.address.zipcode" @blur="viaCep" />
                             </a-form-item>
-                            {{ data.address.zipcode }}
                         </a-col>
                     </a-row>
 
@@ -95,7 +95,6 @@
                                 :rules="[{ required: true, message: 'Campo número é obrigatório' }]">
                                 <a-input v-model:value="data.address.number" />
                             </a-form-item>
-                            {{ data.address.number }}
                         </a-col>
                     </a-row>
 
@@ -113,7 +112,7 @@
 </template>
 
 <script>
-import './client.css';
+import './user.css';
 
 import axios from '../../../services/api.js';
 
@@ -121,18 +120,18 @@ export default {
     data() {
         return {
             data: {
-                name: "testando",
-                email: "testando@teste2.com",
-                password: "123456",
-                cpf: "000.222.333-66",
-                phone: "99 22222-3333",
+                name: null,
+                email: null,
+                password: null,
+                cpf: null,
+                phone: null,
                 address: {
-                    complement: "casa",
+                    complement: null,
                     uf: null,
                     city: null,
                     neighborhood: null,
-                    number: 10,
-                    zipcode: "41219-600",
+                    number: null,
+                    zipcode: null,
                     address: null
                 },
             }
@@ -142,15 +141,11 @@ export default {
         async save(data) {
             try {
 
-                console.log(data);
-                // const response = await axios.post('/user/register', data);
+                const response = await axios.post('/user/register', data);
 
-                // console.log(response);
-                // this.$notification.notification(respons, 'olá')
-
-                // console.log(response);
+                this.$notification.notification(response.status, response.data.message);
             } catch (error) {
-                console.log(error);
+                this.$notification.notification(error.response.status, error.response.data.message);
             }
         },
 
@@ -164,7 +159,6 @@ export default {
                     this.data.address.neighborhood = response.data.bairro;
                 }
             } catch (error) {
-                console.log(error.message);
                 this.clearForm({
                     zipcode: null,
                     address: null,
@@ -174,10 +168,6 @@ export default {
                 });
             }
         },
-
-        clearForm(clear) {
-            this.data.address = { clear };
-        }
     },
 }
 </script>

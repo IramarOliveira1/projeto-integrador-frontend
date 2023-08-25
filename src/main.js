@@ -3,6 +3,7 @@ import { createApp } from 'vue';
 import axios from 'axios';
 
 import notification from './helpers/notification/notification.js'
+import clearForm from './helpers/clearForm/clearForm.js'
 
 import './css/global.css';
 
@@ -21,6 +22,8 @@ const app = createApp(App).use(router);
 app.config.globalProperties.$axios = { ...axiosInstance }
 
 app.config.globalProperties.$notification = { notification }
+
+app.config.globalProperties.$clearForm = { clearForm }
 
 app.mount("#app");
 

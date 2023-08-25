@@ -9,6 +9,7 @@ export default function notifications(status, message) {
                 description: message,
             });
             break;
+
         case 400:
         case 401:
         case 403:
