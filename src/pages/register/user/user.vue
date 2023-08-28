@@ -142,8 +142,9 @@ export default {
             try {
 
                 const response = await axios.post('/user/register', data);
-
+                
                 this.$notification.notification(response.status, response.data.message);
+                this.$router.push('/login')
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
@@ -159,15 +160,22 @@ export default {
                     this.data.address.neighborhood = response.data.bairro;
                 }
             } catch (error) {
+                this.$notification.notification(400, "CEP inválido!");
+
                 this.clearForm({
-                    zipcode: null,
-                    address: null,
-                    uf: null,
-                    city: null,
-                    neighborhood: null,
+                    address: {
+                        address: null,
+                        zipcode: null,
+                        uf: null,
+                        city: null,
+                        neighborhood: null,
+                    }
                 });
             }
         },
+        clearForm(form) {
+            this.data = form;
+        }
     },
 }
 </script>

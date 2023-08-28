@@ -54,6 +54,9 @@ export default {
             try {
                 const response = await axios.post('/user/verify-code', data);
 
+                this.data.code = null;
+                this.data.password = null;
+
                 this.$notification.notification(response.status, response.data.message);
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);

@@ -40,7 +40,7 @@ export default {
     data() {
         return {
             data: {
-                email: "teste",
+                email: null,
             }
         }
     },
@@ -48,11 +48,11 @@ export default {
         async sendMail(data) {
             try {
 
-                this.$clearForm.clearForm(data);
+                const response = await axios.post('/user/send-mail', data);
 
-                // const response = await axios.post('/user/send-mail', data);
+                this.data.email = null;
 
-                // this.$notification.notification(response.status, response.data.message);
+                this.$notification.notification(response.status, response.data.message);
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
