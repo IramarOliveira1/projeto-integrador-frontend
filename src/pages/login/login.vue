@@ -49,16 +49,20 @@ export default {
     data() {
         return {
             data: {
-                email: null,
-                password: null
+                email: "iramar.oliveira@trc.sebraeba.com.br",
+                password: "123456"
             }
         }
     },
     methods: {
         async login(data) {
             try {
-                await axios.post('/user/login', data);
 
+                const response = await axios.post('/user/login', data);
+
+                localStorage.setItem('user', JSON.stringify(response.data));
+
+                this.$router.push('/dashboard')
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }

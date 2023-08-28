@@ -1,8 +1,6 @@
-
-
 const user = {
     state: {
-        count: 10
+        data: JSON.parse(localStorage.getItem('user'))
     },
 }
 

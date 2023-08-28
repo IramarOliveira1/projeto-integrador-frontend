@@ -140,10 +140,10 @@ export default {
     methods: {
         async save(data) {
             try {
-
                 const response = await axios.post('/user/register', data);
-                
+
                 this.$notification.notification(response.status, response.data.message);
+
                 this.$router.push('/login')
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
