@@ -7,7 +7,7 @@
         <div class="form-init">
             <a-col :span="14">
                 <a-form layout="vertical" name="basic" :model="data" @finish="login" :hideRequiredMark="true">
-                    <div >
+                    <div>
                         <img class="image-login" src="../../assets/images/logo_blue.png" alt="">
                     </div>
                     <a-form-item label="E-mail" name="email"
@@ -49,18 +49,26 @@ export default {
     data() {
         return {
             data: {
-                email: null,
-                password: null
+                email: "iramar.oliveira@trc.sebraeba.com.br",
+                password: "123456"
             }
         }
     },
     methods: {
         async login(data) {
             try {
-                const response = await axios.post('/login', data);
-                console.log(response);
+
+                localStorage.clear();
+
+                const response = await axios.post('/user/login', data);
+
+                localStorage.setItem('user', JSON.stringify(response.data));
+
+                this.$store.commit('isAuthenticated', true);
+
+                this.$router.push('/dashboard')
             } catch (error) {
-                console.log(this.error);
+                this.$notification.notification(error.response.status, error.response.data.message);
             }
         },
     },

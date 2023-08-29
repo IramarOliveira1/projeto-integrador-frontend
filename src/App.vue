@@ -1,4 +1,25 @@
 
 <template>
-  <router-view> </router-view>
+  <navbar v-if="this.$store.getters.isAuthenticated || $route.name === 'home'" />
+
+  <router-view />
 </template>
+
+
+<script>
+
+import navbar from './components/navbar/navbar.vue';
+
+export default {
+  components: {
+    navbar
+  },
+  mounted() {
+    if (this.$store.getters.isAuthenticated) {
+      if (JSON.parse(localStorage.getItem('user'))) {
+        this.$store.dispatch('getUser');
+      }
+    }
+  },
+}
+</script>
