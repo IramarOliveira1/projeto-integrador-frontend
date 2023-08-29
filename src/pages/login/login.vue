@@ -49,7 +49,7 @@ export default {
     data() {
         return {
             data: {
-                email: "iramaroliveira1@hotmail.com",
+                email: "iramar.oliveira@trc.sebraeba.com.br",
                 password: "123456"
             }
         }
@@ -58,11 +58,13 @@ export default {
         async login(data) {
             try {
 
+                localStorage.clear();
+
                 const response = await axios.post('/user/login', data);
 
                 localStorage.setItem('user', JSON.stringify(response.data));
 
-                this.$store.commit('isLoggedIn', true)
+                this.$store.commit('isAuthenticated', true);
 
                 this.$router.push('/dashboard')
             } catch (error) {

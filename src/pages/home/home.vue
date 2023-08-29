@@ -1,13 +1,6 @@
 <template>
-    <navbar />
-    <h1>HOME DO SISTEMA</h1>
-</template>
+    <router-view>
 
-<script>
-import navbar from '../../components/navbar/navbar.vue';
-export default {
-    components: {
-        navbar
-    }
-}
-</script>
+        <h1>HOME DO SISTEMA</h1>
+    </router-view>
+</template>

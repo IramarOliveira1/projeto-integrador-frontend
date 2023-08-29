@@ -4,11 +4,10 @@ import store from '../modules/index.js';
 
 const routes = [
     {
-        path: '/login', component: () => import('../pages/login/login.vue'),
+        path: '/login', component: () => import('../pages/login/login.vue'), name: 'login'
     },
     {
         path: '/recuperar-senha', component: () => import('../pages/forgot-password/forgot-password.vue'),
-        meta: { requiresAuth: true }
     },
     {
         path: '/esqueceu-senha', component: () => import('../pages/forgot-password/change-password.vue'),
@@ -17,12 +16,12 @@ const routes = [
         path: '/cadastrar-cliente', component: () => import('../pages/register/user/user.vue'),
     },
     {
-        path: '/', component: () => import('../pages/home/home.vue'),
+        path: '/', component: () => import('../pages/home/home.vue'), name: 'home',
     },
     {
-        path: '/dashboard', component: () => import('../pages/dashboard/dashboard.vue'),
-        meta: { requiresAuth: true }
+        path: '/dashboard', component: () => import('../pages/dashboard/dashboard.vue'), meta: { requiresAuth: true }, name: 'dashboard'
     },
+
 ];
 
 const router = createRouter({
@@ -32,21 +31,24 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, from, next) => {
-    if (to.meta.requiresAuth) {
+    if (store.getters.isAuthenticated && to.name === 'home') {
+        next();
+        return;
+    } else if (store.getters.isAuthenticated && !to.meta.requiresAuth) {
+        next('/dashboard');
+        return;
+    }
+
+    if (to.matched.some(record => record.meta.requiresAuth)) {
         const user = localStorage.getItem('user');
 
         if (!user) {
+            localStorage.removeItem('user');
             next('/login');
             return;
         }
 
-        console.log(store.state.isLoggedIn);
-        // if (store.state.isLoggedIn) {
-        //     next('/dashboard');
-        //     return;
-        // }
-
-        next();
+        next()
     } else {
         next()
     }

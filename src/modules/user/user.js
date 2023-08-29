@@ -1,16 +1,22 @@
 import axios from '../../services/api.js';
 
-import router from '../../router/router.js';
+import notifications from '../../helpers/notification/notification.js';
 
 const user = {
     state: {
         data: JSON.parse(localStorage.getItem('user')),
-        isLoggedIn: false,
+        isAuthenticated: false,
     },
 
     mutations: {
-        isLoggedIn(state, payload) {
-            state.isLoggedIn = payload;
+        isAuthenticated(state, payload) {
+            state.isAuthenticated = payload;
+        }
+    },
+
+    getters: {
+        isAuthenticated(state) {
+            return state.isAuthenticated;
         }
     },
 
@@ -19,8 +25,7 @@ const user = {
             try {
                 await axios.get('/user/2');
             } catch (error) {
-                localStorage.removeItem('user');
-                router.push('/login');
+                notifications(error.response.status, 'token invalido')
             }
         }
     }
