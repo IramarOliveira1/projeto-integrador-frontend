@@ -1,5 +1,6 @@
 import { notification } from 'ant-design-vue';
 
+import router from '../../router/router.js';
 
 export default function notifications(status, message) {
     switch (status) {
@@ -10,8 +11,18 @@ export default function notifications(status, message) {
             });
             break;
 
-        case 400:
+
         case 401:
+            notification['warning']({
+                description: message,
+            });
+
+            if (router.currentRoute.value.path !== '/login') {
+                router.push('/login')
+            }
+            break;
+
+        case 400:
         case 403:
         case 404:
             notification['warning']({
@@ -21,7 +32,7 @@ export default function notifications(status, message) {
 
         default:
             notification['error']({
-                description: 'Não foi possível executar essa ação',
+                description: 'Nï¿½o foi possï¿½vel executar essa aï¿½ï¿½o',
             });
             break;
     }

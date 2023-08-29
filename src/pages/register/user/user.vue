@@ -10,19 +10,19 @@
                     :hideRequiredMark="true">
                     <div class="title">
                         <h2>Cadastre-se</h2>
-                        <h5>Cadastre-se e tenha acesso as melhores ofertas de veículos do Brasil.</h5>
+                        <h5>Cadastre-se e tenha acesso as melhores ofertas de veï¿½culos do Brasil.</h5>
                     </div>
 
                     <a-row :gutter="[8, 16]">
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="Nome" name="name"
-                                :rules="[{ required: true, message: 'Campo nome é obrigatório' }]">
+                                :rules="[{ required: true, message: 'Campo nome ï¿½ obrigatï¿½rio' }]">
                                 <a-input v-model:value="data.name" />
                             </a-form-item>
                         </a-col>
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="CPF" name="cpf"
-                                :rules="[{ required: true, message: 'Campo cpf é obrigatório' }]">
+                                :rules="[{ required: true, message: 'Campo cpf ï¿½ obrigatï¿½rio' }]">
                                 <a-input v-model:value="data.cpf" />
                             </a-form-item>
                         </a-col>
@@ -31,13 +31,13 @@
                     <a-row :gutter="[8, 16]">
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label=" E-mail" name="email"
-                                :rules="[{ required: true, message: 'Campo e-mail é obrigatório' }]">
+                                :rules="[{ required: true, message: 'Campo e-mail ï¿½ obrigatï¿½rio' }]">
                                 <a-input v-model:value="data.email" />
                             </a-form-item>
                         </a-col>
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="Senha" name="password"
-                                :rules="[{ required: true, message: 'Campo senha é obrigatório' }]">
+                                :rules="[{ required: true, message: 'Campo senha ï¿½ obrigatï¿½rio' }]">
                                 <a-input-password v-model:value="data.password" />
                             </a-form-item>
                         </a-col>
@@ -46,13 +46,13 @@
                     <a-row :gutter="[8, 16]">
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="Telefone" name="phone"
-                                :rules="[{ required: true, message: 'Campo telefone é obrigatório' }]">
+                                :rules="[{ required: true, message: 'Campo telefone ï¿½ obrigatï¿½rio' }]">
                                 <a-input v-model:value="data.phone" />
                             </a-form-item>
                         </a-col>
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="CEP" name="zipcode"
-                                :rules="[{ required: true, message: 'Campo cep é obrigatório' }]">
+                                :rules="[{ required: true, message: 'Campo cep ï¿½ obrigatï¿½rio' }]">
                                 <a-input v-model:value="data.address.zipcode" @blur="viaCep" />
                             </a-form-item>
                         </a-col>
@@ -60,7 +60,7 @@
 
                     <a-row :gutter="[8, 16]">
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                            <a-form-item label="Endereço" name="address">
+                            <a-form-item label="Endereï¿½o" name="address">
                                 <a-input v-model:value="data.address.address" disabled />
                             </a-form-item>
                         </a-col>
@@ -91,8 +91,8 @@
                             </a-form-item>
                         </a-col>
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                            <a-form-item label="Número" name="number"
-                                :rules="[{ required: true, message: 'Campo número é obrigatório' }]">
+                            <a-form-item label="Nï¿½mero" name="number"
+                                :rules="[{ required: true, message: 'Campo nï¿½mero ï¿½ obrigatï¿½rio' }]">
                                 <a-input v-model:value="data.address.number" />
                             </a-form-item>
                         </a-col>
@@ -160,7 +160,7 @@ export default {
                     this.data.address.neighborhood = response.data.bairro;
                 }
             } catch (error) {
-                this.$notification.notification(400, "CEP inválido!");
+                this.$notification.notification(400, "CEP invï¿½lido!");
 
                 this.clearForm({
                     address: {

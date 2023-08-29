@@ -1,8 +1,13 @@
 
 <template>
     <div>
-        <h1>{{ this.$store.state.user.data.name }}</h1>
+        <h1>TUDO CERTINHO</h1>
     </div>
+
+
+    <a-button @click="all">
+        esqueceu sua senha?
+    </a-button>
 </template>
 
 
@@ -14,7 +19,7 @@ export default {
     data() {
         return {
             data: {
-                user: {}
+                user: {},
             }
         }
     },
@@ -29,7 +34,7 @@ export default {
                 await axios.get('user/all');
 
             } catch (error) {
-                console.log(error);
+                this.$notification.notification(error.response.status, 'token invalido');
             }
         }
     }

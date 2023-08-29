@@ -1,11 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import store from '../modules/index.js';
+
 const routes = [
     {
         path: '/login', component: () => import('../pages/login/login.vue'),
     },
     {
         path: '/recuperar-senha', component: () => import('../pages/forgot-password/forgot-password.vue'),
+        meta: { requiresAuth: true }
     },
     {
         path: '/esqueceu-senha', component: () => import('../pages/forgot-password/change-password.vue'),
@@ -27,12 +30,23 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach((to, from, next) => {
+
+router.beforeEach(async (to, from, next) => {
     if (to.meta.requiresAuth) {
-        if () {
-            
+        const user = localStorage.getItem('user');
+
+        if (!user) {
+            next('/login');
+            return;
         }
-        next('/login')
+
+        console.log(store.state.isLoggedIn);
+        // if (store.state.isLoggedIn) {
+        //     next('/dashboard');
+        //     return;
+        // }
+
+        next();
     } else {
         next()
     }
