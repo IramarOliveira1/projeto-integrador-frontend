@@ -14,6 +14,17 @@
                         <a-button type="primary" html-type="submit" class="button-filter-general"
                             size="large">Filtrar</a-button>
                     </a-form-item>
+
+                </a-col>
+
+                <a-col :xs="{ span: 24 }" :sm="{ span: 6 }" :xl="{ span: 8 }">
+                    <a-form-item>
+                        <div class="button-add">
+
+                            <a-button type="primary" html-type="submit" class="button-add-general"
+                                size="large">Cadastrar</a-button>
+                        </div>
+                    </a-form-item>
                 </a-col>
 
             </a-row>
