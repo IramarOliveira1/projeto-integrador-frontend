@@ -21,7 +21,9 @@ const routes = [
     {
         path: '/dashboard', component: () => import('../pages/dashboard/dashboard.vue'), meta: { requiresAuth: true }, name: 'dashboard'
     },
-
+    {
+        path: '/clientes', component: () => import('../pages/list/user/user.vue'), meta: { requiresAuth: true }
+    },
 ];
 
 const router = createRouter({
