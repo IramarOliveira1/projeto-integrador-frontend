@@ -21,8 +21,8 @@
                     <a-form-item>
                         <div class="button-add">
 
-                            <a-button type="primary" html-type="submit" class="button-add-general"
-                                size="large">Cadastrar</a-button>
+                            <a-button type="primary" html-type="submit" class="button-add-general" size="large"
+                                @click="showModal">Cadastrar</a-button>
                         </div>
                     </a-form-item>
                 </a-col>
@@ -31,13 +31,20 @@
         </a-form>
         <a-table :columns="columns" :data-source="users" key="users.id" bordered :pagination="{ pageSize: 9 }" />
     </div>
+    <modal :openModal="openModal" @close="openModal = false"/>
+
 </template>
 
 <script>
 
 import axios from '../../../services/api.js';
 
+import modal from '../modal/modal.vue';
+
 export default {
+    components: {
+        modal
+    },
     data() {
         return {
             data: {
@@ -47,17 +54,26 @@ export default {
                 {
                     title: 'id',
                     dataIndex: 'id',
+                    width: '20%',
                 },
                 {
                     title: 'Nome',
                     dataIndex: 'name',
+                    width: '20%',
                 },
                 {
                     title: 'CPF',
                     dataIndex: 'cpf',
+                    width: '20%',
+                },
+                {
+                    title: 'E-mail',
+                    dataIndex: 'email',
+                    width: '20%',
                 },
             ],
             users: [],
+            openModal: false,
         }
     },
     mounted() {
@@ -66,11 +82,19 @@ export default {
     methods: {
         async all() {
             try {
-                const response = await axios.get('/user/all');
+                const response = await axios.get('/user/all', {
+                    params: {
+                        role: 'USER'
+                    }
+                });
                 this.users = response.data;
             } catch (error) {
                 console.log(error);
             }
+        },
+
+        showModal() {
+            this.openModal = true
         }
     }
 }
