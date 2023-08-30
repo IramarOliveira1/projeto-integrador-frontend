@@ -114,37 +114,29 @@
 <script>
 import './user.css';
 
-import axios from '../../../services/api.js';
-
 export default {
-    data() {
-        return {
-            data: {
-                name: null,
-                email: null,
-                password: null,
-                cpf: null,
-                phone: null,
-                address: {
-                    complement: null,
-                    uf: null,
-                    city: null,
-                    neighborhood: null,
-                    number: null,
-                    zipcode: null,
-                    address: null
-                },
-            }
+    computed: {
+        data: {
+            get() {
+                return this.$store.getters.getUser;
+            },
         }
     },
     methods: {
         async save(data) {
             try {
-                const response = await axios.post('/user/register', data);
+
+                const response = await this.$store.dispatch('save', data);
 
                 this.$notification.notification(response.status, response.data.message);
 
-                this.$router.push('/login')
+                this.$store.commit('clearForm', {
+                    name: null, email: null, password: null, cpf: null, phone: null, address: {
+                        address: null, zipcode: '', uf: null, city: null, neighborhood: null,
+                    }
+                });
+
+                localStorage.clear();
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
@@ -152,30 +144,26 @@ export default {
 
         async viaCep() {
             try {
+                console.log("error");
                 if (this.data.address.zipcode.length >= 9) {
-                    const response = await this.$axios.get(`https://viacep.com.br/ws/${this.data.address.zipcode}/json/`);
-                    this.data.address.address = response.data.logradouro;
-                    this.data.address.uf = response.data.uf;
-                    this.data.address.city = response.data.localidade;
-                    this.data.address.neighborhood = response.data.bairro;
+                    await this.$store.dispatch('viaCep', this.data.address);
                 }
             } catch (error) {
                 this.$notification.notification(400, "CEP inv�lido!");
 
-                this.clearForm({
-                    address: {
-                        address: null,
-                        zipcode: null,
-                        uf: null,
-                        city: null,
-                        neighborhood: null,
+                this.$store.commit('clearForm',
+                    {
+                        address: {
+                            address: null,
+                            zipcode: '',
+                            uf: null,
+                            city: null,
+                            neighborhood: null,
+                        }
                     }
-                });
+                );
             }
         },
-        clearForm(form) {
-            this.data = form;
-        }
     },
 }
 </script>

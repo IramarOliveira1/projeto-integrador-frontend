@@ -1,9 +1,8 @@
 <template>
     <div>
-        <a-modal v-model:open="showModal" title="Cadastrar Cliente" :footer="null">
+        <a-modal v-model:open="showModal" :title="modalEdit ? 'Editar Cliente' : 'Cadsatrar Cliente'" :footer="null">
             <a-form layout="vertical" name="basic" :model="{ ...data.address, ...data }" @finish="save"
                 :hideRequiredMark="true">
-
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Nome" name="name"
@@ -88,42 +87,21 @@
                         </a-form-item>
                     </a-col>
                 </a-row>
-
-
                 <a-form-item class="ant-modal-footer">
                     <a-button key="back" @click="closeModal">Fechar</a-button>
-                    <a-button type="primary" html-type="submit">Cadastrar</a-button>
+                    <a-button type="primary" html-type="submit" v-if="!modalEdit">Cadastrar</a-button>
+                    <a-button type="primary" html-type="submit" v-else>Atualizar</a-button>
                 </a-form-item>
             </a-form>
         </a-modal>
     </div>
 </template>
 
-
 <script>
-
-import axios from '../../../services/api';
-
 export default {
-    props: ['openModal'],
+    props: ['openModal', 'idUserEdit'],
     data() {
         return {
-            data: {
-                name: "TESTANDO MODAL 2",
-                email: 'testando@modal2.com',
-                password: '123456',
-                cpf: '012.669.485-23',
-                phone: '41 14523-9636',
-                address: {
-                    complement: null,
-                    uf: 'SP',
-                    city: 'SÃO PAULO',
-                    neighborhood: 'Moema',
-                    number: '363',
-                    zipcode: '04077-020',
-                    address: 'Avenida Moema - até 349/350, Moema, São Paulo - SP'
-                },
-            },
             isActiveModal: false
         }
     },
@@ -132,18 +110,51 @@ export default {
             get() {
                 return this.isActiveModal = this.openModal;
             },
+        },
+
+        data: {
+            get() {
+                return this.$store.getters.getUser;
+            },
+        },
+        modalEdit: {
+            get() {
+                return this.$store.getters.getModalEdit;
+            },
         }
     },
-
     methods: {
         async save(data) {
             try {
 
+                if (this.modalEdit) {
+                    this.update(data);
 
-                this.$store.dispatch('save', data);
-                
-                // this.$notification.notification(response.status, response.data.message);
-                // const response = await axios.post('/user/register', data);
+                    return;
+                }
+
+                const response = await this.$store.dispatch('save', data);
+
+                this.$notification.notification(response.status, response.data.message);
+
+                this.closeModal();
+
+                this.$store.commit('clearForm', {
+                    name: null, email: null, password: null, cpf: null, phone: null, address: {
+                        address: null, zipcode: '', uf: null, city: null, neighborhood: null,
+                    }
+                });
+            } catch (error) {
+                this.$notification.notification(error.response.status, error.response.data.message);
+            }
+        },
+
+        async update(data) {
+            try {
+
+                const response = await this.$store.dispatch('update', { id: this.$props.idUserEdit, data: data });
+
+                this.$notification.notification(response.status, response.data.message);
 
                 this.closeModal();
             } catch (error) {
@@ -154,31 +165,30 @@ export default {
         async viaCep() {
             try {
                 if (this.data.address.zipcode.length >= 9) {
-                    const response = await this.$axios.get(`https://viacep.com.br/ws/${this.data.address.zipcode}/json/`);
-                    this.data.address.address = response.data.logradouro;
-                    this.data.address.uf = response.data.uf;
-                    this.data.address.city = response.data.localidade;
-                    this.data.address.neighborhood = response.data.bairro;
+                    await this.$store.dispatch('viaCep', this.data.address);
                 }
             } catch (error) {
                 this.$notification.notification(400, "CEP inv�lido!");
 
-                this.clearForm({
-                    address: {
-                        address: null,
-                        zipcode: null,
-                        uf: null,
-                        city: null,
-                        neighborhood: null,
+                this.$store.commit('clearForm',
+                    {
+                        address: {
+                            address: null,
+                            zipcode: '',
+                            uf: null,
+                            city: null,
+                            neighborhood: null,
+                        }
                     }
-                });
+                );
             }
         },
-        clearForm(form) {
-            this.data = form;
-            console.log(this.data);
-        },
         closeModal(close) {
+            this.$store.commit('clearForm', {
+                name: null, email: null, password: null, cpf: null, phone: null, address: {
+                    address: null, zipcode: '', uf: null, city: null, neighborhood: null,
+                }
+            });
             this.$emit('close', close);
         },
     },

@@ -45,7 +45,7 @@ router.beforeEach(async (to, from, next) => {
         const user = localStorage.getItem('user');
 
         if (!user) {
-            localStorage.removeItem('user');
+            localStorage.clear();
             next('/login');
             return;
         }
