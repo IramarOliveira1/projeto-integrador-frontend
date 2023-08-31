@@ -23,7 +23,7 @@
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="CPF" name="cpf"
                                 :rules="[{ required: true, message: 'Campo cpf � obrigat�rio' }]">
-                                <a-input v-model:value="data.cpf" />
+                                <a-input v-model:value="data.cpf" v-mask="'###.###.###-##'" />
                             </a-form-item>
                         </a-col>
                     </a-row>
@@ -47,13 +47,13 @@
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="Telefone" name="phone"
                                 :rules="[{ required: true, message: 'Campo telefone � obrigat�rio' }]">
-                                <a-input v-model:value="data.phone" />
+                                <a-input v-model:value="data.phone" v-mask="'## #####-####'" />
                             </a-form-item>
                         </a-col>
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="CEP" name="zipcode"
                                 :rules="[{ required: true, message: 'Campo cep � obrigat�rio' }]">
-                                <a-input v-model:value="data.address.zipcode" @blur="viaCep" />
+                                <a-input v-model:value="data.address.zipcode" v-mask="'#####-###'" @blur="viaCep" />
                             </a-form-item>
                         </a-col>
                     </a-row>
@@ -93,7 +93,7 @@
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="N�mero" name="number"
                                 :rules="[{ required: true, message: 'Campo n�mero � obrigat�rio' }]">
-                                <a-input v-model:value="data.address.number" />
+                                <a-input v-model:value="data.address.number" type="number" min="0" />
                             </a-form-item>
                         </a-col>
                     </a-row>
@@ -114,37 +114,34 @@
 <script>
 import './user.css';
 
-import axios from '../../../services/api.js';
+import { VueTheMask } from 'vue-the-mask'
 
 export default {
-    data() {
-        return {
-            data: {
-                name: null,
-                email: null,
-                password: null,
-                cpf: null,
-                phone: null,
-                address: {
-                    complement: null,
-                    uf: null,
-                    city: null,
-                    neighborhood: null,
-                    number: null,
-                    zipcode: null,
-                    address: null
-                },
-            }
+    components: {
+        VueTheMask
+    },
+    computed: {
+        data: {
+            get() {
+                return this.$store.getters.getUser;
+            },
         }
     },
     methods: {
         async save(data) {
             try {
-                const response = await axios.post('/user/register', data);
+
+                const response = await this.$store.dispatch('save', data);
 
                 this.$notification.notification(response.status, response.data.message);
 
-                this.$router.push('/login')
+                this.$store.commit('clearForm', {
+                    name: null, email: null, password: null, cpf: null, phone: null, address: {
+                        address: null, zipcode: '', uf: null, city: null, neighborhood: null,
+                    }
+                });
+
+                localStorage.clear();
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
@@ -152,30 +149,26 @@ export default {
 
         async viaCep() {
             try {
+                console.log("error");
                 if (this.data.address.zipcode.length >= 9) {
-                    const response = await this.$axios.get(`https://viacep.com.br/ws/${this.data.address.zipcode}/json/`);
-                    this.data.address.address = response.data.logradouro;
-                    this.data.address.uf = response.data.uf;
-                    this.data.address.city = response.data.localidade;
-                    this.data.address.neighborhood = response.data.bairro;
+                    await this.$store.dispatch('viaCep', this.data.address);
                 }
             } catch (error) {
                 this.$notification.notification(400, "CEP inv�lido!");
 
-                this.clearForm({
-                    address: {
-                        address: null,
-                        zipcode: null,
-                        uf: null,
-                        city: null,
-                        neighborhood: null,
+                this.$store.commit('clearForm',
+                    {
+                        address: {
+                            address: null,
+                            zipcode: '',
+                            uf: null,
+                            city: null,
+                            neighborhood: null,
+                        }
                     }
-                });
+                );
             }
         },
-        clearForm(form) {
-            this.data = form;
-        }
     },
 }
 </script>

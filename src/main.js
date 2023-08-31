@@ -2,6 +2,8 @@ import { createApp } from 'vue';
 
 import vuex from './modules/index';
 
+import VueTheMask from 'vue-the-mask'
+
 import axios from 'axios';
 
 import notification from './helpers/notification/notification.js'
@@ -18,7 +20,8 @@ const axiosInstance = axios.create({
     withCredentials: false,
 })
 
-const app = createApp(App).use(router).use(vuex);
+
+const app = createApp(App).use(router).use(vuex).use(VueTheMask);
 
 app.config.globalProperties.$axios = { ...axiosInstance }
 

@@ -13,7 +13,6 @@ export default function notifications(status, message) {
             });
             break;
 
-
         case 401:
             notification['warning']({
                 description: message,
