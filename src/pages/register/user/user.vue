@@ -149,7 +149,6 @@ export default {
 
         async viaCep() {
             try {
-                console.log("error");
                 if (this.data.address.zipcode.length >= 9) {
                     await this.$store.dispatch('viaCep', this.data.address);
                 }

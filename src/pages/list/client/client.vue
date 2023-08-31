@@ -32,7 +32,7 @@
             </a-row>
         </a-form>
 
-        <a-table :columns="columns" :data-source="getClients" :row-key="record => record.id" bordered
+        <a-table :columns="columns" :data-source="getUsers" :row-key="record => record.id" bordered
             :pagination="{ pageSize: 9 }">
             <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'action'">
@@ -56,7 +56,7 @@
 
 import { DeleteTwoTone, EditTwoTone } from '@ant-design/icons-vue';
 
-import modal from '../modal/modal.vue';
+import modal from './modal/modal.vue';
 
 export default {
     components: {
@@ -101,9 +101,9 @@ export default {
         }
     },
     computed: {
-        getClients: {
+        getUsers: {
             get() {
-                return this.$store.getters.getClients;
+                return this.$store.getters.getUsers;
             }
         },
 
@@ -114,7 +114,9 @@ export default {
         }
     },
     mounted() {
-        this.$store.dispatch('getClients');
+        this.$store.dispatch('getUsers', {
+            role: 'USER'
+        });
     },
     methods: {
         async index(id) {
@@ -132,7 +134,7 @@ export default {
         async filter(data) {
             try {
 
-                await this.$store.dispatch('filter', data.nameOrCpf);
+                await this.$store.dispatch('filter', { data: data.nameOrCpf, role: 'USER' });
 
                 this.data.nameOrCpf = null;
 
@@ -143,14 +145,14 @@ export default {
         },
 
         async clearFilter() {
-            this.$store.dispatch('getClients');
+            this.$store.dispatch('getUsers', { role: 'USER' });
 
             this.$store.commit('setFilterExits', false);
         },
 
         async destroy(id) {
             try {
-                const response = await this.$store.dispatch('destroy', id);
+                const response = await this.$store.dispatch('destroy', { id: id, role: 'USER' });
 
                 this.$notification.notification(response.status, response.data.message);
 

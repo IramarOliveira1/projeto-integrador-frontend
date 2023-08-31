@@ -9,7 +9,7 @@ const user = {
         modalEdit: false,
         clearFilter: false,
         isAuthenticated: false,
-        clients: [],
+        users: [],
         data: {
             name: null,
             email: null,
@@ -32,7 +32,7 @@ const user = {
         isAuthenticated(state, payload) {
             state.isAuthenticated = payload;
         },
-        setClients(state, payload) {
+        setUsers(state, payload) {
             state.clients = payload;
         },
 
@@ -58,7 +58,7 @@ const user = {
             return state.isAuthenticated;
         },
 
-        getClients(state) {
+        getUsers(state) {
             return state.clients;
         },
 
@@ -85,20 +85,19 @@ const user = {
         },
 
         async save({ dispatch, state }, data) {
-
-            const response = await axios.post('/user/register', data);
+            const request = { ...data.data, role: data.role }
+            const response = await axios.post('/user/register', request);
 
             if (state.isAuthenticated) {
-                dispatch('getClients');
+                dispatch('getUsers', data);
             }
             return response;
         },
 
-        async getClients({ commit }) {
+        async getUsers({ commit }, role) {
             try {
-
-                const response = await axios.get('/user/all', { params: { role: 'USER' } });
-                commit('setClients', response.data);
+                const response = await axios.get('/user/all', { params: { role: role.role } });
+                commit('setUsers', response.data);
 
                 return response;
             } catch (error) {
@@ -106,10 +105,11 @@ const user = {
             }
         },
 
-        async filter({ commit }, nameOrCpf) {
-            const response = await axios.post('user/filter', { nameOrCpf: nameOrCpf });
+        async filter({ commit }, data) {
+            console.log(data);
+            const response = await axios.post('user/filter', { nameOrCpf: data.data, role: data.role });
 
-            commit('setClients', response.data);
+            commit('setUsers', response.data);
         },
 
         async index({ commit }, id) {
@@ -138,14 +138,14 @@ const user = {
 
             const response = await axios.put(`/user/${data.id}`, data.data);
 
-            dispatch('getClients');
+            dispatch('getUsers', data);
 
             return response;
         },
 
-        async destroy({ dispatch }, id) {
-            const response = await axios.delete(`user/${id}`);
-            dispatch('getClients');
+        async destroy({ dispatch }, data) {
+            const response = await axios.delete(`user/${data.id}`);
+            dispatch('getUsers', data);
 
             return response;
         },
