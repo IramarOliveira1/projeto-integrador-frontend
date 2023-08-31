@@ -44,7 +44,6 @@
                         <a-button>
                             <DeleteTwoTone two-tone-color="#ef3413" />
                         </a-button>
-
                     </a-popconfirm>
                 </template>
             </template>

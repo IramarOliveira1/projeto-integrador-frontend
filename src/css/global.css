@@ -104,3 +104,11 @@
         margin: 0;
     }
 }
+
+.tooltip-password {
+    margin-left: 10px;
+}
+
+.ant-modal-close {
+    display: none;
+}

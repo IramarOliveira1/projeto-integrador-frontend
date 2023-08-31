@@ -1,7 +1,8 @@
 <template>
     <div>
-        <a-modal v-model:open="showModal" :title="modalEdit ? 'Editar Cliente' : 'Cadsatrar Cliente'" :footer="null">
-            <a-form layout="vertical" name="basic" :model="{ ...data.address, ...data }" @finish="save"
+        <a-modal v-model:open="showModal" :title="modalEdit ? 'Editar Cliente' : 'Cadastrar Cliente'" :footer="null"
+            width="800px">
+            <a-form layout="vertical" ref="form" name="basic" :model="{ ...data.address, ...data }" @finish="save"
                 :hideRequiredMark="true">
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
@@ -13,22 +14,28 @@
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="CPF" name="cpf"
                             :rules="[{ required: true, message: 'Campo cpf ï¿½ obrigatï¿½rio' }]">
-                            <a-input v-model:value="data.cpf" />
+                            <a-input v-model:value="data.cpf" v-mask="'###.###.###-##'" />
                         </a-form-item>
                     </a-col>
                 </a-row>
 
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label=" E-mail" name="email"
-                            :rules="[{ required: true, message: 'Campo e-mail ï¿½ obrigatï¿½rio' }]">
+                        <a-form-item name="email" :rules="[{ required: true, message: 'Campo e-mail ï¿½ obrigatï¿½rio' }]">
+                            E-mail
                             <a-input v-model:value="data.email" />
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Senha" name="password"
-                            :rules="[{ required: true, message: 'Campo senha ï¿½ obrigatï¿½rio' }]">
-                            <a-input-password v-model:value="data.password" />
+                        <a-form-item name="password"
+                            :rules="[modalEdit ? { required: false } : { required: true, message: 'Campo senha ï¿½ obrigatï¿½rio' }]">
+                            Senha
+
+                            <a-tooltip v-if="modalEdit" class="tooltip-password"
+                                title="Administrador não pode alterar senha de clientes!">
+                                <InfoCircleTwoTone two-tone-color="#ea8b0e" />
+                            </a-tooltip>
+                            <a-input-password v-model:value="data.password" :disabled="modalEdit ? true : false" />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -37,13 +44,13 @@
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Telefone" name="phone"
                             :rules="[{ required: true, message: 'Campo telefone ï¿½ obrigatï¿½rio' }]">
-                            <a-input v-model:value="data.phone" />
+                            <a-input v-model:value="data.phone" v-mask="'## #####-####'" />
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="CEP" name="zipcode"
                             :rules="[{ required: true, message: 'Campo cep ï¿½ obrigatï¿½rio' }]">
-                            <a-input v-model:value="data.address.zipcode" @blur="viaCep" />
+                            <a-input v-model:value="data.address.zipcode" v-mask="'#####-###'" @blur="viaCep" />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -81,9 +88,9 @@
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Nï¿½mero" name="number"
+                        <a-form-item label="Nï¿½mero" name="number" 
                             :rules="[{ required: true, message: 'Campo nï¿½mero ï¿½ obrigatï¿½rio' }]">
-                            <a-input v-model:value="data.address.number" />
+                            <a-input v-model:value="data.address.number" type="number" min="0" />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -98,11 +105,20 @@
 </template>
 
 <script>
+
+import { InfoCircleTwoTone } from '@ant-design/icons-vue';
+
+import { VueTheMask } from 'vue-the-mask'
+
 export default {
+    components: {
+        InfoCircleTwoTone,
+        VueTheMask
+    },
     props: ['openModal', 'idUserEdit'],
     data() {
         return {
-            isActiveModal: false
+            isActiveModal: false,
         }
     },
     computed: {
@@ -111,7 +127,6 @@ export default {
                 return this.isActiveModal = this.openModal;
             },
         },
-
         data: {
             get() {
                 return this.$store.getters.getUser;
@@ -184,6 +199,8 @@ export default {
             }
         },
         closeModal(close) {
+            this.$refs['form'].clearValidate();
+
             this.$store.commit('clearForm', {
                 name: null, email: null, password: null, cpf: null, phone: null, address: {
                     address: null, zipcode: '', uf: null, city: null, neighborhood: null,

@@ -23,7 +23,7 @@
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="CPF" name="cpf"
                                 :rules="[{ required: true, message: 'Campo cpf � obrigat�rio' }]">
-                                <a-input v-model:value="data.cpf" />
+                                <a-input v-model:value="data.cpf" v-mask="'###.###.###-##'" />
                             </a-form-item>
                         </a-col>
                     </a-row>
@@ -47,13 +47,13 @@
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="Telefone" name="phone"
                                 :rules="[{ required: true, message: 'Campo telefone � obrigat�rio' }]">
-                                <a-input v-model:value="data.phone" />
+                                <a-input v-model:value="data.phone" v-mask="'## #####-####'" />
                             </a-form-item>
                         </a-col>
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="CEP" name="zipcode"
                                 :rules="[{ required: true, message: 'Campo cep � obrigat�rio' }]">
-                                <a-input v-model:value="data.address.zipcode" @blur="viaCep" />
+                                <a-input v-model:value="data.address.zipcode" v-mask="'#####-###'" @blur="viaCep" />
                             </a-form-item>
                         </a-col>
                     </a-row>
@@ -93,7 +93,7 @@
                         <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                             <a-form-item label="N�mero" name="number"
                                 :rules="[{ required: true, message: 'Campo n�mero � obrigat�rio' }]">
-                                <a-input v-model:value="data.address.number" />
+                                <a-input v-model:value="data.address.number" type="number" min="0" />
                             </a-form-item>
                         </a-col>
                     </a-row>
@@ -114,7 +114,12 @@
 <script>
 import './user.css';
 
+import { VueTheMask } from 'vue-the-mask'
+
 export default {
+    components: {
+        VueTheMask
+    },
     computed: {
         data: {
             get() {
