@@ -9,6 +9,9 @@
                     <router-link to="/clientes">
                         <a-menu-item key="2">Clientes</a-menu-item>
                     </router-link>
+                    <router-link to="/funcionarios">
+                        <a-menu-item key="4">Funcionarios</a-menu-item>
+                    </router-link>
                 </div>
                 <router-link to="/login" v-else>
                     <a-menu-item key="3">login</a-menu-item>

@@ -6,10 +6,11 @@ import notifications from '../../helpers/notification/notification.js';
 
 const user = {
     state: {
+        userLogin: [],
         modalEdit: false,
         clearFilter: false,
         isAuthenticated: false,
-        clients: [],
+        users: [],
         data: {
             name: null,
             email: null,
@@ -32,7 +33,7 @@ const user = {
         isAuthenticated(state, payload) {
             state.isAuthenticated = payload;
         },
-        setClients(state, payload) {
+        setUsers(state, payload) {
             state.clients = payload;
         },
 
@@ -51,6 +52,10 @@ const user = {
         setFilterExits(state, payload) {
             state.clearFilter = payload;
         },
+
+        setUserLogin(state, payload) {
+            state.userLogin = payload;
+        },
     },
 
     getters: {
@@ -58,7 +63,7 @@ const user = {
             return state.isAuthenticated;
         },
 
-        getClients(state) {
+        getUsers(state) {
             return state.clients;
         },
 
@@ -73,32 +78,40 @@ const user = {
         getFilterExits(state) {
             return state.clearFilter;
         },
+
+        getUserLogin(state) {
+            return state.userLogin;
+        },
     },
 
     actions: {
-        async getUser() {
+        async getUser({ commit }, id) {
             try {
-                await axios.get('/user/1');
+
+                const response = await axios.get(`/user/${id}`);
+
+                commit('setUserLogin', response.data[0]);
+
             } catch (error) {
                 notifications(error.response.status, 'token invalido')
             }
         },
 
         async save({ dispatch, state }, data) {
-
-            const response = await axios.post('/user/register', data);
+            const request = { ...data.data, role: data.role }
+            const response = await axios.post('/user/register', request);
 
             if (state.isAuthenticated) {
-                dispatch('getClients');
+                dispatch('getUsers', data);
             }
             return response;
         },
 
-        async getClients({ commit }) {
+        async getUsers({ commit }, role) {
             try {
+                const response = await axios.get('/user/all', { params: { role: role.role } });
 
-                const response = await axios.get('/user/all', { params: { role: 'USER' } });
-                commit('setClients', response.data);
+                commit('setUsers', response.data);
 
                 return response;
             } catch (error) {
@@ -106,10 +119,10 @@ const user = {
             }
         },
 
-        async filter({ commit }, nameOrCpf) {
-            const response = await axios.post('user/filter', { nameOrCpf: nameOrCpf });
+        async filter({ commit }, data) {
+            const response = await axios.post('user/filter', { nameOrCpf: data.data, role: data.role });
 
-            commit('setClients', response.data);
+            commit('setUsers', response.data);
         },
 
         async index({ commit }, id) {
@@ -138,14 +151,14 @@ const user = {
 
             const response = await axios.put(`/user/${data.id}`, data.data);
 
-            dispatch('getClients');
+            dispatch('getUsers', data);
 
             return response;
         },
 
-        async destroy({ dispatch }, id) {
-            const response = await axios.delete(`user/${id}`);
-            dispatch('getClients');
+        async destroy({ dispatch }, data) {
+            const response = await axios.delete(`user/${data.id}`);
+            dispatch('getUsers', data);
 
             return response;
         },

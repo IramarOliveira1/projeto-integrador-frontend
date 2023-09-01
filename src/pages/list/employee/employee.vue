@@ -5,7 +5,7 @@
 
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 8 }">
                     <a-form-item label="FILTRAR POR NOME OU CPF" name="nameOrCpf"
-                        :rules="[{ required: true, message: 'Campo filtrar é obrigatório!' }]">
+                        :rules="[{ required: true, message: 'Campo filtrar ï¿½ obrigatï¿½rio!' }]">
                         <a-input v-model:value="data.nameOrCpf" size="large" />
                     </a-form-item>
                 </a-col>
@@ -32,19 +32,23 @@
             </a-row>
         </a-form>
 
-        <a-table :columns="columns" :data-source="getClients" :row-key="record => record.id" bordered
+        <a-table :columns="columns" :data-source="getUsers" :row-key="record => record.id" bordered
             :pagination="{ pageSize: 9 }">
             <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'action'">
-                    <a-button @click="index(record.id)">
-                        <EditTwoTone />
-                    </a-button>
-                    <a-popconfirm title="Deseja realmente excluir esse registro ?" ok-text="Sim" cancel-text="Não"
-                        @confirm="destroy(record.id)">
-                        <a-button>
-                            <DeleteTwoTone two-tone-color="#ef3413" />
+
+                    <a-tooltip :title="record.id === getUser.id ? 'Para atualizar ou excluir cadastro entre na aba de perfil.' : ''">
+                        <a-button @click="index(record.id)" :disabled="record.id === getUser.id">
+                            <EditTwoTone />
                         </a-button>
-                    </a-popconfirm>
+
+                        <a-popconfirm title="Deseja realmente excluir esse registro ?" ok-text="Sim" cancel-text="NÃ£o"
+                            @confirm="destroy(record.id)" :disabled="record.id === getUser.id">
+                            <a-button :disabled="record.id === getUser.id">
+                                <DeleteTwoTone two-tone-color="#ef3413" />
+                            </a-button>
+                        </a-popconfirm>
+                    </a-tooltip>
                 </template>
             </template>
         </a-table>
@@ -56,7 +60,7 @@
 
 import { DeleteTwoTone, EditTwoTone } from '@ant-design/icons-vue';
 
-import modal from '../modal/modal.vue';
+import modal from './modal/modal.vue';
 
 export default {
     components: {
@@ -97,16 +101,21 @@ export default {
                 },
             ],
             openModal: false,
-            idUserEdit: null
+            idUserEdit: null,
+            isEmploy: true,
         }
     },
     computed: {
-        getClients: {
+        getUsers: {
             get() {
-                return this.$store.getters.getClients;
+                return this.$store.getters.getUsers;
             }
         },
-
+        getUser: {
+            get() {
+                return this.$store.getters.getUserLogin;
+            }
+        },
         buttonFilter: {
             get() {
                 return this.$store.getters.getFilterExits;
@@ -114,7 +123,9 @@ export default {
         }
     },
     mounted() {
-        this.$store.dispatch('getClients');
+        this.$store.dispatch('getUsers', {
+            role: 'ADMIN'
+        });
     },
     methods: {
         async index(id) {
@@ -132,7 +143,7 @@ export default {
         async filter(data) {
             try {
 
-                await this.$store.dispatch('filter', data.nameOrCpf);
+                await this.$store.dispatch('filter', { data: data.nameOrCpf, role: 'ADMIN' });
 
                 this.data.nameOrCpf = null;
 
@@ -143,14 +154,14 @@ export default {
         },
 
         async clearFilter() {
-            this.$store.dispatch('getClients');
+            this.$store.dispatch('getUsers', { role: 'ADMIN' });
 
             this.$store.commit('setFilterExits', false);
         },
 
         async destroy(id) {
             try {
-                const response = await this.$store.dispatch('destroy', id);
+                const response = await this.$store.dispatch('destroy', { id: id, role: 'ADMIN' });
 
                 this.$notification.notification(response.status, response.data.message);
 

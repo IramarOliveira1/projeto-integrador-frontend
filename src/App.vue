@@ -17,7 +17,7 @@ export default {
   mounted() {
     if (this.$store.getters.isAuthenticated) {
       if (JSON.parse(localStorage.getItem('user'))) {
-        this.$store.dispatch('getUser');
+        this.$store.dispatch('getUser', this.$store.getters.getUserLogin.id);
       }
     }
   },
