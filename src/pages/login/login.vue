@@ -11,12 +11,12 @@
                         <img class="image-login" src="../../assets/images/logo_blue.png" alt="">
                     </div>
                     <a-form-item label="E-mail" name="email"
-                        :rules="[{ required: true, message: 'Campo e-mail é obrigatório' }]">
+                        :rules="[{ required: true, message: 'Campo e-mail ï¿½ obrigatï¿½rio' }]">
                         <a-input v-model:value="data.email" size="large" />
                     </a-form-item>
 
                     <a-form-item label="Senha" name="password"
-                        :rules="[{ required: true, message: 'Campo senha é obrigatório!' }]">
+                        :rules="[{ required: true, message: 'Campo senha ï¿½ obrigatï¿½rio!' }]">
                         <a-input-password v-model:value="data.password" size="large" />
                     </a-form-item>
 
@@ -65,6 +65,8 @@ export default {
                 localStorage.setItem('user', JSON.stringify(response.data));
 
                 this.$store.commit('isAuthenticated', true);
+
+                this.$store.commit('setUserLogin', response.data);
 
                 this.$router.push('/dashboard')
             } catch (error) {

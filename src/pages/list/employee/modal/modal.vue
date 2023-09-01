@@ -32,7 +32,7 @@
                             Senha
 
                             <a-tooltip v-if="modalEdit" class="tooltip-password"
-                                title="Administrador não pode alterar senha de clientes!">
+                                title="Funcionário não pode alterar senha dos demais!">
                                 <InfoCircleTwoTone two-tone-color="#ea8b0e" />
                             </a-tooltip>
                             <a-input-password v-model:value="data.password" :disabled="modalEdit ? true : false" />
@@ -88,7 +88,7 @@
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Nï¿½mero" name="number" 
+                        <a-form-item label="Nï¿½mero" name="number"
                             :rules="[{ required: true, message: 'Campo nï¿½mero ï¿½ obrigatï¿½rio' }]">
                             <a-input v-model:value="data.address.number" type="number" min="0" />
                         </a-form-item>
@@ -147,8 +147,8 @@ export default {
 
                     return;
                 }
-
-                const response = await this.$store.dispatch('save', data);
+                
+                const response = await this.$store.dispatch('save', { data: data, role: 'ADMIN' });
 
                 this.$notification.notification(response.status, response.data.message);
 
@@ -167,7 +167,7 @@ export default {
         async update(data) {
             try {
 
-                const response = await this.$store.dispatch('update', { id: this.$props.idUserEdit, data: data });
+                const response = await this.$store.dispatch('update', { id: this.$props.idUserEdit, data: data, role: 'ADMIN' });
 
                 this.$notification.notification(response.status, response.data.message);
 
