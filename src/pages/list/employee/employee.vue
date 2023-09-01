@@ -5,7 +5,7 @@
 
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 8 }">
                     <a-form-item label="FILTRAR POR NOME OU CPF" name="nameOrCpf"
-                        :rules="[{ required: true, message: 'Campo filtrar é obrigatório!' }]">
+                        :rules="[{ required: true, message: 'Campo filtrar ï¿½ obrigatï¿½rio!' }]">
                         <a-input v-model:value="data.nameOrCpf" size="large" />
                     </a-form-item>
                 </a-col>
@@ -36,21 +36,19 @@
             :pagination="{ pageSize: 9 }">
             <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'action'">
-                    <div v-if="record.id === 1">
-                        <h5>não pode</h5>
-                    </div>
 
-                    <div v-if="record.id !== 1">
-                        <a-button @click="index(record.id)">
+                    <a-tooltip :title="record.id === getUser.id ? 'Para atualizar ou excluir cadastro entre na aba de perfil.' : ''">
+                        <a-button @click="index(record.id)" :disabled="record.id === getUser.id">
                             <EditTwoTone />
                         </a-button>
-                        <a-popconfirm title="Deseja realmente excluir esse registro ?" ok-text="Sim" cancel-text="Não"
-                            @confirm="destroy(record.id)">
-                            <a-button>
+
+                        <a-popconfirm title="Deseja realmente excluir esse registro ?" ok-text="Sim" cancel-text="NÃ£o"
+                            @confirm="destroy(record.id)" :disabled="record.id === getUser.id">
+                            <a-button :disabled="record.id === getUser.id">
                                 <DeleteTwoTone two-tone-color="#ef3413" />
                             </a-button>
                         </a-popconfirm>
-                    </div>
+                    </a-tooltip>
                 </template>
             </template>
         </a-table>
@@ -113,7 +111,11 @@ export default {
                 return this.$store.getters.getUsers;
             }
         },
-
+        getUser: {
+            get() {
+                return this.$store.getters.getUserLogin;
+            }
+        },
         buttonFilter: {
             get() {
                 return this.$store.getters.getFilterExits;

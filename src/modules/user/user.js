@@ -6,6 +6,7 @@ import notifications from '../../helpers/notification/notification.js';
 
 const user = {
     state: {
+        userLogin: [],
         modalEdit: false,
         clearFilter: false,
         isAuthenticated: false,
@@ -51,6 +52,10 @@ const user = {
         setFilterExits(state, payload) {
             state.clearFilter = payload;
         },
+
+        setUserLogin(state, payload) {
+            state.userLogin = payload;
+        },
     },
 
     getters: {
@@ -73,12 +78,20 @@ const user = {
         getFilterExits(state) {
             return state.clearFilter;
         },
+
+        getUserLogin(state) {
+            return state.userLogin;
+        },
     },
 
     actions: {
-        async getUser() {
+        async getUser({ commit }, id) {
             try {
-                await axios.get('/user/1');
+
+                const response = await axios.get(`/user/${id}`);
+
+                commit('setUserLogin', response.data[0]);
+
             } catch (error) {
                 notifications(error.response.status, 'token invalido')
             }
@@ -97,6 +110,7 @@ const user = {
         async getUsers({ commit }, role) {
             try {
                 const response = await axios.get('/user/all', { params: { role: role.role } });
+
                 commit('setUsers', response.data);
 
                 return response;
@@ -106,7 +120,6 @@ const user = {
         },
 
         async filter({ commit }, data) {
-            console.log(data);
             const response = await axios.post('user/filter', { nameOrCpf: data.data, role: data.role });
 
             commit('setUsers', response.data);
