@@ -1,7 +1,7 @@
 <template>
     <div class="container-init">
         <div class="image-init">
-            <img src="../../assets/images/login.png" alt="">
+            <img src="../../assets/images/login.png" alt="Imagem de login">
         </div>
 
         <div class="form-init">
@@ -49,7 +49,7 @@ export default {
     data() {
         return {
             data: {
-                email: "clear@form22.com",
+                email: "iramar.oliveira@trc.sebraeba.com.br",
                 password: "123456"
             }
         }
