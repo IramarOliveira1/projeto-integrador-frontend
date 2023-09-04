@@ -16,16 +16,19 @@ const routes = [
         path: '/cadastrar-cliente', component: () => import('../pages/register/user/user.vue'),
     },
     {
-        path: '/', component: () => import('../pages/home/home.vue'), name: 'home',
+        path: '/', component: () => import('../pages/home/home.vue'), meta: { admin: true, guest: true }, name: 'home',
     },
     {
-        path: '/dashboard', component: () => import('../pages/dashboard/dashboard.vue'), meta: { requiresAuth: true }, name: 'dashboard'
+        path: '/dashboard', component: () => import('../pages/dashboard/dashboard.vue'), meta: { admin: true, guest: true }, name: 'dashboard'
     },
     {
-        path: '/clientes', component: () => import('../pages/list/client/client.vue'), meta: { requiresAuth: true }
+        path: '/clientes', component: () => import('../pages/list/client/client.vue'), meta: { admin: true, guest: false }, name: 'client'
     },
     {
-        path: '/funcionarios', component: () => import('../pages/list/employee/employee.vue'), meta: { requiresAuth: true }
+        path: '/funcionarios', component: () => import('../pages/list/employee/employee.vue'), meta: { admin: true, guest: false }, name: 'employee'
+    },
+    {
+        path: '/perfil', component: () => import('../pages/profile/profile.vue'), meta: { admin: true, guest: true }, name: 'profile'
     },
 ];
 
@@ -36,15 +39,27 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, from, next) => {
-    if (store.getters.isAuthenticated && to.name === 'home') {
+
+    if (!store.getters.isAuthenticated && to.name === 'home') {
         next();
         return;
-    } else if (store.getters.isAuthenticated && !to.meta.requiresAuth) {
+    }
+
+    if (store.getters.isAuthenticated && to.meta.admin && !to.meta.guest && store.getters.getUserLogin.role === 'ADMIN') {
+        next();
+        return;
+    }
+
+    if (store.getters.isAuthenticated && to.meta.admin && to.meta.guest && store.getters.getUserLogin.role === 'USER') {
+        next();
+        return;
+    } else if (store.getters.isAuthenticated && !to.meta.guest) {
         next('/dashboard');
         return;
     }
 
-    if (to.matched.some(record => record.meta.requiresAuth)) {
+
+    if (to.matched.some(record => record.meta.admin)) {
         const user = localStorage.getItem('user');
 
         if (!user) {

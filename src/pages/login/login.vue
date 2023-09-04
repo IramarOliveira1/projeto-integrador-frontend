@@ -1,7 +1,7 @@
 <template>
     <div class="container-init">
         <div class="image-init">
-            <img src="../../assets/images/login.png" alt="">
+            <img src="../../assets/images/login.png" alt="Imagem de login">
         </div>
 
         <div class="form-init">
