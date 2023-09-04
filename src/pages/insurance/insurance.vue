@@ -1,12 +1,12 @@
 <template>
     <div class="container-main">
-        <a-form layout="vertical" name="basic" :model="data" :hideRequiredMark="true">
+        <a-form layout="vertical" name="basic" :model="data" @finish="filter" :hideRequiredMark="true">
             <a-row class="row-filter-general">
 
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 8 }">
-                    <a-form-item label="FILTRAR POR NOME OU CPF" name="nameOrCpf"
+                    <a-form-item label="FILTRAR POR TIPO DE COBERTURA" name="tipo"
                         :rules="[{ required: true, message: 'Campo filtrar � obrigat�rio!' }]">
-                        <a-input v-model:value="data.nameOrCpf" size="large" />
+                        <a-input v-model:value="data.tipo" size="large" />
                     </a-form-item>
                 </a-col>
 
@@ -15,7 +15,7 @@
                         <a-button type="primary" html-type="submit" class="button-filter-general"
                             size="large">Filtrar</a-button>
                         <a-button type="primary" @click="clearFilter" class="button-filter-general clear-filter"
-                            size="large">Limpar Filtro</a-button>
+                            size="large" v-if="buttonFilter">Limpar Filtro</a-button>
                     </a-form-item>
 
                 </a-col>
@@ -32,7 +32,8 @@
             </a-row>
         </a-form>
 
-        <a-table :columns="columns" :row-key="record => record.id" bordered :pagination="{ pageSize: 9 }">
+        <a-table :columns="columns" :data-source="getInsurancies" :row-key="record => record.id" bordered
+            :pagination="{ pageSize: 9 }">
             <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'action'">
                     <a-button @click="index(record.id)">
@@ -47,7 +48,7 @@
                 </template>
             </template>
         </a-table>
-        <modal :openModal="openModal" @close="openModal = false" />
+        <modal :openModal="openModal" :idEdit="idEdit" @close="openModal = false" />
     </div>
 </template>
 
@@ -66,7 +67,7 @@ export default {
     data() {
         return {
             data: {
-                nameOrCpf: null
+                tipo: null
             },
             columns: [
                 {
@@ -74,7 +75,6 @@ export default {
                     dataIndex: 'id',
                     width: '20%',
                     responsive: ['sm'],
-
                 },
                 {
                     title: 'Tipo',
@@ -96,18 +96,80 @@ export default {
                 },
             ],
             openModal: false,
+            idEdit: null
         }
     },
 
-    methods: {
-        showModal() {
-            this.$store.commit('setModalEdit', false);
-            this.openModal = true;
+    computed: {
+        getInsurancies: {
+            get() {
+                return this.$store.getters['insurance/getInsurancies'];
+            }
         },
 
-        clearFilter() {
-            console.log('entrei');
+        buttonFilter: {
+            get() {
+                return this.$store.getters['generic/getFilterExits'];
+            },
         }
+    },
+
+    mounted() {
+
+        this.$store.commit('generic/setFilterExits', false);
+        this.$store.dispatch('insurance/all');
+    },
+
+    methods: {
+
+        async index(id) {
+            try {
+                await this.$store.dispatch('insurance/index', id);
+
+                this.$store.commit('generic/setModalEdit', true);
+
+                this.openModal = true;
+                this.idEdit = id;
+            } catch (error) {
+                this.$notification.notification(error.response.status, error.response.data.message);
+            }
+        },
+
+        async destroy(id) {
+            try {
+                const response = await this.$store.dispatch('insurance/destroy', id);
+
+                this.$notification.notification(response.status, response.data.message);
+
+                this.$store.commit('generic/setFilterExits', false);
+            } catch (error) {
+                this.$notification.notification(error.response.status, error.response.data.message);
+            }
+        },
+
+        async clearFilter() {
+            this.$store.dispatch('insurance/all');
+
+            this.$store.commit('generic/setFilterExits', false);
+        },
+
+        async filter(data) {
+            try {
+
+                await this.$store.dispatch('insurance/filter', data);
+
+                this.data.tipo = null;
+
+                this.$store.commit('generic/setFilterExits', true);
+            } catch (error) {
+                this.$notification.notification(error.response.status, error.response.data.message);
+            }
+        },
+
+        showModal() {
+            this.$store.commit('generic/setModalEdit', false);
+            this.openModal = true;
+        },
     }
 }
 </script>

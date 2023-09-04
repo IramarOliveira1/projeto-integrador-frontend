@@ -1,5 +1,5 @@
 const generic = {
-
+    namespaced: true,
     state: {
         modalEdit: false,
         clearFilter: false,

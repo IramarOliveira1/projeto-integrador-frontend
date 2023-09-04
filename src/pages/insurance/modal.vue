@@ -15,7 +15,7 @@
                     <a-col :xs="{ span: 24 }" :sm="{ span: 24 }" :xl="{ span: 24 }">
                         <a-form-item label="Preço" name="preco"
                             :rules="[{ required: true, message: 'Campo preço é obrigat�rio' }]">
-                            <a-input v-model:value="data.preco" v-money="money" />
+                            <a-input v-model:value="data.preco" v-money="money"  />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -38,18 +38,14 @@ export default {
     components: {
         Money
     },
-    props: ['openModal', 'idUserEdit'],
+    props: ['openModal', 'idEdit'],
     data() {
         return {
-            data: {
-                tipo: null,
-                preco: null,
-            },
             money: {
                 decimal: ',',
                 thousands: '.',
                 precision: 2,
-                masked: false 
+                masked: false
             },
             isActiveModal: false,
         }
@@ -63,7 +59,13 @@ export default {
 
         modalEdit: {
             get() {
-                return this.$store.getters.getModalEdit;
+                return this.$store.getters['generic/getModalEdit'];
+            },
+        },
+
+        data: {
+            get() {
+                return this.$store.getters['insurance/getData'];
             },
         }
     },
@@ -71,7 +73,17 @@ export default {
         async save(data) {
             try {
 
-                console.log(data);
+                if (this.modalEdit) {
+                    this.update(data);
+
+                    return;
+                }
+
+                const response = await this.$store.dispatch('insurance/save', data);
+
+                this.$notification.notification(response.status, response.data.message);
+
+                this.closeModal();
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
@@ -80,8 +92,11 @@ export default {
         async update(data) {
             try {
 
-                console.log('entrei');
+                const response = await this.$store.dispatch('insurance/update', { id: this.$props.idEdit, data: data });
 
+                this.$notification.notification(response.status, response.data.message);
+
+                this.closeModal();
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
@@ -90,11 +105,8 @@ export default {
         closeModal(close) {
             this.$refs['form'].clearValidate();
 
-            // this.$store.commit('clearForm', {
-            //     name: null, email: null, password: null, cpf: null, phone: null, address: {
-            //         address: null, zipcode: '', uf: null, city: null, neighborhood: null,
-            //     }
-            // });
+            this.$store.commit('insurance/clearForm', { tipo: null, preco: null, });
+
             this.$emit('close', close);
         },
     },
