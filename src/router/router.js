@@ -22,13 +22,13 @@ const routes = [
         path: '/dashboard', component: () => import('../pages/dashboard/dashboard.vue'), meta: { admin: true, guest: true }, name: 'dashboard'
     },
     {
-        path: '/clientes', component: () => import('../pages/list/client/client.vue'), meta: { admin: true, guest: false }
+        path: '/clientes', component: () => import('../pages/list/client/client.vue'), meta: { admin: true, guest: false }, name: 'client'
     },
     {
-        path: '/funcionarios', component: () => import('../pages/list/employee/employee.vue'), meta: { admin: true, guest: false }
+        path: '/funcionarios', component: () => import('../pages/list/employee/employee.vue'), meta: { admin: true, guest: false }, name: 'employee'
     },
     {
-        path: '/perfil', component: () => import('../pages/profile/profile.vue'), meta: { admin: true, guest: true }
+        path: '/perfil', component: () => import('../pages/profile/profile.vue'), meta: { admin: true, guest: true }, name: 'profile'
     },
 ];
 
