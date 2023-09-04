@@ -1,12 +1,14 @@
 import { createStore } from "vuex";
 
-import createPersistedState from 'vuex-persistedstate'
+import createPersistedState from 'vuex-persistedstate';
 
-import user from './user/user'
+import user from './user/user';
+import generic from './generic/generic';
 
 const store = createStore({
     modules: {
-        user: user
+        user: user,
+        generic: generic
     },
     plugins: [createPersistedState()]
 })
