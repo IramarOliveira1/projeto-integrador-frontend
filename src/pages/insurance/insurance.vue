@@ -17,7 +17,6 @@
                         <a-button type="primary" @click="clearFilter" class="button-filter-general clear-filter"
                             size="large" v-if="buttonFilter">Limpar Filtro</a-button>
                     </a-form-item>
-
                 </a-col>
 
                 <a-col :xs="{ span: 24 }" :sm="{ span: 6 }" :xl="{ span: 8 }">
@@ -35,6 +34,11 @@
         <a-table :columns="columns" :data-source="getInsurancies" :row-key="record => record.id" bordered
             :pagination="{ pageSize: 9 }">
             <template #bodyCell="{ column, record }">
+
+                <template v-if="column.key === 'preco'">
+                    {{ parseFloat(record.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}
+                </template>
+
                 <template v-if="column.key === 'action'">
                     <a-button @click="index(record.id)">
                         <EditTwoTone />
@@ -67,7 +71,7 @@ export default {
     data() {
         return {
             data: {
-                tipo: null
+                tipo: null,
             },
             columns: [
                 {
@@ -83,6 +87,7 @@ export default {
                 },
                 {
                     title: 'Preço',
+                    key: 'preco',
                     dataIndex: 'preco',
                     width: '20%',
                     responsive: ['sm'],
