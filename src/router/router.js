@@ -33,6 +33,9 @@ const routes = [
     {
         path: '/seguros', component: () => import('../pages/insurance/insurance.vue'), meta: { admin: true, guest: false }, name: 'insurance'
     },
+    {
+        path: '/agencias', component: () => import('../pages/agency/agency.vue'), meta: { admin: true, guest: false }, name: 'agency'
+    },
 ];
 
 const router = createRouter({

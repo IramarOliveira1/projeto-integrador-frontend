@@ -37,6 +37,10 @@
                         <router-link to="/seguros">
                             <a-menu-item key="insurance">Seguro</a-menu-item>
                         </router-link>
+
+                        <router-link to="/agencias">
+                            <a-menu-item key="agency">Agência</a-menu-item>
+                        </router-link>
                     </div>
 
                     <div v-if="this.$store.getters.isAuthenticated">
@@ -83,6 +87,10 @@
 
                         <router-link to="/seguros">
                             <a-menu-item key="insurance">Seguro</a-menu-item>
+                        </router-link>
+
+                        <router-link to="/agencias">
+                            <a-menu-item key="agency">Agência</a-menu-item>
                         </router-link>
                     </div>
 
