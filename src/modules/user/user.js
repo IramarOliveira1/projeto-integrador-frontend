@@ -7,8 +7,6 @@ import notifications from '../../helpers/notification/notification.js';
 const user = {
     state: {
         userLogin: [],
-        modalEdit: false,
-        clearFilter: false,
         isAuthenticated: false,
         users: [],
         data: {
@@ -45,14 +43,6 @@ const user = {
             state.data = payload;
         },
 
-        setModalEdit(state, payload) {
-            state.modalEdit = payload;
-        },
-
-        setFilterExits(state, payload) {
-            state.clearFilter = payload;
-        },
-
         setUserLogin(state, payload) {
             state.userLogin = payload;
         },
@@ -69,14 +59,6 @@ const user = {
 
         getUser(state) {
             return state.data;
-        },
-
-        getModalEdit(state) {
-            return state.modalEdit;
-        },
-
-        getFilterExits(state) {
-            return state.clearFilter;
         },
 
         getUserLogin(state) {

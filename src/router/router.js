@@ -30,6 +30,9 @@ const routes = [
     {
         path: '/perfil', component: () => import('../pages/profile/profile.vue'), meta: { admin: true, guest: true }, name: 'profile'
     },
+    {
+        path: '/seguros', component: () => import('../pages/insurance/insurance.vue'), meta: { admin: true, guest: false }, name: 'insurance'
+    },
 ];
 
 const router = createRouter({
@@ -57,7 +60,6 @@ router.beforeEach(async (to, from, next) => {
         next('/dashboard');
         return;
     }
-
 
     if (to.matched.some(record => record.meta.admin)) {
         const user = localStorage.getItem('user');
