@@ -1,69 +1,54 @@
 <template>
     <div>
-        <a-modal v-model:open="showModal" :title="modalEdit ? 'Editar Cliente' : 'Cadastrar Cliente'" :footer="null"
+        <a-modal v-model:open="showModal" :title="modalEdit ? 'Editar Agência' : 'Cadastrar Agência'" :footer="null"
             width="800px">
             <a-form layout="vertical" ref="form" name="basic" :model="{ ...data.address, ...data }" @finish="save"
                 :hideRequiredMark="true">
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Nome" name="name"
+                        <a-form-item label="Nome" name="nome"
                             :rules="[{ required: true, message: 'Campo nome ï¿½ obrigatï¿½rio' }]">
-                            <a-input v-model:value="data.name" />
+                            <a-input v-model:value="data.nome" />
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="CPF" name="cpf"
-                            :rules="[{ required: true, message: 'Campo cpf ï¿½ obrigatï¿½rio' }]">
-                            <a-input v-model:value="data.cpf" v-mask="'###.###.###-##'" />
+                        <a-form-item label="Telefone" name="telefone"
+                            :rules="[{ required: true, message: 'Campo telefone ï¿½ obrigatï¿½rio' }]">
+                            <a-input v-model:value="data.telefone" v-mask="'## #####-####'" />
                         </a-form-item>
                     </a-col>
                 </a-row>
 
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item name="email" :rules="[{ required: true, message: 'Campo e-mail ï¿½ obrigatï¿½rio' }]">
-                            E-mail
-                            <a-input v-model:value="data.email" />
-                        </a-form-item>
-                    </a-col>
-                    <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item name="password"
-                            :rules="[modalEdit ? { required: false } : { required: true, message: 'Campo senha ï¿½ obrigatï¿½rio' }]">
-                            Senha
 
-                            <a-tooltip v-if="modalEdit" class="tooltip-password"
-                                title="Administrador não pode alterar senha de clientes!">
+                        <a-form-item name="quantidade_total">
+                            Quantidade
+                            <a-tooltip class="tooltip-password"
+                                title="Campo quantidade é alimentado de acordo com a quantidade de veiculos cadastrados na agência!">
                                 <InfoCircleTwoTone two-tone-color="#ea8b0e" />
                             </a-tooltip>
-                            <a-input-password v-model:value="data.password" :disabled="modalEdit ? true : false" />
+                            <a-input v-model:value="data.quantidade_total" disabled />
+                        </a-form-item>
+                    </a-col>
+
+                    <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
+                        <a-form-item name="cep" :rules="[{ required: true, message: 'Campo cep ï¿½ obrigatï¿½rio' }]">
+                            CEP
+                            <a-input v-model:value="data.address.cep" v-mask="'#####-###'" @blur="viaCep" />
                         </a-form-item>
                     </a-col>
                 </a-row>
 
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Telefone" name="phone"
-                            :rules="[{ required: true, message: 'Campo telefone ï¿½ obrigatï¿½rio' }]">
-                            <a-input v-model:value="data.phone" v-mask="'## #####-####'" />
+                        <a-form-item label="Endereï¿½o" name="logradouro">
+                            <a-input v-model:value="data.address.logradouro" disabled />
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="CEP" name="zipcode"
-                            :rules="[{ required: true, message: 'Campo cep ï¿½ obrigatï¿½rio' }]">
-                            <a-input v-model:value="data.address.zipcode" v-mask="'#####-###'" @blur="viaCep" />
-                        </a-form-item>
-                    </a-col>
-                </a-row>
-
-                <a-row :gutter="[8, 16]">
-                    <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Endereï¿½o" name="address">
-                            <a-input v-model:value="data.address.address" disabled />
-                        </a-form-item>
-                    </a-col>
-                    <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Complemento" name="complement">
-                            <a-input v-model:value="data.address.complement" />
+                        <a-form-item label="Complemento" name="complemento">
+                            <a-input v-model:value="data.address.complemento" />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -75,22 +60,22 @@
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Cidade" name="city">
-                            <a-input v-model:value="data.address.city" disabled />
+                        <a-form-item label="Cidade" name="cidade">
+                            <a-input v-model:value="data.address.cidade" disabled />
                         </a-form-item>
                     </a-col>
                 </a-row>
 
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Bairro" name="neighborhood">
-                            <a-input v-model:value="data.address.neighborhood" disabled />
+                        <a-form-item label="Bairro" name="bairro">
+                            <a-input v-model:value="data.address.bairro" disabled />
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Nï¿½mero" name="number"
+                        <a-form-item label="Nï¿½mero" name="numero"
                             :rules="[{ required: true, message: 'Campo nï¿½mero ï¿½ obrigatï¿½rio' }]">
-                            <a-input v-model:value="data.address.number" type="number" min="0" />
+                            <a-input v-model:value="data.address.numero" type="number" min="0" />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -115,7 +100,7 @@ export default {
         InfoCircleTwoTone,
         VueTheMask
     },
-    props: ['openModal', 'idUserEdit'],
+    props: ['openModal', 'idEdit'],
     data() {
         return {
             isActiveModal: false,
@@ -129,7 +114,7 @@ export default {
         },
         data: {
             get() {
-                return this.$store.getters.getUser;
+                return this.$store.getters['agency/getData'];
             },
         },
         modalEdit: {
@@ -142,23 +127,32 @@ export default {
         async save(data) {
             try {
 
+                const convertData = {
+                    nome: data.nome,
+                    telefone: data.telefone,
+                    quantidade_total: data.quantidade_total,
+                    address: {
+                        complement: data.complemento,
+                        uf: data.uf,
+                        city: data.cidade,
+                        neighborhood: data.bairro,
+                        number: data.numero,
+                        zipcode: data.cep,
+                        address: data.logradouro,
+                    },
+                }
+
                 if (this.modalEdit) {
-                    this.update(data);
+                    this.update(convertData);
 
                     return;
                 }
 
-                const response = await this.$store.dispatch('save', { data: data, role: 'USER' });
+                const response = await this.$store.dispatch('agency/save', convertData);
 
                 this.$notification.notification(response.status, response.data.message);
 
                 this.closeModal();
-
-                this.$store.commit('clearForm', {
-                    name: null, email: null, password: null, cpf: null, phone: null, address: {
-                        address: null, zipcode: '', uf: null, city: null, neighborhood: null,
-                    }
-                });
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
@@ -167,7 +161,7 @@ export default {
         async update(data) {
             try {
 
-                const response = await this.$store.dispatch('update', { id: this.$props.idUserEdit, data: data, role: 'USER' });
+                const response = await this.$store.dispatch('agency/update', { id: this.$props.idEdit, data: data });
 
                 this.$notification.notification(response.status, response.data.message);
 
@@ -179,33 +173,39 @@ export default {
 
         async viaCep() {
             try {
-                if (this.data.address.zipcode.length >= 9) {
-                    await this.$store.dispatch('viaCep', this.data.address);
+                if (this.data.address.cep.length >= 9) {
+                    const response = await this.$store.dispatch('agency/viaCep', this.data.address);
+
+                    if (response.data.erro) {
+                        this.$notification.notification(400, "CEP invï¿½lido!");
+                        this.clearForm();
+                    }
                 }
             } catch (error) {
                 this.$notification.notification(400, "CEP invï¿½lido!");
-
-                this.$store.commit('clearForm',
-                    {
-                        address: {
-                            address: null,
-                            zipcode: '',
-                            uf: null,
-                            city: null,
-                            neighborhood: null,
-                        }
-                    }
-                );
+                this.clearForm();
             }
         },
+
+        clearForm() {
+            this.$store.commit('agency/clearForm',
+                {
+                    address: {
+                        address: null,
+                        zipcode: '',
+                        uf: null,
+                        city: null,
+                        neighborhood: null,
+                    }
+                }
+            );
+        },
+
         closeModal(close) {
             this.$refs['form'].clearValidate();
 
-            this.$store.commit('clearForm', {
-                name: null, email: null, password: null, cpf: null, phone: null, address: {
-                    address: null, zipcode: '', uf: null, city: null, neighborhood: null,
-                }
-            });
+            this.clearForm();
+
             this.$emit('close', close);
         },
     },

@@ -89,15 +89,8 @@
 
             <a-form-item>
                 <div class="div-button-update-profile">
-                    <a-tooltip
-                        :title="this.$store.getters.getUserLogin.id === 1 ? 'Administrador Padrão não pode excluir sua conta.' : ''">
-                        <a-popconfirm title="Deseja realmente excluir sua conta ?" ok-text="Sim" cancel-text="Não"
-                            @confirm="deleteProfile" :disabled="this.$store.getters.getUserLogin.id === 1">
-                            <a-button type="primary" danger class="button-update-profile" html-type="submit"
-                                :disabled="this.$store.getters.getUserLogin.id === 1">Excluir
-                                conta</a-button>
-                        </a-popconfirm>
-                    </a-tooltip>
+                    <a-button type="primary" danger class="button-update-profile" html-type="submit"
+                        v-if="this.$store.getters.getUserLogin.id !== 1">Excluir conta</a-button>
                     <a-button type="primary" class="button-update-profile" html-type="submit">Atualizar</a-button>
                 </div>
             </a-form-item>
