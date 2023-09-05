@@ -33,6 +33,10 @@
                         <router-link to="/funcionarios">
                             <a-menu-item key="employee">Funcionário</a-menu-item>
                         </router-link>
+
+                        <router-link to="/seguros">
+                            <a-menu-item key="insurance">Seguro</a-menu-item>
+                        </router-link>
                     </div>
 
                     <div v-if="this.$store.getters.isAuthenticated">
@@ -75,6 +79,10 @@
                         </router-link>
                         <router-link to="/funcionarios">
                             <a-menu-item key="employee">Funcionário</a-menu-item>
+                        </router-link>
+
+                        <router-link to="/seguros">
+                            <a-menu-item key="insurance">Seguro</a-menu-item>
                         </router-link>
                     </div>
 
