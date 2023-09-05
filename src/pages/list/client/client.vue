@@ -126,7 +126,7 @@ export default {
             try {
                 await this.$store.dispatch('index', id);
 
-                this.$store.commit('setModalEdit', true);
+                this.$store.commit('generic/setModalEdit', true);
 
                 this.openModal = true;
                 this.idUserEdit = id;
@@ -167,7 +167,7 @@ export default {
         },
 
         showModal() {
-            this.$store.commit('setModalEdit', false);
+            this.$store.commit('generic/setModalEdit', false);
             this.openModal = true
         }
     }
