@@ -109,21 +109,24 @@ export default {
 
         buttonFilter: {
             get() {
-                return this.$store.getters.getFilterExits;
+                return this.$store.getters['generic/getFilterExits'];
             },
         }
     },
     mounted() {
+        
+        this.$store.commit('generic/setFilterExits', false);
         this.$store.dispatch('getUsers', {
             role: 'USER'
         });
     },
     methods: {
+
         async index(id) {
             try {
                 await this.$store.dispatch('index', id);
 
-                this.$store.commit('setModalEdit', true);
+                this.$store.commit('generic/setModalEdit', true);
 
                 this.openModal = true;
                 this.idUserEdit = id;
@@ -131,6 +134,7 @@ export default {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
         },
+
         async filter(data) {
             try {
 
@@ -138,7 +142,7 @@ export default {
 
                 this.data.nameOrCpf = null;
 
-                this.$store.commit('setFilterExits', true);
+                this.$store.commit('generic/setFilterExits', true);
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
@@ -147,7 +151,7 @@ export default {
         async clearFilter() {
             this.$store.dispatch('getUsers', { role: 'USER' });
 
-            this.$store.commit('setFilterExits', false);
+            this.$store.commit('generic/setFilterExits', false);
         },
 
         async destroy(id) {
@@ -156,13 +160,14 @@ export default {
 
                 this.$notification.notification(response.status, response.data.message);
 
-                this.$store.commit('setFilterExits', false);
+                this.$store.commit('generic/setFilterExits', false);
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
         },
+
         showModal() {
-            this.$store.commit('setModalEdit', false);
+            this.$store.commit('generic/setModalEdit', false);
             this.openModal = true
         }
     }

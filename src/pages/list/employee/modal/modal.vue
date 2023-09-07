@@ -134,7 +134,7 @@ export default {
         },
         modalEdit: {
             get() {
-                return this.$store.getters.getModalEdit;
+                return this.$store.getters['generic/getModalEdit'];
             },
         }
     },
@@ -147,7 +147,7 @@ export default {
 
                     return;
                 }
-                
+
                 const response = await this.$store.dispatch('save', { data: data, role: 'ADMIN' });
 
                 this.$notification.notification(response.status, response.data.message);
