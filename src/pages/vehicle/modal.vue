@@ -5,6 +5,7 @@
 
             <a-form layout="vertical" ref="form" name="basic" :model="{ ...data.agencia, ...data }" @finish="save"
                 :hideRequiredMark="true">
+
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Marca" name="marca"
@@ -42,11 +43,9 @@
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Preço" name="valor_diaria"
+                        <a-form-item label="PreÃ§o" name="valor_diaria"
                             :rules="[{ required: true, message: 'Campo valor da diaria ï¿½ obrigatï¿½rio' }]">
                             <a-input v-model:value="data.valor_diaria" v-money="money" />
-
-                            {{ data.valor_diaria }}
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -75,7 +74,7 @@
                     </a-col>
 
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Agência" name="agencia"
+                        <a-form-item label="Agï¿½ncia" name="agencia"
                             :rules="[{ required: true, message: 'Campo agencia ï¿½ obrigatï¿½rio' }]">
                             <a-input v-model:value="data.agencia.id" />
                         </a-form-item>
@@ -85,13 +84,13 @@
                 <a-form-item label="Imagem" name="image"
                     :rules="[{ required: true, message: 'Campo imagem ï¿½ obrigatï¿½rio' }]">
                     <a-upload-dragger :before-upload="beforeUpload" list-type="picture" name="file" :max-count="1"
-                        :multiple="false" @change="removeImage">
+                        :multiple="false" @remove="removeImage">
 
                         <p class="ant-upload-drag-icon">
                             <InboxOutlined />
                         </p>
                         <p class="ant-upload-text">
-                            Clique ou arraste o arquivo para esta área para fazer upload</p>
+                            Clique ou arraste o arquivo para esta ï¿½rea para fazer upload</p>
                         <p class="ant-upload-hint">
                             Arquivos do tipo (PNG, JPEG, JPG)
                         </p>
@@ -110,12 +109,13 @@
 
 <script>
 
-import { VueTheMask } from 'vue-the-mask'
-import { Money } from 'v-money'
+import { Money } from 'v-money';
+
+import { VueTheMask } from 'vue-the-mask';
+
 import { InboxOutlined } from '@ant-design/icons-vue';
 
 import { Upload } from 'ant-design-vue';
-
 
 export default {
     components: {
@@ -126,6 +126,7 @@ export default {
     props: ['openModal', 'idEdit'],
     data() {
         return {
+            // fileList: [],
             description: null,
             money: {
                 decimal: ',',
@@ -153,13 +154,13 @@ export default {
             get() {
                 return this.$store.getters['vehicle/getData'];
             },
-        }
+        },
     },
+
+
     methods: {
         removeImage(image) {
-            if (image.fileList.length === 0) {
-                this.$store.commit('vehicle/setImage', null);
-            }
+            this.$store.commit('vehicle/setImage', null);
         },
         beforeUpload(image) {
             const types = [
@@ -171,7 +172,7 @@ export default {
             const filter = types.filter(type => type === image.type);
 
             if (filter.length === 0) {
-                this.$notification.notification(400, `${image.name} não é um arquivo do tipo (PNG, JPEG OU JPG) `);
+                this.$notification.notification(400, `${image.name} nï¿½o ï¿½ um arquivo do tipo (PNG, JPEG OU JPG) `);
 
                 return Upload.LIST_IGNORE;
             }
@@ -195,6 +196,8 @@ export default {
 
                 this.$notification.notification(response.status, response.data.message);
 
+                this.removeImage();
+
                 this.closeModal();
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
@@ -216,13 +219,12 @@ export default {
 
         closeModal(close) {
             this.$refs['form'].clearValidate();
-            // console.log(  this.$refs['form'].clearValidate());
 
             this.$store.commit('vehicle/clearForm', {
                 ano: null,
                 capacidade: null,
                 categoria: null,
-                valor_diaria: null,
+                valor_diaria: "0,00",
                 cor: null,
                 marca: null,
                 modelo: null,
@@ -231,7 +233,7 @@ export default {
                 agencia: {
                     id: null
                 },
-                image: null
+                image: null,
             });
 
             this.$emit('close', close);

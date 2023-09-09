@@ -20,7 +20,7 @@ const vehicle = {
             agencia: {
                 id: null
             },
-            image: null
+            image: null,
         },
         vehicles: []
     },
@@ -53,7 +53,6 @@ const vehicle = {
         },
 
         clearForm(state, payload) {
-            console.log(payload);
             state.data = payload;
         },
     },
@@ -83,7 +82,7 @@ const vehicle = {
                 }
             });
 
-            // dispatch('all');
+            dispatch('all');
             return response;
         },
 
@@ -91,7 +90,7 @@ const vehicle = {
 
             const response = await axios.get(`vehicle/${id}`);
 
-            commit('setData', response.data);
+            commit('setData', response.data[0]);
 
             return response;
         },
@@ -103,8 +102,18 @@ const vehicle = {
             commit('setVehicles', response.data);
         },
 
-        async update({ dispatch }, data) {
-            const response = await axios.put(`/vehicle/${data.id}`, data.data);
+        async update({ dispatch, state }, data) {
+
+            let formData = new FormData();
+
+            formData.append('vehicle', JSON.stringify(data.data));
+            formData.append('image', state.data.image);
+
+            const response = await axios.put(`/vehicle/${data.id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
 
             dispatch('all');
             return response;
