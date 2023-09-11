@@ -22,6 +22,7 @@ const vehicle = {
             },
             image: null,
         },
+        fileList: [],
         vehicles: []
     },
 
@@ -37,6 +38,10 @@ const vehicle = {
         getImage(state) {
             return state.data.image;
         },
+
+        getFileList(state) {
+            return state.fileList;
+        },
     },
 
     mutations: {
@@ -50,6 +55,10 @@ const vehicle = {
 
         setImage(state, payload) {
             return state.data.image = payload;
+        },
+
+        setFileList(state, payload) {
+            return state.fileList = payload;
         },
 
         clearForm(state, payload) {
@@ -89,6 +98,15 @@ const vehicle = {
         async index({ commit }, id) {
 
             const response = await axios.get(`vehicle/${id}`);
+
+            let list = [
+                {
+                    url: response.data[0].url_imagem,
+                    thumbUrl: response.data[0].url_imagem
+                }
+            ];
+
+            commit('setFileList', list);
 
             commit('setData', response.data[0]);
 

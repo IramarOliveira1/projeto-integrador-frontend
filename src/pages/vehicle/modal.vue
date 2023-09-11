@@ -81,10 +81,13 @@
                     </a-col>
                 </a-row>
 
+
+                {{ fileList }}
+
                 <a-form-item label="Imagem" name="image"
                     :rules="[{ required: true, message: 'Campo imagem � obrigat�rio' }]">
-                    <a-upload-dragger :before-upload="beforeUpload" list-type="picture" name="file" :max-count="1"
-                        :multiple="false" @remove="removeImage">
+                    <a-upload-dragger :before-upload="beforeUpload" v-model:file-list="fileList" list-type="picture"
+                        name="file" :max-count="1" :multiple="false" @remove="removeImage">
 
                         <p class="ant-upload-drag-icon">
                             <InboxOutlined />
@@ -123,11 +126,10 @@ export default {
         VueTheMask,
         Money
     },
-    props: ['openModal', 'idEdit'],
+    props: ['openModal', 'idEdit', 'listImage'],
     data() {
         return {
-            // fileList: [],
-            description: null,
+            fileLists: [],
             money: {
                 decimal: ',',
                 thousands: '.',
@@ -142,6 +144,17 @@ export default {
             get() {
                 return this.isActiveModal = this.openModal;
             },
+        },
+
+        fileList: {
+            get() {
+                return this.$store.getters['vehicle/getFileList'];
+            },
+            set(newVal) {
+                console.log(newVal);
+                // return newVal
+                // return this.$store.commit('vehicle/setFileList', newVal);
+            }
         },
 
         modalEdit: {
@@ -159,7 +172,8 @@ export default {
 
 
     methods: {
-        removeImage(image) {
+        removeImage() {
+            this.fileList = [];
             this.$store.commit('vehicle/setImage', null);
         },
         beforeUpload(image) {
@@ -177,20 +191,20 @@ export default {
                 return Upload.LIST_IGNORE;
             }
 
-            this.$store.commit('vehicle/setImage', image);
+            // this.$store.commit('vehicle/setImage', image);
 
             return false;
         },
         async save(data) {
             try {
 
+                delete data.image;
+
                 if (this.modalEdit) {
                     this.update(data);
 
                     return;
                 }
-
-                delete data.image;
 
                 const response = await this.$store.dispatch('vehicle/save', data);
 
@@ -235,6 +249,8 @@ export default {
                 },
                 image: null,
             });
+
+            this.fileList = [];
 
             this.$emit('close', close);
         },

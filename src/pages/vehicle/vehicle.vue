@@ -48,7 +48,7 @@
                 </template>
             </template>
         </a-table>
-        <modal :openModal="openModal" :idEdit="idEdit" @close="openModal = false" />
+        <modal :openModal="openModal" :idEdit="idEdit" :listImage="listImage" @close="openModal = false" />
     </div>
 </template>
 
@@ -102,7 +102,8 @@ export default {
                 },
             ],
             openModal: false,
-            idEdit: null
+            idEdit: null,
+            listImage: []
         }
     },
 
@@ -130,11 +131,19 @@ export default {
 
         async index(id) {
             try {
-                await this.$store.dispatch('vehicle/index', id);
+                const response = await this.$store.dispatch('vehicle/index', id);
 
                 this.$store.commit('generic/setModalEdit', true);
 
+                let teste = [
+                    {
+                        url: response.data[0].url_imagem,
+                        thumbUrl: response.data[0].url_imagem
+                    }
+                ];
+
                 this.openModal = true;
+                this.listImage = teste;
                 this.idEdit = id;
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
