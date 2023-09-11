@@ -132,18 +132,26 @@ export default {
         async index(id) {
             try {
                 const response = await this.$store.dispatch('vehicle/index', id);
+                const extension = response.data[0].url_imagem.split('.')[1];
 
+                const getImage = await this.$axios.get(response.data[0].url_imagem, {
+                    responseType: 'blob',
+                });
+
+                const image = new File([getImage.data], `${response.data[0].marca}-${response.data[0].modelo}.${extension}`, { type: getImage.data.type });
+
+                const loadImage =
+                {
+                    url: response.data[0].url_imagem,
+                    name: `${response.data[0].marca} - ${response.data[0].modelo}.${extension}`,
+                }
+
+                this.$store.commit('vehicle/setImage', image);
+                
                 this.$store.commit('generic/setModalEdit', true);
 
-                let teste = [
-                    {
-                        url: response.data[0].url_imagem,
-                        thumbUrl: response.data[0].url_imagem
-                    }
-                ];
-
                 this.openModal = true;
-                this.listImage = teste;
+                this.listImage = [loadImage];
                 this.idEdit = id;
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);

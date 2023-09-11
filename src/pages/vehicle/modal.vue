@@ -76,18 +76,19 @@
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Ag�ncia" name="agencia"
                             :rules="[{ required: true, message: 'Campo agencia � obrigat�rio' }]">
+<!-- 
+                            <a-select v-model:value="value" mode="tags" style="width: 100%" placeholder="Tags Mode"
+                                :options="options" @change="handleChange"></a-select> -->
                             <a-input v-model:value="data.agencia.id" />
                         </a-form-item>
                     </a-col>
                 </a-row>
 
-
-                {{ fileList }}
-
                 <a-form-item label="Imagem" name="image"
                     :rules="[{ required: true, message: 'Campo imagem � obrigat�rio' }]">
-                    <a-upload-dragger :before-upload="beforeUpload" v-model:file-list="fileList" list-type="picture"
-                        name="file" :max-count="1" :multiple="false" @remove="removeImage">
+                    <a-upload-dragger :before-upload="beforeUpload" list-type="picture" name="file" :max-count="1"
+                        :multiple="false" v-model:fileList="fileList" @remove="removeImage"
+                        :load="modalEdit ? getImage : null">
 
                         <p class="ant-upload-drag-icon">
                             <InboxOutlined />
@@ -129,7 +130,7 @@ export default {
     props: ['openModal', 'idEdit', 'listImage'],
     data() {
         return {
-            fileLists: [],
+            fileList: [],
             money: {
                 decimal: ',',
                 thousands: '.',
@@ -145,15 +146,12 @@ export default {
                 return this.isActiveModal = this.openModal;
             },
         },
-
-        fileList: {
+        getImage: {
             get() {
-                return this.$store.getters['vehicle/getFileList'];
+                return this.fileList = this.listImage;
             },
             set(newVal) {
-                console.log(newVal);
-                // return newVal
-                // return this.$store.commit('vehicle/setFileList', newVal);
+                return newVal;
             }
         },
 
@@ -173,8 +171,8 @@ export default {
 
     methods: {
         removeImage() {
-            this.fileList = [];
             this.$store.commit('vehicle/setImage', null);
+            this.fileList = [];
         },
         beforeUpload(image) {
             const types = [
@@ -191,7 +189,8 @@ export default {
                 return Upload.LIST_IGNORE;
             }
 
-            // this.$store.commit('vehicle/setImage', image);
+            this.getImage = image;
+            this.$store.commit('vehicle/setImage', image);
 
             return false;
         },
@@ -225,6 +224,8 @@ export default {
 
                 this.$notification.notification(response.status, response.data.message);
 
+                this.removeImage();
+
                 this.closeModal();
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
@@ -250,7 +251,7 @@ export default {
                 image: null,
             });
 
-            this.fileList = [];
+            this.removeImage();
 
             this.$emit('close', close);
         },

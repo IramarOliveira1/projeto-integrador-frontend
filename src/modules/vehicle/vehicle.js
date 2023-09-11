@@ -80,6 +80,7 @@ const vehicle = {
         },
 
         async save({ dispatch, state }, data) {
+
             let formData = new FormData();
 
             formData.append('vehicle', JSON.stringify(data));
@@ -98,15 +99,6 @@ const vehicle = {
         async index({ commit }, id) {
 
             const response = await axios.get(`vehicle/${id}`);
-
-            let list = [
-                {
-                    url: response.data[0].url_imagem,
-                    thumbUrl: response.data[0].url_imagem
-                }
-            ];
-
-            commit('setFileList', list);
 
             commit('setData', response.data[0]);
 
