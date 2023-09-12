@@ -7,6 +7,7 @@ import generic from './generic/generic';
 import insurance from './insurance/insurance';
 import agency from './agency/agency';
 import vehicle from './vehicle/vehicle';
+import model from './model/model';
 
 const store = createStore({
     modules: {
@@ -14,7 +15,8 @@ const store = createStore({
         generic: generic,
         insurance: insurance,
         agency: agency,
-        vehicle: vehicle
+        vehicle: vehicle,
+        model: model,
     },
     plugins: [createPersistedState()]
 })
