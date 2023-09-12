@@ -3,8 +3,7 @@
         <a-modal v-model:open="showModal" :title="modalEdit ? 'Editar Veiculo' : 'Cadastrar Veiculo'" :footer="null"
             width="800px">
 
-            <a-form layout="vertical" ref="form" name="basic" :model="{ ...data.agencia, ...data }" @finish="save"
-                :hideRequiredMark="true">
+            <a-form layout="vertical" ref="form" name="basic" :model="data" @finish="save" :hideRequiredMark="true">
 
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
@@ -16,7 +15,9 @@
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Modelo" name="modelo"
                             :rules="[{ required: true, message: 'Campo modelo ï¿½ obrigatï¿½rio' }]">
-                            <a-input v-model:value="data.modelo" />
+
+                            <a-select v-model:value="data.modelo.id" placeholder="Selecione um modelo" :options="models"
+                                :field-names="{ label: 'nome', value: 'id' }"></a-select>
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -42,10 +43,13 @@
                             <a-input v-model:value="data.cor" />
                         </a-form-item>
                     </a-col>
+
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="PreÃ§o" name="valor_diaria"
-                            :rules="[{ required: true, message: 'Campo valor da diaria ï¿½ obrigatï¿½rio' }]">
-                            <a-input v-model:value="data.valor_diaria" v-money="money" />
+                        <a-form-item label="Agï¿½ncia" name="agencia"
+                            :rules="[{ required: true, message: 'Campo agencia ï¿½ obrigatï¿½rio' }]">
+
+                            <a-select v-model:value="data.agencia.id" placeholder="Selecione uma agência"
+                                :options="agencies" :field-names="{ label: 'nome', value: 'id' }"></a-select>
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -57,49 +61,14 @@
                             <a-input v-model:value="data.capacidade" type="number" min="0" />
                         </a-form-item>
                     </a-col>
-                    <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Quantidade em estoque" name="quantidade"
-                            :rules="[{ required: true, message: 'Campo quantidade ï¿½ obrigatï¿½rio' }]">
-                            <a-input v-model:value="data.quantidade" type="number" min="0" />
-                        </a-form-item>
-                    </a-col>
-                </a-row>
 
-                <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Categoria" name="categoria"
                             :rules="[{ required: true, message: 'Campo categoria ï¿½ obrigatï¿½rio' }]">
                             <a-input v-model:value="data.categoria" />
                         </a-form-item>
                     </a-col>
-
-                    <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Agï¿½ncia" name="agencia"
-                            :rules="[{ required: true, message: 'Campo agencia ï¿½ obrigatï¿½rio' }]">
-<!-- 
-                            <a-select v-model:value="value" mode="tags" style="width: 100%" placeholder="Tags Mode"
-                                :options="options" @change="handleChange"></a-select> -->
-                            <a-input v-model:value="data.agencia.id" />
-                        </a-form-item>
-                    </a-col>
                 </a-row>
-
-                <a-form-item label="Imagem" name="image"
-                    :rules="[{ required: true, message: 'Campo imagem ï¿½ obrigatï¿½rio' }]">
-                    <a-upload-dragger :before-upload="beforeUpload" list-type="picture" name="file" :max-count="1"
-                        :multiple="false" v-model:fileList="fileList" @remove="removeImage"
-                        :load="modalEdit ? getImage : null">
-
-                        <p class="ant-upload-drag-icon">
-                            <InboxOutlined />
-                        </p>
-                        <p class="ant-upload-text">
-                            Clique ou arraste o arquivo para esta ï¿½rea para fazer upload</p>
-                        <p class="ant-upload-hint">
-                            Arquivos do tipo (PNG, JPEG, JPG)
-                        </p>
-                    </a-upload-dragger>
-                </a-form-item>
 
                 <a-form-item class="ant-modal-footer">
                     <a-button key="back" @click="closeModal">Fechar</a-button>
@@ -113,30 +82,18 @@
 
 <script>
 
-import { Money } from 'v-money';
-
 import { VueTheMask } from 'vue-the-mask';
 
 import { InboxOutlined } from '@ant-design/icons-vue';
-
-import { Upload } from 'ant-design-vue';
 
 export default {
     components: {
         InboxOutlined,
         VueTheMask,
-        Money
     },
-    props: ['openModal', 'idEdit', 'listImage'],
+    props: ['openModal', 'idEdit'],
     data() {
         return {
-            fileList: [],
-            money: {
-                decimal: ',',
-                thousands: '.',
-                precision: 2,
-                masked: false
-            },
             isActiveModal: false,
         }
     },
@@ -145,14 +102,6 @@ export default {
             get() {
                 return this.isActiveModal = this.openModal;
             },
-        },
-        getImage: {
-            get() {
-                return this.fileList = this.listImage;
-            },
-            set(newVal) {
-                return newVal;
-            }
         },
 
         modalEdit: {
@@ -166,38 +115,23 @@ export default {
                 return this.$store.getters['vehicle/getData'];
             },
         },
+
+        agencies: {
+            get() {
+                return this.$store.getters['vehicle/getAgencies'];
+            },
+        },
+
+        models: {
+            get() {
+                return this.$store.getters['vehicle/getModels'];
+            },
+        },
     },
 
-
     methods: {
-        removeImage() {
-            this.$store.commit('vehicle/setImage', null);
-            this.fileList = [];
-        },
-        beforeUpload(image) {
-            const types = [
-                'image/png',
-                'image/jpeg',
-                'image/jpg',
-            ];
-
-            const filter = types.filter(type => type === image.type);
-
-            if (filter.length === 0) {
-                this.$notification.notification(400, `${image.name} nï¿½o ï¿½ um arquivo do tipo (PNG, JPEG OU JPG) `);
-
-                return Upload.LIST_IGNORE;
-            }
-
-            this.getImage = image;
-            this.$store.commit('vehicle/setImage', image);
-
-            return false;
-        },
         async save(data) {
             try {
-
-                delete data.image;
 
                 if (this.modalEdit) {
                     this.update(data);
@@ -209,8 +143,6 @@ export default {
 
                 this.$notification.notification(response.status, response.data.message);
 
-                this.removeImage();
-
                 this.closeModal();
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
@@ -220,11 +152,9 @@ export default {
         async update(data) {
             try {
 
-                const response = await this.$store.dispatch('vehicle/update', { id: this.$props.idEdit, data: data });
+                const response = await this.$store.dispatch('vehicle/update', { id: this.$props.idEdit, data });
 
                 this.$notification.notification(response.status, response.data.message);
-
-                this.removeImage();
 
                 this.closeModal();
             } catch (error) {
@@ -239,19 +169,16 @@ export default {
                 ano: null,
                 capacidade: null,
                 categoria: null,
-                valor_diaria: "0,00",
                 cor: null,
                 marca: null,
-                modelo: null,
                 placa: null,
-                quantidade: null,
                 agencia: {
                     id: null
                 },
-                image: null,
+                modelo: {
+                    id: null
+                },
             });
-
-            this.removeImage();
 
             this.$emit('close', close);
         },

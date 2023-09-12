@@ -11,18 +11,19 @@ const vehicle = {
             ano: null,
             capacidade: null,
             categoria: null,
-            valor_diaria: null,
             cor: null,
             marca: null,
-            modelo: null,
             placa: null,
-            quantidade: null,
             agencia: {
                 id: null
             },
-            image: null,
+            modelo: {
+                id: null
+            },
         },
-        vehicles: []
+        vehicles: [],
+        agencies: [],
+        models: []
     },
 
     getters: {
@@ -30,12 +31,16 @@ const vehicle = {
             return state.vehicles;
         },
 
-        getData(state) {
-            return state.data;
+        getAgencies(state) {
+            return state.agencies;
         },
 
-        getImage(state) {
-            return state.data.image;
+        getModels(state) {
+            return state.models;
+        },
+
+        getData(state) {
+            return state.data;
         },
     },
 
@@ -44,12 +49,16 @@ const vehicle = {
             return state.vehicles = payload;
         },
 
-        setData(state, payload) {
-            return state.data = payload;
+        setAgencies(state, payload) {
+            return state.agencies = payload;
         },
 
-        setImage(state, payload) {
-            return state.data.image = payload;
+        setModels(state, payload) {
+            return state.models = payload;
+        },
+
+        setData(state, payload) {
+            return state.data = payload;
         },
 
         clearForm(state, payload) {
@@ -64,24 +73,30 @@ const vehicle = {
 
                 const response = await axios.get('/vehicle/all');
 
-                commit('setVehicles', response.data);
+                commit('setVehicles', response.data.veiculo);
+                commit('setAgencies', response.data.agencia);
+                commit('setModels', response.data.modelo);
             } catch (error) {
                 notifications(error.response.status, error.response.data.message);
             }
         },
 
-        async save({ dispatch, state }, data) {
-
-            let formData = new FormData();
-
-            formData.append('vehicle', JSON.stringify(data));
-            formData.append('image', state.data.image);
-
-            const response = await axios.post('/vehicle/register', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+        async save({ dispatch }, data) {
+            const response = await axios.post('/vehicle/register',
+                {
+                    ano: data.ano,
+                    capacidade: data.capacidade,
+                    categoria: data.categoria,
+                    cor: data.cor,
+                    marca: data.marca,
+                    placa: data.placa,
+                    agencia: {
+                        id: data.agencia.id
+                    },
+                    modelo: {
+                        id: data.modelo.id
+                    },
+                });
 
             dispatch('all');
             return response;
@@ -90,7 +105,6 @@ const vehicle = {
         async index({ commit }, id) {
 
             const response = await axios.get(`vehicle/${id}`);
-
             commit('setData', response.data[0]);
 
             return response;
@@ -103,21 +117,25 @@ const vehicle = {
             commit('setVehicles', response.data);
         },
 
-        async update({ dispatch, state }, data) {
-
-            let formData = new FormData();
-
-            formData.append('vehicle', JSON.stringify(data.data));
-            formData.append('image', state.data.image);
-
-            const response = await axios.put(`/vehicle/${data.id}`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+        async update({ dispatch }, data) {
+            const response = await axios.put(`/vehicle/${data.id}`, {
+                ano: data.data.ano,
+                capacidade: data.data.capacidade,
+                categoria: data.data.categoria,
+                cor: data.data.cor,
+                marca: data.data.marca,
+                placa: data.data.placa,
+                agencia: {
+                    id: data.data.agencia.id
+                },
+                modelo: {
+                    id: data.data.modelo.id
+                },
             });
 
             dispatch('all');
             return response;
+
         },
 
         async destroy({ dispatch }, id) {

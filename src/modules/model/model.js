@@ -9,7 +9,8 @@ const model = {
         data: {
             nome: null,
             quantidade: null,
-            image: null
+            image: null,
+            valor_diaria: null
         },
         models: []
     },
@@ -61,7 +62,7 @@ const model = {
         async save({ dispatch, state }, data) {
             let formData = new FormData();
 
-            formData.append('name', data.nome);
+            formData.append('model', JSON.stringify(data));
             formData.append('image', state.data.image);
 
             const response = await axios.post('/model/register', formData, {
@@ -92,7 +93,7 @@ const model = {
         async update({ dispatch, state }, data) {
             let formData = new FormData();
 
-            formData.append('name', data.data.nome);
+            formData.append('model', JSON.stringify(data.data));
             formData.append('image', state.data.image);
 
             const response = await axios.put(`/model/${data.id}`, formData, {

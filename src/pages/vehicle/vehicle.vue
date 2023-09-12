@@ -34,7 +34,9 @@
         <a-table :columns="columns" :data-source="getVehicle" :row-key="record => record.id" bordered
             :pagination="{ pageSize: 9 }">
             <template #bodyCell="{ column, record }">
-
+                <template v-if="column.key === 'modelo'">
+                    {{ record.modelo.nome }}
+                </template>
                 <template v-if="column.key === 'action'">
                     <a-button @click="index(record.id)">
                         <EditTwoTone />
@@ -48,7 +50,7 @@
                 </template>
             </template>
         </a-table>
-        <modal :openModal="openModal" :idEdit="idEdit" :listImage="listImage" @close="openModal = false" />
+        <modal :openModal="openModal" :idEdit="idEdit" @close="openModal = false" />
     </div>
 </template>
 
@@ -82,6 +84,7 @@ export default {
                     width: '20%',
                 },
                 {
+                    key: 'modelo',
                     title: 'Modelo',
                     dataIndex: 'modelo',
                     width: '20%',
@@ -103,7 +106,6 @@ export default {
             ],
             openModal: false,
             idEdit: null,
-            listImage: []
         }
     },
 
@@ -131,27 +133,11 @@ export default {
 
         async index(id) {
             try {
-                const response = await this.$store.dispatch('vehicle/index', id);
-                const extension = response.data[0].url_imagem.split('.')[1];
+                await this.$store.dispatch('vehicle/index', id);
 
-                const getImage = await this.$axios.get(response.data[0].url_imagem, {
-                    responseType: 'blob',
-                });
-
-                const image = new File([getImage.data], `${response.data[0].marca}-${response.data[0].modelo}.${extension}`, { type: getImage.data.type });
-
-                const loadImage =
-                {
-                    url: response.data[0].url_imagem,
-                    name: `${response.data[0].marca} - ${response.data[0].modelo}.${extension}`,
-                }
-
-                this.$store.commit('vehicle/setImage', image);
-                
                 this.$store.commit('generic/setModalEdit', true);
 
                 this.openModal = true;
-                this.listImage = [loadImage];
                 this.idEdit = id;
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);

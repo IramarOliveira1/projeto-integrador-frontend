@@ -27,13 +27,16 @@
                         </div>
                     </a-form-item>
                 </a-col>
-
             </a-row>
         </a-form>
 
         <a-table :columns="columns" :data-source="getModels" :row-key="record => record.id" bordered
             :pagination="{ pageSize: 9 }">
             <template #bodyCell="{ column, record }">
+
+                <template v-if="column.key === 'valor_diaria'">
+                    {{ parseFloat(record.valor_diaria).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}
+                </template>
 
                 <template v-if="column.key === 'action'">
                     <a-button @click="index(record.id)">
@@ -82,9 +85,17 @@ export default {
                     width: '20%',
                 },
                 {
+                    key: 'valor_diaria',
+                    title: 'Valor diaria',
+                    dataIndex: 'valor_diaria',
+                    width: '20%',
+                    responsive: ['sm'],
+                },
+                {
                     title: 'Quantidade',
                     dataIndex: 'quantidade',
                     width: '20%',
+                    responsive: ['sm'],
                 },
                 {
                     title: 'Action',
@@ -121,10 +132,10 @@ export default {
     },
 
     methods: {
-
         async index(id) {
             try {
                 const response = await this.$store.dispatch('model/index', id);
+
                 const extension = response.data[0].url_imagem.split('.')[1];
 
                 const getImage = await this.$axios.get(response.data[0].url_imagem, {

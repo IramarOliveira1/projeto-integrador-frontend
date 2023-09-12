@@ -1,19 +1,32 @@
 <template>
     <div>
-        <a-modal v-model:open="showModal" :title="modalEdit ? 'Editar Veiculo' : 'Cadastrar Veiculo'" :footer="null"
+        <a-modal v-model:open="showModal" :title="modalEdit ? 'Editar Modelo' : 'Cadastrar Modelo'" :footer="null"
             width="800px">
-
             <a-form layout="vertical" ref="form" name="basic" :model="data" @finish="save" :hideRequiredMark="true">
 
+                <a-col :xs="{ span: 24 }" :sm="{ span: 24 }" :xl="{ span: 24 }">
+                    <a-form-item label="Nome" name="nome"
+                        :rules="[{ required: true, message: 'Campo nome ï¿½ obrigatï¿½rio' }]">
+                        <a-input v-model:value="data.nome" />
+                    </a-form-item>
+                </a-col>
+
                 <a-row :gutter="[8, 16]">
-                    <a-col :xs="{ span: 24 }" :sm="{ span: 24 }" :xl="{ span: 24 }">
-                        <a-form-item label="Nome" name="nome"
-                            :rules="[{ required: true, message: 'Campo nome ï¿½ obrigatï¿½rio' }]">
-                            <a-input v-model:value="data.nome" />
+                    <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
+                        <a-form-item name="valor_diaria"
+                            :rules="[{ required: true, message: 'Campo valor da diaria ï¿½ obrigatï¿½rio' }]">
+                            Valor da diaria
+                            <a-input v-model:value="data.valor_diaria" v-money="money" />
                         </a-form-item>
                     </a-col>
-                    <a-col :xs="{ span: 24 }" :sm="{ span: 24 }" :xl="{ span: 24 }">
-                        <a-form-item label="Quantidade" name="quantidade">
+
+                    <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
+                        <a-form-item name="quantidade">
+                            Quantidade
+                            <a-tooltip class="tooltip-password"
+                                title="Campo quantidade é alimentado de acordo com cadastro de veiculos!">
+                                <InfoCircleTwoTone two-tone-color="#ea8b0e" />
+                            </a-tooltip>
                             <a-input v-model:value="data.quantidade" disabled />
                         </a-form-item>
                     </a-col>
@@ -48,18 +61,28 @@
 
 <script>
 
-import { InboxOutlined } from '@ant-design/icons-vue';
+import { InboxOutlined, InfoCircleTwoTone } from '@ant-design/icons-vue';
+
+import { Money } from 'v-money';
 
 import { Upload } from 'ant-design-vue';
 
 export default {
     components: {
+        Money,
         InboxOutlined,
+        InfoCircleTwoTone
     },
     props: ['openModal', 'idEdit', 'listImage'],
     data() {
         return {
             fileList: [],
+            money: {
+                decimal: ',',
+                thousands: '.',
+                precision: 2,
+                masked: false
+            },
             isActiveModal: false,
         }
     },
@@ -91,7 +114,6 @@ export default {
         },
     },
 
-
     methods: {
         removeImage() {
             this.$store.commit('model/setImage', null);
@@ -99,6 +121,14 @@ export default {
         },
 
         beforeUpload(image) {
+
+            const sizeInMB = (image.size / (1024 * 1024)).toFixed(2);
+
+            if (sizeInMB > 6.0) {
+                this.$notification.notification(400, 'Adicione uma imagem com tamanho até 6MB ');
+                return Upload.LIST_IGNORE;
+            }
+
             const types = [
                 'image/png',
                 'image/jpeg',
@@ -160,7 +190,9 @@ export default {
 
             this.$store.commit('model/clearForm', {
                 nome: null,
+                quantidade: null,
                 image: null,
+                valor_diaria: "0,00"
             });
 
             this.removeImage();
