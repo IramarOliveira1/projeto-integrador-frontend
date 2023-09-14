@@ -36,6 +36,12 @@ const routes = [
     {
         path: '/agencias', component: () => import('../pages/agency/agency.vue'), meta: { admin: true, guest: false }, name: 'agency'
     },
+    {
+        path: '/carros', component: () => import('../pages/vehicle/vehicle.vue'), meta: { admin: true, guest: false }, name: 'vehicle'
+    },
+    {
+        path: '/modelos', component: () => import('../pages/model/model.vue'), meta: { admin: true, guest: false }, name: 'model'
+    },
 ];
 
 const router = createRouter({
