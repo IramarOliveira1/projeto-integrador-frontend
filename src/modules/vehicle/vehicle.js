@@ -10,7 +10,6 @@ const vehicle = {
         data: {
             ano: null,
             capacidade: null,
-            categoria: null,
             cor: null,
             marca: null,
             placa: null,
@@ -86,7 +85,6 @@ const vehicle = {
                 {
                     ano: data.ano,
                     capacidade: data.capacidade,
-                    categoria: data.categoria,
                     cor: data.cor,
                     marca: data.marca,
                     placa: data.placa,
@@ -121,7 +119,6 @@ const vehicle = {
             const response = await axios.put(`/vehicle/${data.id}`, {
                 ano: data.data.ano,
                 capacidade: data.data.capacidade,
-                categoria: data.data.categoria,
                 cor: data.data.cor,
                 marca: data.data.marca,
                 placa: data.data.placa,

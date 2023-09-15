@@ -24,10 +24,19 @@
                         <a-form-item name="quantidade">
                             Quantidade
                             <a-tooltip class="tooltip-password"
-                                title="Campo quantidade é alimentado de acordo com cadastro de veiculos!">
+                                title="Campo quantidade ï¿½ alimentado de acordo com cadastro de veiculos!">
                                 <InfoCircleTwoTone two-tone-color="#ea8b0e" />
                             </a-tooltip>
                             <a-input v-model:value="data.quantidade" disabled />
+                        </a-form-item>
+                    </a-col>
+                </a-row>
+
+                <a-row :gutter="[8, 16]">
+                    <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
+                        <a-form-item name="categoria" label="Categoria"
+                            :rules="[{ required: true, message: 'Campo categoria ï¿½ obrigatï¿½rio' }]">
+                            <a-input v-model:value="data.categoria" />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -125,7 +134,7 @@ export default {
             const sizeInMB = (image.size / (1024 * 1024)).toFixed(2);
 
             if (sizeInMB > 6.0) {
-                this.$notification.notification(400, 'Adicione uma imagem com tamanho até 6MB ');
+                this.$notification.notification(400, 'Adicione uma imagem com tamanho atï¿½ 6MB ');
                 return Upload.LIST_IGNORE;
             }
 
@@ -192,7 +201,8 @@ export default {
                 nome: null,
                 quantidade: null,
                 image: null,
-                valor_diaria: "0,00"
+                valor_diaria: "0,00",
+                categoria: null
             });
 
             this.removeImage();
