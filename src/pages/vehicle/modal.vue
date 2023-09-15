@@ -48,7 +48,7 @@
                         <a-form-item label="Agï¿½ncia" name="agencia"
                             :rules="[{ required: true, message: 'Campo agencia ï¿½ obrigatï¿½rio' }]">
 
-                            <a-select v-model:value="data.agencia.id" placeholder="Selecione uma agência"
+                            <a-select v-model:value="data.agencia.id" placeholder="Selecione uma agï¿½ncia"
                                 :options="agencies" :field-names="{ label: 'nome', value: 'id' }"></a-select>
                         </a-form-item>
                     </a-col>
@@ -62,10 +62,9 @@
                         </a-form-item>
                     </a-col>
 
-                    <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Categoria" name="categoria"
-                            :rules="[{ required: true, message: 'Campo categoria ï¿½ obrigatï¿½rio' }]">
-                            <a-input v-model:value="data.categoria" />
+                    <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }" v-if="modalEdit">
+                        <a-form-item label="Categoria" name="categoria">
+                            <a-input v-model:value="data.modelo.categoria" disabled />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -168,7 +167,6 @@ export default {
             this.$store.commit('vehicle/clearForm', {
                 ano: null,
                 capacidade: null,
-                categoria: null,
                 cor: null,
                 marca: null,
                 placa: null,
