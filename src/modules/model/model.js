@@ -10,7 +10,8 @@ const model = {
             nome: null,
             quantidade: null,
             image: null,
-            valor_diaria: null
+            valor_diaria: null,
+            categoria: null
         },
         models: []
     },

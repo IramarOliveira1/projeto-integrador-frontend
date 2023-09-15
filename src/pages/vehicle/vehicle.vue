@@ -91,8 +91,8 @@ export default {
                     responsive: ['sm'],
                 },
                 {
-                    title: 'Categoria',
-                    dataIndex: 'categoria',
+                    title: 'Placa',
+                    dataIndex: 'placa',
                     width: '20%',
                     responsive: ['sm'],
                 },
