@@ -1,11 +1,18 @@
-.link-forgot:hover {
+.link-forgot>a:hover {
     color: #8f95c2;
 }
 
-.link-forgot {
+.link-forgot>a:nth-child(1) {
+    font-weight: bold;
+}
+
+.link-forgot>a {
     color: #303D97;
+}
+
+.link-forgot {
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
     align-items: center;
 }
 

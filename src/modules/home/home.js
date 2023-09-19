@@ -11,6 +11,9 @@ const home = {
             endDate: null,
             agencia: {
                 id: null
+            },
+            devolution: {
+                id: null
             }
         },
         agencies: []
@@ -23,6 +26,9 @@ const home = {
         getData(state) {
             return state.data;
         },
+        getAgencyDevolution(state) {
+            return state.data.endDate;
+        },
     },
 
     mutations: {
@@ -32,6 +38,9 @@ const home = {
 
         setData(state, payload) {
             return state.data = payload;
+        },
+        setAgencyDevolution(state, payload) {
+            return state.data.endDate = payload;
         },
 
         clearForm(state, payload) {
@@ -54,7 +63,7 @@ const home = {
 
 
         async search({ dispatch }, data) {
-            
+
             const response = await axios.post('/vehicle/home', data);
 
             console.log(response.data);
