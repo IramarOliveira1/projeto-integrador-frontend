@@ -96,7 +96,7 @@ export default {
         async search(data) {
             try {
 
-                await this.$store.dispatch('home/search', {
+                const response = await this.$store.dispatch('home/search', {
                     startDate: data.startDate.format('YYYY-MM-DD'),
                     endDate: data.endDate.format('YYYY-MM-DD'),
                     agencia: {
@@ -104,6 +104,8 @@ export default {
                     },
                 });
 
+                this.$store.commit('reserve/setVehicles', response.data);
+                this.$router.push('/listar-veiculos');
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
@@ -120,7 +122,7 @@ export default {
             const diffTime = Math.abs(currentSelected - now);
             this.addDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             this.data.endDate = dayjs().set('date', current.$D >= 28 ? current.$D + 3 : current.$D + 1)
-                .set('month',   current.$D >= 28 ? current.$d.getMonth() + 1 : current.$d.getMonth() + 0)
+                .set('month', current.$D >= 28 ? current.$d.getMonth() + 1 : current.$d.getMonth() + 0)
                 .set('year', current.$d.getFullYear());
             this.disabledEndDate(this.addDays);
         },

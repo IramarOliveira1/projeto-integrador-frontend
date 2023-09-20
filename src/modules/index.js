@@ -9,6 +9,7 @@ import agency from './agency/agency';
 import vehicle from './vehicle/vehicle';
 import model from './model/model';
 import home from './home/home';
+import reserve from './reserve/reserve';
 
 const store = createStore({
     modules: {
@@ -19,6 +20,7 @@ const store = createStore({
         vehicle: vehicle,
         model: model,
         home: home,
+        reserve: reserve,
     },
     plugins: [createPersistedState()]
 })

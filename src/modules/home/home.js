@@ -62,13 +62,10 @@ const home = {
         },
 
 
-        async search({ dispatch }, data) {
-
+        async search({ }, data) {
             const response = await axios.post('/vehicle/home', data);
 
-            console.log(response.data);
-            // dispatch('all');
-            return response;
+            return response
         },
     }
 }

@@ -42,6 +42,9 @@ const routes = [
     {
         path: '/modelos', component: () => import('../pages/model/model.vue'), meta: { admin: true, guest: false }, name: 'model'
     },
+    {
+        path: '/listar-veiculos', component: () => import('../pages/list/vehicle/listVehicle.vue'), meta: { admin: true, guest: true }, name: 'list-vehicle'
+    },
 ];
 
 const router = createRouter({
@@ -52,7 +55,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
 
-    if (!store.getters.isAuthenticated && to.name === 'home') {
+    if (!store.getters.isAuthenticated && to.name === 'home' || to.name === 'list-vehicle') {
         next();
         return;
     }
