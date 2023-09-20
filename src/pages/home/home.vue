@@ -1,7 +1,6 @@
 <template>
-    <div class="container-main">
+    <div class="container-main container-home">
         <a-form layout="vertical" ref="form" name="basic" :model="data" @finish="search" :hideRequiredMark="true">
-
             <a-row :gutter="[8, 16]">
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                     <a-form-item label="Agência retirada" name="agencia">
@@ -15,7 +14,8 @@
                     <a-form-item label="Data retirada" name="startDate">
 
                         <a-date-picker v-model:value="data.startDate" format="DD-MM-YYYY" :locale="locale" size="large"
-                            :disabled-date="disabledDate" style="width: 100%;" :allowClear="false" @change="changeTeste" />
+                            :disabled-date="disabledDate" :disabled="disabledStartDate" style="width: 100%;"
+                            :allowClear="false" @change="changeStartDate" />
                     </a-form-item>
                 </a-col>
             </a-row>
@@ -26,21 +26,28 @@
 
                         <a-select size="large" v-model:value="data.devolution.id" placeholder="Selecione uma agï¿½ncia"
                             :options="agencies" :field-names="{ label: 'nome', value: 'nome' }" :disabled="disabledGeneric"
-                            labelInValue showSearch />
+                            labelInValue showSearch @change="changeButton" />
                     </a-form-item>
                 </a-col>
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                     <a-form-item label="Data devolução" name="endDate"
                         :rules="[{ required: true, message: 'Campo Data devolução ï¿½ obrigatï¿½rio' }]">
-                        <!-- :disabled="disabledGeneric" -->
-                        <a-date-picker :value="data.endDate" format="DD-MM-YYYY" :locale="locale" size="large"
-                            :disabled-date="disabledEndDate" style=" width: 100%" :allowClear="false" />
+                        <a-date-picker :value="data.endDate" @change="changeEndDate" format="DD-MM-YYYY" :locale="locale"
+                            size="large" :disabled-date="disabledEndDate" :disabled="disabledGeneric" style=" width: 100%"
+                            :allowClear="false" />
                     </a-form-item>
                 </a-col>
             </a-row>
 
-            <a-button type="primary" html-type="submit" :disabled="disabledGeneric">CONTINUAR</a-button>
+            <div class="button-search">
+                <a-button type="primary" html-type="submit" :disabled="disabledButton">CONTINUAR</a-button>
+            </div>
         </a-form>
+    </div>
+    <div class="footer">
+        <h3>Sistema AlugueAqui</h3>
+        <h4>Desenvolvido por: Iramar Capim - Bruno Tito - Marcos Vinicio </h4>
+        <h5> Priscila Julia - Ricardo Jesus - Tairone Barbosa </h5>
     </div>
 </template>
 
@@ -54,8 +61,8 @@ export default {
             locale,
             disabledStartDate: true,
             disabledGeneric: true,
-            testando: null,
-            teste: null,
+            disabledButton: true,
+            addDays: null,
         }
     },
     computed: {
@@ -82,9 +89,10 @@ export default {
             this.disabledStartDate = false;
         },
 
-        changeStartDate() {
-            this.disabledGeneric = false;
+        changeButton() {
+            this.disabledButton = false;
         },
+
         async search(data) {
             try {
 
@@ -102,21 +110,43 @@ export default {
         },
 
         disabledDate(current) {
-            return current && current < dayjs().endOf('day').day(+1);
+            return current && current < dayjs().startOf('day');
         },
 
-        changeTeste(current) {
-            const date1 = new Date(dayjs().format('YYYY-MM-DD'));
-            const date2 = new Date(current.format('YYYY-MM-DD'));
-            const diffTime = Math.abs(date2 - date1);
-            this.testando = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            this.data.endDate = current.format('DD-MM-YYYY')
-
-            this.disabledEndDate(this.testando);
+        changeStartDate(current) {
+            this.disabledGeneric = false;
+            const now = new Date(dayjs().format('YYYY-MM-DD'));
+            const currentSelected = new Date(current.format('YYYY-MM-DD'));
+            const diffTime = Math.abs(currentSelected - now);
+            this.addDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            this.data.endDate = dayjs().set('date', current.$D >= 28 ? current.$D + 3 : current.$D + 1)
+                .set('month',   current.$D >= 28 ? current.$d.getMonth() + 1 : current.$d.getMonth() + 0)
+                .set('year', current.$d.getFullYear());
+            this.disabledEndDate(this.addDays);
         },
+
         disabledEndDate(current) {
-            return current && current < dayjs().endOf('days').day(this.testando + 1);
-        }
+            return current && current < dayjs().endOf('days').add(this.addDays - 1, 'day');
+        },
+
+        changeEndDate(current) {
+            this.data.endDate = dayjs().set('date', current.$D).set('month', current.$d.getMonth()).set('year', current.$d.getFullYear());
+        },
+
+        clearForm() {
+            this.$refs['form'].clearValidate();
+
+            this.$store.commit('home/clearForm', {
+                startDate: null,
+                endDate: null,
+                agencia: {
+                    id: null
+                },
+                devolution: {
+                    id: null
+                }
+            });
+        },
     },
 }
 </script>

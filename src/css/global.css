@@ -133,6 +133,26 @@
     margin-left: 10px;
 }
 
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background-color: #F8F9FC;
+}
+
+.footer h3 {
+    font-weight: bold;
+    color: #001529;
+}
+
+
+.button-search {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
 @media only screen and (max-width: 768px) {
     .div-button-update-profile {
         display: flex;
@@ -147,9 +167,10 @@
         margin-bottom: 10px;
         margin-left: 0;
     }
-}
 
-.form-home {
-    display: flex;
-    align-items: center;justify-content: center;
+    .button-search button {
+        width: 100%;
+        margin-bottom: 100px;
+    }
+
 }
