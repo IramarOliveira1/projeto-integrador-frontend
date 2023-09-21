@@ -15,6 +15,10 @@
             <div class="toggle-navbar">
                 <a-menu theme="dark" mode="horizontal" v-model:selectedKeys="currentRoute">
 
+                    <router-link to="/">
+                        <a-menu-item key="home">Home</a-menu-item>
+                    </router-link>
+
                     <div v-if="this.$store.getters.isAuthenticated">
                         <router-link to="/dashboard">
                             <a-menu-item key="dashboard">Dashboard</a-menu-item>
@@ -74,6 +78,10 @@
                     <div class="image-drawer-flex">
                         <img class="image-drawer" src="../../assets/images/logo_white.png" alt="Imagem menu lateral">
                     </div>
+
+                    <router-link to="/">
+                        <a-menu-item key="home">Home</a-menu-item>
+                    </router-link>
 
                     <div v-if="this.$store.getters.isAuthenticated">
                         <router-link to="/dashboard">

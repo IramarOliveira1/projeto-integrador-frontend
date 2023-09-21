@@ -80,7 +80,7 @@ export default {
     },
 
     mounted() {
-
+        this.clearForm();
         this.$store.dispatch('home/all');
     },
 
