@@ -1,19 +1,19 @@
 <template>
     <div>
-        <a-modal v-model:open="showModal" :title="modalEdit ? 'Editar Ag�ncia' : 'Cadastrar Ag�ncia'" :footer="null"
+        <a-modal v-model:open="showModal" :title="modalEdit ? 'Editar Agência' : 'Cadastrar Agência'" :footer="null"
             width="800px">
             <a-form layout="vertical" ref="form" name="basic" :model="{ ...data.address, ...data }" @finish="save"
                 :hideRequiredMark="true">
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Nome" name="nome"
-                            :rules="[{ required: true, message: 'Campo nome � obrigat�rio' }]">
+                            :rules="[{ required: true, message: 'Campo nome é obrigatório' }]">
                             <a-input v-model:value="data.nome" />
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Telefone" name="telefone"
-                            :rules="[{ required: true, message: 'Campo telefone � obrigat�rio' }]">
+                            :rules="[{ required: true, message: 'Campo telefone é obrigatório' }]">
                             <a-input v-model:value="data.telefone" v-mask="'## #####-####'" />
                         </a-form-item>
                     </a-col>
@@ -25,7 +25,7 @@
                         <a-form-item name="quantidade_total">
                             Quantidade
                             <a-tooltip class="tooltip-password"
-                                title="Campo quantidade � alimentado de acordo com a quantidade de veiculos cadastrados na ag�ncia!">
+                                title="Campo quantidade é alimentado de acordo com a quantidade de veiculos cadastrados na agência!">
                                 <InfoCircleTwoTone two-tone-color="#ea8b0e" />
                             </a-tooltip>
                             <a-input v-model:value="data.quantidade_total" disabled />
@@ -33,7 +33,7 @@
                     </a-col>
 
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item name="cep" :rules="[{ required: true, message: 'Campo cep � obrigat�rio' }]">
+                        <a-form-item name="cep" :rules="[{ required: true, message: 'Campo cep é obrigatório' }]">
                             CEP
                             <a-input v-model:value="data.address.cep" v-mask="'#####-###'" @blur="viaCep" />
                         </a-form-item>
@@ -42,7 +42,7 @@
 
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Endere�o" name="logradouro">
+                        <a-form-item label="Endereço" name="logradouro">
                             <a-input v-model:value="data.address.logradouro" disabled />
                         </a-form-item>
                     </a-col>
@@ -73,8 +73,8 @@
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="N�mero" name="numero"
-                            :rules="[{ required: true, message: 'Campo n�mero � obrigat�rio' }]">
+                        <a-form-item label="Número" name="numero"
+                            :rules="[{ required: true, message: 'Campo número é obrigatório' }]">
                             <a-input v-model:value="data.address.numero" type="number" min="0" />
                         </a-form-item>
                     </a-col>

@@ -15,9 +15,8 @@
             <a-card :title="'CATEGORIA ' + vehicle.model.categoria" v-for="vehicle in data" :key="vehicle.id">
                 <template #cover>
                     <img alt="Imagem Carros" class="image-card-vehicles"
-                        src="https://www.localiza.com/brasil-site/geral/Frota/MOBI.png" />
+                        :src="vehicle.model.url_imagem" />
                 </template>
-
                 <a-card-meta :title="vehicle.model.nome" />
                 <a-card-meta
                     :title="parseFloat(vehicle.model.valor_diaria).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + '/dia'" />

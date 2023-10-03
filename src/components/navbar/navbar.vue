@@ -51,7 +51,7 @@
                         </router-link>
 
                         <router-link to="/agencias">
-                            <a-menu-item key="agency">Ag�ncia</a-menu-item>
+                            <a-menu-item key="agency">Agência</a-menu-item>
                         </router-link>
                     </div>
 

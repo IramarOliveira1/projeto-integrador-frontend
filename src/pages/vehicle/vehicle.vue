@@ -4,7 +4,7 @@
             <a-row class="row-filter-general">
 
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 8 }">
-                    <a-form-item label="FILTRAR POR MODELO OU MARCA" name="modelOrMarca"
+                    <a-form-item label="FILTRAR POR MODELO OU MARCA OU PLACA" name="modelOrMarca"
                         :rules="[{ required: true, message: 'Campo filtrar é obrigatório!' }]">
                         <a-input v-model:value="data.modelOrMarca" size="large" />
                     </a-form-item>

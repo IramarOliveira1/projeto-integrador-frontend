@@ -3,7 +3,7 @@
         <a-form layout="vertical" ref="form" name="basic" :model="data" @finish="search" :hideRequiredMark="true">
             <a-row :gutter="[8, 16]">
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                    <a-form-item label="Agência retirada" name="agencia">
+                    <a-form-item label="AgÃªncia retirada" name="agencia">
                         <a-select size="large" v-model:value="data.agencia.id" placeholder="Selecione uma agï¿½ncia"
                             :options="agencies" :field-names="{ label: 'nome', value: 'nome' }" labelInValue showSearch
                             @change="changeAgency" />
@@ -22,7 +22,7 @@
 
             <a-row :gutter="[8, 16]">
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                    <a-form-item label="Agência devolução" name="devolution">
+                    <a-form-item label="AgÃªncia devoluÃ§Ã£o" name="devolution">
 
                         <a-select size="large" v-model:value="data.devolution.id" placeholder="Selecione uma agï¿½ncia"
                             :options="agencies" :field-names="{ label: 'nome', value: 'nome' }" :disabled="disabledGeneric"
@@ -30,8 +30,8 @@
                     </a-form-item>
                 </a-col>
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                    <a-form-item label="Data devolução" name="endDate"
-                        :rules="[{ required: true, message: 'Campo Data devolução ï¿½ obrigatï¿½rio' }]">
+                    <a-form-item label="Data devoluÃ§Ã£o" name="endDate"
+                        :rules="[{ required: true, message: 'Campo Data devoluÃ§Ã£o Ã© obrigatÃ³rio' }]">
                         <a-date-picker :value="data.endDate" @change="changeEndDate" format="DD-MM-YYYY" :locale="locale"
                             size="large" :disabled-date="disabledEndDate" :disabled="disabledGeneric" style=" width: 100%"
                             :allowClear="false" />

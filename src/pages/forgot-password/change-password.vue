@@ -11,13 +11,13 @@
                         <h2>Redefinir sua senha.</h2>
                         <h5>Para recuperar seu acesso, preencha os campos abaixo.</h5>
                     </div>
-                    <a-form-item label="Código" name="code"
-                        :rules="[{ required: true, message: 'Campo código é obrigatório' }]">
+                    <a-form-item label="CÃ³digo" name="code"
+                        :rules="[{ required: true, message: 'Campo cÃ³digo Ã© obrigatÃ³rio' }]">
                         <a-input v-model:value="data.code" size="large" />
                     </a-form-item>
 
                     <a-form-item label="Senha" name="password"
-                        :rules="[{ required: true, message: 'Campo senha é obrigatório' }]">
+                        :rules="[{ required: true, message: 'Campo senha Ã© obrigatÃ³rio' }]">
                         <a-input-password v-model:value="data.password" size="large" />
                     </a-form-item>
 
