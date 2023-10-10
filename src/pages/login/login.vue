@@ -20,9 +20,15 @@
                         <a-input-password v-model:value="data.password" size="large" />
                     </a-form-item>
 
-                    <router-link to="/recuperar-senha" class="link-forgot">
-                        esqueceu sua senha?
-                    </router-link>
+
+                    <div class="link-forgot">
+                        <router-link to="/" class="">
+                            Voltar para home?
+                        </router-link>
+                        <router-link to="/recuperar-senha" >
+                            esqueceu sua senha?
+                        </router-link>
+                    </div>
 
                     <a-form-item>
                         <a-button type="primary" html-type="submit" class="button-init" size="large">Entrar</a-button>

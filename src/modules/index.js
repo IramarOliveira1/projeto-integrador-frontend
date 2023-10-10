@@ -8,6 +8,7 @@ import insurance from './insurance/insurance';
 import agency from './agency/agency';
 import vehicle from './vehicle/vehicle';
 import model from './model/model';
+import home from './home/home';
 
 const store = createStore({
     modules: {
@@ -17,6 +18,7 @@ const store = createStore({
         agency: agency,
         vehicle: vehicle,
         model: model,
+        home: home,
     },
     plugins: [createPersistedState()]
 })
