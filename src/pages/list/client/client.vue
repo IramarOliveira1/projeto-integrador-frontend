@@ -114,7 +114,7 @@ export default {
         }
     },
     mounted() {
-        
+
         this.$store.commit('generic/setFilterExits', false);
         this.$store.dispatch('getUsers', {
             role: 'USER'
@@ -167,6 +167,12 @@ export default {
         },
 
         showModal() {
+            this.$store.commit('clearForm', {
+                name: null, email: null, password: null, cpf: null, phone: null, address: {
+                    address: null, zipcode: '', uf: null, city: null, neighborhood: null,
+                }
+            });
+
             this.$store.commit('generic/setModalEdit', false);
             this.openModal = true
         }
