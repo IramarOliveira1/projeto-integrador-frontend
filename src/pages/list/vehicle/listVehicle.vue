@@ -14,13 +14,11 @@
 
             <a-card :title="'CATEGORIA ' + vehicle.model.categoria" v-for="vehicle in data" :key="vehicle.id">
                 <template #cover>
-                    <img alt="Imagem Carros" class="image-card-vehicles"
-                        :src="vehicle.model.url_imagem" />
+                    <img alt="Imagem Carros" class="image-card-vehicles" :src="vehicle.model.url_imagem" />
                 </template>
                 <a-card-meta :title="vehicle.model.nome" />
                 <a-card-meta
                     :title="parseFloat(vehicle.model.valor_diaria).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + '/dia'" />
-
                 <a-card-meta>
                     <template #description> Veiculos disponiveis: {{ vehicle.vehicle_available }}</template>
                 </a-card-meta>
@@ -43,11 +41,40 @@ export default {
             }
         }
     },
-
-
     methods: {
         chooseVehicle(id) {
-            console.log(id);
+
+            // const data = {
+            //     startDateRent: JSON.parse(localStorage.getItem('vuex')).home.data.startDate,
+            //     endDateRent: JSON.parse(localStorage.getItem('vuex')).home.data.endDate,
+            //     startAgency: {
+            //         id: JSON.parse(localStorage.getItem('vuex')).home.data.agencia.id.option.id
+            //     },
+            //     endAgency: {
+            //         id: JSON.parse(localStorage.getItem('vuex')).home.data.devolution.id.option.id
+            //     },
+
+            //     insurance: {
+            //         id: null
+            //     },
+            //     payment: {
+            //         preco: null,
+            //         tipo_pagamento: {
+
+            //             id: null
+            //         }
+            //     },
+            //     user: {
+            //         id: 1
+            //     },
+            //     vehicle: {
+            //         id: id
+            //     }
+            // }
+
+            this.$store.commit('payment/setData', JSON.parse(localStorage.getItem('vuex')).home.data);
+
+            this.$router.push('/pagamento');
         }
     },
 }

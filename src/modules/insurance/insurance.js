@@ -7,7 +7,7 @@ const insurance = {
     namespaced: true,
     state: {
         data: {
-            tipo: null,
+            nome: null,
             preco: null,
         },
         insurancies: []

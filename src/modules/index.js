@@ -10,6 +10,7 @@ import vehicle from './vehicle/vehicle';
 import model from './model/model';
 import home from './home/home';
 import reserve from './reserve/reserve';
+import payment from './payment/payment';
 
 const store = createStore({
     modules: {
@@ -21,6 +22,7 @@ const store = createStore({
         model: model,
         home: home,
         reserve: reserve,
+        payment: payment,
     },
     plugins: [createPersistedState()]
 })

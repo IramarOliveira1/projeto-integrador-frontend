@@ -6,9 +6,9 @@
             <a-form layout="vertical" ref="form" name="basic" :model="data" @finish="save" :hideRequiredMark="true">
                 <a-row>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 24 }" :xl="{ span: 24 }">
-                        <a-form-item label="Tipo de Cobertura" name="tipo"
+                        <a-form-item label="Tipo de Cobertura" name="nome"
                             :rules="[{ required: true, message: 'Campo tipo é obrigat�rio' }]">
-                            <a-input v-model:value="data.tipo" />
+                            <a-input v-model:value="data.nome" />
                         </a-form-item>
                     </a-col>
 
@@ -105,7 +105,7 @@ export default {
         closeModal(close) {
             this.$refs['form'].clearValidate();
 
-            this.$store.commit('insurance/clearForm', { tipo: null, preco: null, });
+            this.$store.commit('insurance/clearForm', { nome: null, preco: null, });
 
             this.$emit('close', close);
         },

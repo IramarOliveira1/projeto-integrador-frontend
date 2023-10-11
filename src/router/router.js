@@ -45,6 +45,9 @@ const routes = [
     {
         path: '/listar-veiculos', component: () => import('../pages/list/vehicle/listVehicle.vue'), meta: { admin: true, guest: true }, name: 'list-vehicle'
     },
+    {
+        path: '/pagamento', component: () => import('../pages/payment/payment.vue'), meta: { admin: true, guest: true }, name: 'payment'
+    },
 ];
 
 const router = createRouter({
@@ -59,7 +62,7 @@ router.beforeEach(async (to, from, next) => {
         return;
     }
 
-    if (!store.getters.isAuthenticated && to.name === 'home' || to.name === 'list-vehicle') {
+    if (!store.getters.isAuthenticated && to.name === 'home' || to.name === 'list-vehicle' || to.name == 'payment') {
         next();
         return;
     }
