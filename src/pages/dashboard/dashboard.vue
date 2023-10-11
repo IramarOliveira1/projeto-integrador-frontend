@@ -1,24 +1,27 @@
 <template>
     <div class="container-main">
-        <!-- <h1>Olá {{ this.$store.getters.getUserLogin.name }}</h1> -->
+        <!-- <h1>Olï¿½ {{ this.$store.getters.getUserLogin.name }}</h1> -->
 
 
         <a-form layout="vertical" ref="form" name="basic" :model="data" @finish="filter" :hideRequiredMark="true">
             <!-- <div class="filter"> -->
+            <h3>Filtrar faturamento por periodo</h3>
             <a-range-picker v-model:value="data.date" :disabled-date="disabledDate" @change="onChange"
-                @openChange="onOpenChange" @calendarChange="onCalendarChange" />
-
-
-
+                @openChange="onOpenChange" @calendarChange="onCalendarChange" size="large" format="DD-MM-YYYY" />
             <!-- </div> -->
 
-            <a-button type="primary" html-type="submit">CONTINUAR</a-button>
+            <a-button type="primary" html-type="submit" size="large">CONTINUAR</a-button>
+            <a-button type="primary" @click="all" size="large" v-if="buttonFilter">Limpar Filtro</a-button>
+
         </a-form>
 
 
         <div id="chart">
             <h3>Faturamento mensal do ano atual por 12 meses.</h3>
-            <apexchart ref="chart" type="donut" width="500" :options="chartOptions" :series="series"></apexchart>
+            <apexchart ref="chart" type="donut" width="500" :options="donutOptions" :series="series[0].data" />
+
+            <apexchart ref="chart" type="bar" height="350" :options="barOptions" :series="series[1].data" />
+            {{ series[1].data }}
         </div>
     </div>
 </template>
@@ -40,13 +43,32 @@ export default {
                 value: [],
                 hackValue: []
             },
-            series: [],
-            chartOptions: {
-                xaxis: {
-                    title: {
-                        text: 'Month'
+            series: [
+                {
+                    name: 'donut',
+                    data: []
+                },
+                {
+                    name: 'bar',
+                    data: []
+                }
+            ],
+            donutOptions: {
+                colors: ['#009688', '#E91E63', '#3F51B5', '#607D8B', '#FF5722', '#8BC34A', '#FFC107', '#03A9F4', '#00BCD4', '#F44336', '#9E9E9E', '#795548'],
+                plotOptions: {
+                    pie: {
+                        expandOnClick: false,
+                        size: 200
                     }
                 },
+
+                chart: {
+                    type: 'pie',
+                },
+                labels: [],
+            },
+
+            barOptions: {
                 colors: ['#009688', '#E91E63', '#3F51B5', '#607D8B', '#FF5722', '#8BC34A', '#FFC107', '#03A9F4', '#00BCD4', '#F44336', '#9E9E9E', '#795548'],
                 plotOptions: {
                     pie: {
@@ -55,13 +77,20 @@ export default {
                     }
                 },
                 chart: {
-                    type: 'pie',
+                    type: 'bar',
                 },
                 labels: [],
             },
         }
     },
 
+    computed: {
+        buttonFilter: {
+            get() {
+                return this.$store.getters['generic/getFilterExits'];
+            },
+        }
+    },
     mounted() {
         this.all();
         this.index();
@@ -71,25 +100,19 @@ export default {
             try {
                 const response = await axios.get('/dashboard/all');
 
+                this.donut = [];
+                this.donutOptions.labels = [];
+
+                const arr = [];
+
                 response.data.map(index => {
-                    this.series.push(index.valueTotal);
-                    this.chartOptions.labels.push(`${index.month} - ${index.year}`);
+                    arr.push(`${index.month} - ${index.year}`);
+                    this.series[0].data.push(index.valueTotal);
                 })
 
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        async index() {
-            try {
-                const response = await axios.get(`/dashboard/${this.$store.getters.getUserLogin.id}`);
+                this.donutOptions = { labels: arr };
 
-                console.log(response);
-
-                // response.data.map(index => {
-                //     this.series.push(index.valueTotal);
-                //     this.chartOptions.labels.push(`${index.month} - ${index.year}`);
-                // })
+                this.$store.commit('generic/setFilterExits', false);
 
             } catch (error) {
                 console.log(error);
@@ -102,13 +125,33 @@ export default {
                     end: this.data.date[1].format('DD-MM-YYYY')
                 });
 
-                this.series = [];
-                this.chartOptions.labels = [];
+                this.donut = [];
+                this.donutOptions.labels = [];
+
+                const arr = [];
 
                 response.data.map(index => {
-                    this.chartOptions.labels.push(`${index.month} - ${index.year}`);
-                    this.series.push(index.valueTotal);
+                    arr.push(`${index.month} - ${index.year}`);
+                    this.series[0].data.push(index.valueTotal);
                 })
+
+                this.donutOptions = { labels: arr };
+
+                this.data.date = null;
+
+                this.$store.commit('generic/setFilterExits', true);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async index() {
+            try {
+                const response = await axios.get(`/dashboard/${this.$store.getters.getUserLogin.id}`);
+
+                response.data.map(index => {
+                    // this.series[1].data.push(index.amountTotal);
+                    this.barOptions.labels.push(`${index.month} - ${index.year}`);
+                });
 
             } catch (error) {
                 console.log(error);
