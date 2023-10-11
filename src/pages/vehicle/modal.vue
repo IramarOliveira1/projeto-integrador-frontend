@@ -25,7 +25,7 @@
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Placa" name="placa"
                             :rules="[{ required: true, message: 'Campo placa � obrigat�rio' }]">
-                            <a-input v-model:value="data.placa" v-mask="'AAA-####'" />
+                            <a-input v-model:value="data.placa" v-mask="'AAA-#X##'" />
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
