@@ -23,12 +23,11 @@
                         <router-link to="/perfil">
                             <a-menu-item key="profile">Perfil</a-menu-item>
                         </router-link>
-
                     </div>
 
                     <div v-if="this.$store.getters.isAuthenticated && this.$store.getters.getUserLogin.role === 'ADMIN'">
                         <router-link to="/clientes">
-                            <a-menu-item key="client">Cliente</a-menu-item>
+                                <a-menu-item key="client">Cliente</a-menu-item>
                         </router-link>
                         <router-link to="/funcionarios">
                             <a-menu-item key="employee">Funcionário</a-menu-item>

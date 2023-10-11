@@ -131,7 +131,7 @@ export default {
         async save(data) {
             try {
 
-                const response = await this.$store.dispatch('save', data);
+                const response = await this.$store.dispatch('save', { data: data, role: 'USER' });
 
                 this.$notification.notification(response.status, response.data.message);
 
