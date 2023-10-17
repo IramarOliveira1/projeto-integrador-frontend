@@ -22,7 +22,6 @@ const payment = {
             payment: {
                 preco: null,
                 tipo_pagamento: {
-
                     id: null
                 }
             },
@@ -33,12 +32,16 @@ const payment = {
                 id: null
             }
         },
-        typePayments: []
+        typePayments: [],
+        resume: []
     },
 
     getters: {
         getData(state) {
             return state.data;
+        },
+        getResume(state) {
+            return state.resume;
         },
         getTypePayment(state) {
             return state.typePayments;
@@ -48,6 +51,9 @@ const payment = {
     mutations: {
         setData(state, payload) {
             return state.data = payload;
+        },
+        setResume(state, payload) {
+            return state.resume = payload;
         },
         setTypePayment(state, payload) {
             return state.typePayments = payload;

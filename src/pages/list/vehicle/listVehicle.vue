@@ -24,7 +24,7 @@
                 </a-card-meta>
 
                 <a-button type="primary" html-type="submit" class="button-select-vehicle"
-                    @click="chooseVehicle(vehicle.id)">ESCOLHER
+                    @click="chooseVehicle(vehicle)">ESCOLHER
                     VEICULO</a-button>
             </a-card>
         </div>
@@ -33,7 +33,13 @@
 
 <script>
 import './listVehicle.css';
+
+import dayjs from 'dayjs';
+import locale from 'ant-design-vue/es/date-picker/locale/pt_BR';
 export default {
+    components: {
+        locale
+    },
     computed: {
         data: {
             get() {
@@ -42,7 +48,9 @@ export default {
         }
     },
     methods: {
-        chooseVehicle(id) {
+        chooseVehicle(vehicle) {
+            const dateOne = dayjs(this.$store.getters['home/getData'].startDate);
+            const dateTwo = dayjs(this.$store.getters['home/getData'].endDate);
 
             // const data = {
             //     startDateRent: JSON.parse(localStorage.getItem('vuex')).home.data.startDate,
@@ -72,7 +80,13 @@ export default {
             //     }
             // }
 
-            this.$store.commit('payment/setData', JSON.parse(localStorage.getItem('vuex')).home.data);
+            this.$store.commit('payment/setResume',
+                {
+                    data: this.$store.getters['home/getData'],
+                    diffDay: dateTwo.diff(dateOne, 'd'),
+                    vehicle: vehicle
+                }
+            );
 
             this.$router.push('/pagamento');
         }

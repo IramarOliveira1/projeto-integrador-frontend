@@ -10,6 +10,8 @@ import axios from 'axios';
 
 import notification from './helpers/notification/notification.js'
 
+import VueCreditCardValidation from 'vue-credit-card-validation';
+
 import './css/global.css';
 
 import App from './App.vue';
@@ -22,7 +24,7 @@ const axiosInstance = axios.create({
     withCredentials: false,
 })
 
-const app = createApp(App).use(router).use(vuex).use(VueTheMask).use(money, { precision: 4 });
+const app = createApp(App).use(router).use(vuex).use(VueCreditCardValidation ).use(VueTheMask).use(money, { precision: 4 });
 
 app.config.globalProperties.$axios = { ...axiosInstance }
 

@@ -161,6 +161,22 @@
     margin-bottom: 50px;
 }
 
+.button-continue {
+    width: 30%;
+    background-color: #303D97;
+    margin-bottom: 30px;
+}
+
+.button-continue:hover {
+    background-color: #404dac !important;
+}
+
+.selected-insurance .ant-select {
+    display: flex;
+    margin-bottom: 20px;
+    width: 30%;
+}
+
 @media only screen and (max-width: 768px) {
     .div-button-update-profile {
         display: flex;
@@ -185,9 +201,60 @@
         font-size: 10px;
         margin-bottom: 20px;
     }
-/* 
+
+    .button-continue {
+        width: 100%;
+    }
+
+    .selected-insurance .ant-select {
+        width: 100%;
+    }
+
+    /* 
     .steps {
         margin-top: 40%;
         margin-bottom: 20px;
     } */
+}
+
+.colorValue {
+    color: #12aa52;
+}
+
+.title-payment {
+    background-color: #E6E6E6;
+    color: #383838;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.color-title h3 {
+    color: #383838
+}
+
+.total {
+    display: flex;
+    align-items: center;
+}
+
+.total h3:nth-child(2) {
+    margin-left: 10px;
+    font-weight: bold;
+    color: #12aa52
+}
+
+.vehicle-payment img {
+    width: 10% !important;
+}
+
+.button-payment-finish {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-top: 20px;
+}
+
+.button-payment-finish button:nth-last-child(1) {
+    background-color: #12aa52;
+    margin-left: 20px;
 }

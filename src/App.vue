@@ -1,6 +1,6 @@
 
 <template>
-  <navbar v-if="this.$store.getters.isAuthenticated || $route.name === 'home'  || $route.name === 'list-vehicle'" />
+  <navbar v-if="this.$store.getters.isAuthenticated || $route.name === 'home'  || $route.name === 'list-vehicle' || $route.name === 'payment'" />
 
   <router-view />
 </template>
