@@ -36,7 +36,6 @@
 
             <a-divider style="height: 2px; background-color: #d6d6d6" />
 
-
             <div class="special-offer">
                 <h3>OFERTA ESPECIAL</h3>
                 <h4> {{ this.$store.getters['payment/getResume'].diffDay }} DIARIAS X
@@ -91,13 +90,14 @@
         </div>
     </div>
 
-    <modal :openModal="showModal" :calculateTotalValue="calculateTotalValue" :data="data" @close="showModal = false" />
+    <modal :openModal="showModal" :calculateTotalValue="calculateTotalValue" :data="data" :resume="getResume" @close="showModal = false" />
 </template>
 
 <script>
 import dayjs from 'dayjs';
 import locale from 'ant-design-vue/es/date-picker/locale/pt_BR';
 import modal from './modal.vue';
+
 export default {
     components: {
         locale,
@@ -113,7 +113,7 @@ export default {
             valueTotal: this.$store.getters['payment/getResume'].vehicle.model.valor_diaria * this.$store.getters['payment/getResume'].diffDay,
             calculateTotalValue: null,
             startDateRent: dayjs(this.$store.getters['payment/getResume'].data.startDate).format('DD-MM-YYYY'),
-            endDateRent: dayjs(this.$store.getters['payment/getResume'].data.endDate).format('DD-MM-YYYY')
+            endDateRent: dayjs(this.$store.getters['payment/getResume'].data.endDate).format('DD-MM-YYYY'),
         }
     },
     computed: {
@@ -157,7 +157,6 @@ export default {
             if (id === null) {
                 return this.$notification.notification(400, 'Campo seguro È obrigat√≥rio');
             }
-
             this.showModal = true;
         }
     },

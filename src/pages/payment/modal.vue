@@ -7,7 +7,8 @@
             }) }}
             </h1>
 
-            <a-form layout="vertical" ref="form" name="basic" :model="data" :hideRequiredMark="true">
+            <a-form layout="vertical" ref="form" name="basic" :model="{ ...valueFields }" :hideRequiredMark="true"
+                @finish="execute">
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                     <a-form-item label="Selecione tipo de pagamento" name="tipo_pagamento">
                         <a-select placeholder="Selecione tipo de pagamento" v-model:value="data.payment.tipo_pagamento.id"
@@ -16,34 +17,55 @@
                     </a-form-item>
                 </a-col>
                 <div class="cart" v-if="data.payment.tipo_pagamento.id > 1">
-                    <a-row :gutter="[8, 16]">
-                        <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                            <a-form-item label="Nome do titular" name="name"
-                                :rules="[{ required: true, message: 'Campo nome √© obrigat√≥rio' }]">
-                                <a-input />
-                            </a-form-item>
-                        </a-col>
-                        <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                            <a-form-item label="N˙mero do cart„o" name="number_cart"
-                                :rules="[{ required: true, message: 'Campo marca √© obrigat√≥rio' }]">
-                                <a-input v-cardformat:formatCardNumber />
-                            </a-form-item>
-                        </a-col>
-                    </a-row>
-                    <a-row :gutter="[8, 16]">
-                        <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                            <a-form-item label="MÍs/Ano" name="Ano"
-                                :rules="[{ required: true, message: 'Campo marca √© obrigat√≥rio' }]">
-                                <a-input v-cardformat:formatCardExpiry />
-                            </a-form-item>
-                        </a-col>
-                        <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                            <a-form-item label="CVV" name="cvv"
-                                :rules="[{ required: true, message: 'Campo marca √© obrigat√≥rio' }]">
-                                <a-input v-cardformat:formatCardCVC />
-                            </a-form-item>
-                        </a-col>
-                    </a-row>
+
+                    <div class="card-item" :class="{ '-active': isCardFlipped }" v-if="labels && inputFields">
+                        <vue-paycard :value-fields="valueFields" :input-fields="inputFields" :is-card-number-masked="false"
+                            :labels="labels" />
+
+                        <a-row :gutter="[8, 16]">
+                            <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
+                                <a-form-item label="N˙mero do cart„o" name="card_number">
+                                    <a-input type="tel" v-model:value="valueFields.cardNumber" :id="inputFields.cardNumber"
+                                        v-cardformat:formatCardNumber />
+                                </a-form-item>
+                            </a-col>
+                            <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
+                                <a-form-item label="Nome do titular" name="cardName"
+                                    :rules="[{ required: true, message: 'Campo nome È obrigatÛrio' }]">
+                                    <a-input v-model:value="valueFields.cardName" :id="inputFields.cardName" />
+                                </a-form-item>
+                            </a-col>
+                        </a-row>
+
+                        <a-row :gutter="[8, 16]">
+                            <a-col :xs="{ span: 24 }" :sm="{ span: 8 }" :xl="{ span: 8 }">
+                                <a-form-item label="MÍs" name="cardMonth">
+                                    <a-select placeholder="Selecione o mÍs do vencimento do cart„o"
+                                        v-model:value="valueFields.cardMonth" :options="month" required
+                                        :field-names="{ label: 'month', value: 'month' }">
+                                    </a-select>
+                                </a-form-item>
+                            </a-col>
+
+                            <a-col :xs="{ span: 24 }" :sm="{ span: 8 }" :xl="{ span: 8 }">
+                                <a-form-item label="Ano" name="cardYear">
+                                    <a-select placeholder="Selecione o ano do vencimento do cart„o"
+                                        v-model:value="valueFields.cardYear" :options="year"
+                                        :field-names="{ label: 'year', value: 'year' }">
+                                    </a-select>
+                                </a-form-item>
+                            </a-col>
+
+                            <a-col :xs="{ span: 24 }" :sm="{ span: 8 }" :xl="{ span: 8 }">
+                                <a-form-item label="CVV" name="cardCvv"
+                                    :rules="[{ required: true, message: 'Campo CVV È obrigatÛrio' }]">
+                                    <a-input type="tel" v-model:value="valueFields.cardCvv" :id="inputFields.cardCvv"
+                                        @focus="isCardFlipped = true" @blur="isCardFlipped = false"
+                                        v-cardformat:formatCardCVC :maxlength="4" />
+                                </a-form-item>
+                            </a-col>
+                        </a-row>
+                    </div>
                 </div>
 
                 <div class="pix" v-if="data.payment.tipo_pagamento.id === 1">
@@ -56,29 +78,53 @@
                     <a-button type="primary" html-type="submit">Realizar pagamento</a-button>
                 </div>
             </a-form>
-
-            <VCreditCard />
-
         </a-modal>
-
     </div>
 </template>
-
 <script>
-
 import QrcodeVue from 'qrcode.vue'
 
+import { VuePaycard } from 'vue-paycard'
 
-import VCreditCard from 'v-credit-card';
-import 'v-credit-card/dist/VCreditCard.css';
-
+import dayjs from 'dayjs';
+import locale from 'ant-design-vue/es/date-picker/locale/pt_BR';
 
 export default {
     components: {
         QrcodeVue,
-        VCreditCard
+        VuePaycard,
+        locale
     },
-    props: ['openModal', 'calculateTotalValue', 'data'],
+    props: ['openModal', 'calculateTotalValue', 'data', 'resume'],
+    data() {
+        return {
+            isCardFlipped: false,
+            valueFields: {
+                cardName: '',
+                cardNumber: '',
+                cardMonth: '',
+                cardYear: '',
+                cardCvv: ''
+            },
+            labels: {
+                cardName: "AlgueAqui",
+                cardHolder: "Nome Completo",
+                cardMonth: "MM",
+                cardYear: "YY",
+                cardExpires: "Validade",
+                cardCvv: "CVV"
+            },
+            inputFields: {
+                cardNumber: "v-card-number",
+                cardName: "v-card-name",
+                cardMonth: "v-card-month",
+                cardYear: "v-card-year",
+                cardCvv: "v-card-cvv",
+            },
+            year: [],
+            month: []
+        }
+    },
     computed: {
         showModal: {
             get() {
@@ -91,10 +137,76 @@ export default {
             }
         },
     },
-    methods: {
-        closeModal() {
-            this.$emit('close', close);
+    mounted() {
+        let month = [];
+        let year = [];
+        for (let index = 1; index < 13; index++) {
+            year.push({ id: index, year: new Date().getFullYear() + index - 1 });
+            month.push({ id: index, month: `${index > 9 ? index : '0' + index}` });
         }
+        this.year = year;
+        this.month = month;
+    },
+    methods: {
+
+        async execute() {
+            try {
+                if (this.data.payment.tipo_pagamento.id === null) {
+                    return this.$notification.notification(400, 'Campo tipo de pagamento È obrigat√≥rio');
+                }
+
+                const data =
+                {
+                    startDateRent: dayjs(this.resume.data.startDate).format('YYYY-MM-DD'),
+                    endDateRent: dayjs(this.resume.data.endDate).format('YYYY-MM-DD'),
+                    startAgency: {
+                        id: this.resume.data.agencia.id.option.id
+                    },
+                    endAgency: {
+                        id: this.resume.data.devolution.id.option.id
+
+                    },
+                    insurance: {
+                        id: this.data.insurance.id
+                    },
+                    payment: {
+                        preco: String(`${this.calculateTotalValue}`),
+                        tipo_pagamento: {
+                            id: this.data.payment.tipo_pagamento.id
+                        }
+                    },
+                    user: {
+                        id: 2
+                    },
+                    vehicle: {
+                        id: this.resume.vehicle.id
+                    }
+                }
+
+                const response = await this.$store.dispatch('payment/execute', data);
+
+                this.$notification.notification(response.status, response.data.message);
+            } catch (error) {
+                this.$notification.notification(error.response.status, error.response.data.message);
+            }
+        },
+        closeModal(close) {
+
+            this.$refs['form'].clearValidate();
+
+            this.$emit('close', close);
+
+            this.data.payment.tipo_pagamento.id = null;
+
+            this.valueFields = {
+                cardName: '',
+                cardNumber: '',
+                cardMonth: '',
+                cardYear: '',
+                cardCvv: ''
+            };
+
+        },
     },
 }
 </script>

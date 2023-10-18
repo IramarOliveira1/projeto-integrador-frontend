@@ -58,6 +58,10 @@ const payment = {
         setTypePayment(state, payload) {
             return state.typePayments = payload;
         },
+        clearForm(state, payload) {
+            console.log(payload);
+            state.data = payload;
+        },
     },
 
     actions: {
@@ -65,7 +69,17 @@ const payment = {
             try {
 
                 const response = await axios.get('/payment-types/all');
-                
+
+                commit('setTypePayment', response.data);
+            } catch (error) {
+                notifications(error.response.status, error.response.data.message);
+            }
+        },
+
+        async execute({ }, data) {
+            try {
+                const response = await axios.post('/reserve/register', data);
+
                 commit('setTypePayment', response.data);
             } catch (error) {
                 notifications(error.response.status, error.response.data.message);
