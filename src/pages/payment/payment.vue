@@ -83,14 +83,23 @@
                 <h3>SELECIONE UM SEGURO</h3>
                 <a-select placeholder="Selecione um seguro" :options="getInsurancies"
                     :field-names="{ label: 'nome', value: 'id' }" v-model:value="data.insurance.id"
-                    @change="changeValueTotal(data.insurance.id)"></a-select>
-                <a-button type="primary" html-type="submit" class="button-continue" size="large"
-                    @click="finalizeReservation(data.insurance.id)">CONTINUAR</a-button>
+                    @change="changeValueTotal(data.insurance.id)">
+                </a-select>
+
+                <div class="group-button-payment">
+                    <a-button key="back" size="large" @click="back" class="button-back">Voltar</a-button>
+
+                    <a-button type="primary" html-type="submit" class="button-continue" size="large"
+                        @click="finalizeReservation(data.insurance.id)">
+                        CONTINUAR
+                    </a-button>
+                </div>
             </div>
         </div>
     </div>
 
-    <modal :openModal="showModal" :calculateTotalValue="calculateTotalValue" :data="data" :resume="getResume" @close="showModal = false" />
+    <modal :openModal="showModal" :calculateTotalValue="calculateTotalValue" :data="data" :resume="getResume"
+        @close="showModal = false" />
 </template>
 
 <script>
@@ -158,6 +167,11 @@ export default {
                 return this.$notification.notification(400, 'Campo seguro È obrigat√≥rio');
             }
             this.showModal = true;
+        },
+        back(){
+            this.$router.push('/listar-veiculos');
+
+            this.data.insurance.id = null;
         }
     },
 }

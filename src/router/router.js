@@ -56,7 +56,6 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-
     if (to.name === 'list-vehicle' && !store.getters['home/getData'].startDate) {
         next('/');
         return;

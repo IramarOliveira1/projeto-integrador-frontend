@@ -25,7 +25,7 @@
                         <router-link to="/" class="">
                             Voltar para home?
                         </router-link>
-                        <router-link to="/recuperar-senha" >
+                        <router-link to="/recuperar-senha">
                             esqueceu sua senha?
                         </router-link>
                     </div>
@@ -68,11 +68,16 @@ export default {
 
                 const response = await axios.post('/user/login', data);
 
-                localStorage.setItem('user', JSON.stringify(response.data));
+                const user = { isAuthenticated: true, ...response.data }
 
-                this.$store.commit('isAuthenticated', true);
+                localStorage.setItem('user', JSON.stringify(user));
 
-                this.$store.commit('setUserLogin', response.data);
+                this.$store.commit('user/setUser', user);
+
+                
+                // this.$store.commit('generic/setModalEdit', true);
+
+                // this.$store.commit('setUserLogin', response.data);
 
                 this.$router.push('/dashboard')
             } catch (error) {

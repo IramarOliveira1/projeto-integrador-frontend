@@ -12,7 +12,7 @@
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                     <a-form-item label="Selecione tipo de pagamento" name="tipo_pagamento">
                         <a-select placeholder="Selecione tipo de pagamento" v-model:value="data.payment.tipo_pagamento.id"
-                            :options="getTypePayment" :field-names="{ label: 'nome', value: 'id' }">
+                            :options="getTypePayment" :field-names="{ label: 'nome', value: 'id' }" :disabled="loading">
                         </a-select>
                     </a-form-item>
                 </a-col>
@@ -67,15 +67,18 @@
                         </a-row>
                     </div>
                 </div>
-
                 <div class="pix" v-if="data.payment.tipo_pagamento.id === 1">
                     <qrcode-vue value="https://github.com/IramarOliveira1/projeto-integrador-backend" level="H"
                         :size="180" />
                 </div>
-
                 <div class="button-payment-finish">
-                    <a-button key="back" @click="closeModal">Fechar</a-button>
-                    <a-button type="primary" html-type="submit">Realizar pagamento</a-button>
+                    <a-button key="back" @click="closeModal" :disabled="loading">Fechar</a-button>
+                    <a-button type="primary" html-type="submit" :disabled="loading" :class="this.loading ? 'active' : ''">
+                        <a-spin v-if="loading" :indicator="indicator" />
+                        <div v-else>
+                            Realizar pagamento
+                        </div>
+                    </a-button>
                 </div>
             </a-form>
         </a-modal>
@@ -89,6 +92,9 @@ import { VuePaycard } from 'vue-paycard'
 import dayjs from 'dayjs';
 import locale from 'ant-design-vue/es/date-picker/locale/pt_BR';
 
+import { LoadingOutlined } from '@ant-design/icons-vue';
+import { h } from 'vue';
+
 export default {
     components: {
         QrcodeVue,
@@ -98,6 +104,14 @@ export default {
     props: ['openModal', 'calculateTotalValue', 'data', 'resume'],
     data() {
         return {
+            indicator: h(LoadingOutlined, {
+                style: {
+                    fontSize: '22px',
+                    color: '#fff'
+                },
+                spin: true,
+            }),
+            loading: false,
             isCardFlipped: false,
             valueFields: {
                 cardName: '',
@@ -151,10 +165,14 @@ export default {
 
         async execute() {
             try {
+
+                console.log(this.$store.getters.getUserLogin.id);
+
                 if (this.data.payment.tipo_pagamento.id === null) {
                     return this.$notification.notification(400, 'Campo tipo de pagamento È obrigat√≥rio');
                 }
 
+                this.loading = true;
                 const data =
                 {
                     startDateRent: dayjs(this.resume.data.startDate).format('YYYY-MM-DD'),
@@ -186,7 +204,10 @@ export default {
                 const response = await this.$store.dispatch('payment/execute', data);
 
                 this.$notification.notification(response.status, response.data.message);
+
+                this.loading = false;
             } catch (error) {
+                this.loading = false;
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
         },

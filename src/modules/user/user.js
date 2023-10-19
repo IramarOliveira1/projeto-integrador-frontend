@@ -5,10 +5,11 @@ import axiosLib from 'axios';
 import notifications from '../../helpers/notification/notification.js';
 
 const user = {
+    namespaced: true,
     state: {
-        userLogin: [],
-        isAuthenticated: false,
-        users: [],
+        user: [],
+        // userLogin: [],
+        // users: [],
         data: {
             name: null,
             email: null,
@@ -28,131 +29,135 @@ const user = {
     },
 
     mutations: {
-        isAuthenticated(state, payload) {
-            state.isAuthenticated = payload;
-        },
-        setUsers(state, payload) {
-            state.clients = payload;
-        },
+        // isAuthenticated(state, payload) {
+        //     state.isAuthenticated = payload;
+        // },
+        // setUsers(state, payload) {
+        //     state.clients = payload;
+        // },
 
         setUser(state, payload) {
-            state.data = payload;
+            state.user = payload;
         },
 
-        clearForm(state, payload) {
-            state.data = payload;
-        },
+        // setUser(state, payload) {
+        //     state.data = payload;
+        // },
 
-        setUserLogin(state, payload) {
-            state.userLogin = payload;
-        },
+        // clearForm(state, payload) {
+        //     state.data = payload;
+        // },
+
+        // setUserLogin(state, payload) {
+        //     state.userLogin = payload;
+        // },
     },
 
     getters: {
-        isAuthenticated(state) {
-            return state.isAuthenticated;
-        },
+        // isAuthenticated(state) {
+        //     return state.isAuthenticated;
+        // },
 
-        getUsers(state) {
-            return state.clients;
-        },
+        // getUsers(state) {
+        //     return state.clients;
+        // },
 
         getUser(state) {
-            return state.data;
+            return state.user;
         },
 
-        getUserLogin(state) {
-            return state.userLogin;
-        },
+        // getUserLogin(state) {
+        //     return state.userLogin;
+        // },
     },
 
     actions: {
-        async getUser({ commit }, id) {
-            try {
+    //     async getUser({ commit }, id) {
+    //         try {
 
-                const response = await axios.get(`/user/${id}`);
+    //             const response = await axios.get(`/user/${id}`);
 
-                commit('setUserLogin', response.data[0]);
+    //             commit('setUserLogin', response.data[0]);
 
-            } catch (error) {
-                notifications(error.response.status, 'token invalido')
-            }
-        },
+    //         } catch (error) {
+    //             notifications(error.response.status, 'token invalido')
+    //         }
+    //     },
 
-        async save({ dispatch, state }, data) {
-            const request = { ...data.data, role: data.role }
-            const response = await axios.post('/user/register', request);
+    //     async save({ dispatch, state }, data) {
+    //         const request = { ...data.data, role: data.role }
+    //         const response = await axios.post('/user/register', request);
 
-            if (state.isAuthenticated) {
-                dispatch('getUsers', data);
-            }
-            return response;
-        },
+    //         if (state.isAuthenticated) {
+    //             dispatch('getUsers', data);
+    //         }
+    //         return response;
+    //     },
 
-        async getUsers({ commit }, role) {
-            try {
-                const response = await axios.get('/user/all', { params: { role: role.role } });
+    //     async getUsers({ commit }, role) {
+    //         try {
+    //             const response = await axios.get('/user/all', { params: { role: role.role } });
 
-                commit('setUsers', response.data);
+    //             commit('setUsers', response.data);
 
-                return response;
-            } catch (error) {
-                notifications(error.response.status, error.response.data.message)
-            }
-        },
+    //             return response;
+    //         } catch (error) {
+    //             notifications(error.response.status, error.response.data.message)
+    //         }
+    //     },
 
-        async filter({ commit }, data) {
-            const response = await axios.post('user/filter', { nameOrCpf: data.data, role: data.role });
+    //     async filter({ commit }, data) {
+    //         const response = await axios.post('user/filter', { nameOrCpf: data.data, role: data.role });
 
-            commit('setUsers', response.data);
-        },
+    //         commit('setUsers', response.data);
+    //     },
 
-        async index({ commit }, id) {
-            const response = await axios.get(`user/${id}`);
+    //     async index({ commit }, id) {
+    //         const response = await axios.get(`user/${id}`);
 
-            const data = {
-                name: response.data[0].name,
-                email: response.data[0].email,
-                cpf: response.data[0].cpf,
-                phone: response.data[0].phone,
-                address: {
-                    complement: response.data[0].address.complemento,
-                    uf: response.data[0].address.uf,
-                    city: response.data[0].address.cidade,
-                    neighborhood: response.data[0].address.bairro,
-                    number: response.data[0].address.numero,
-                    zipcode: response.data[0].address.cep,
-                    address: response.data[0].address.logradouro
-                }
-            }
-            commit('setUser', data);
-            return response;
-        },
+    //         const data = {
+    //             name: response.data[0].name,
+    //             email: response.data[0].email,
+    //             cpf: response.data[0].cpf,
+    //             phone: response.data[0].phone,
+    //             address: {
+    //                 complement: response.data[0].address.complemento,
+    //                 uf: response.data[0].address.uf,
+    //                 city: response.data[0].address.cidade,
+    //                 neighborhood: response.data[0].address.bairro,
+    //                 number: response.data[0].address.numero,
+    //                 zipcode: response.data[0].address.cep,
+    //                 address: response.data[0].address.logradouro
+    //             }
+    //         }
+    //         commit('setUser', data);
+    //         return response;
+    //     },
 
-        async update({ dispatch }, data) {
+    //     async update({ dispatch }, data) {
 
-            const response = await axios.put(`/user/${data.id}`, data.data);
+    //         const response = await axios.put(`/user/${data.id}`, data.data);
 
-            dispatch('getUsers', data);
+    //         dispatch('getUsers', data);
 
-            return response;
-        },
+    //         return response;
+    //     },
 
-        async destroy({ dispatch }, data) {
-            const response = await axios.delete(`user/${data.id}`);
-            dispatch('getUsers', data);
+    //     async destroy({ dispatch }, data) {
+    //         const response = await axios.delete(`user/${data.id}`);
+    //         dispatch('getUsers', data);
 
-            return response;
-        },
+    //         return response;
+    //     },
 
-        async viaCep({ }, data) {
-            const response = await axiosLib.get(`https://viacep.com.br/ws/${data.zipcode}/json/`);
-            data.address = response.data.logradouro;
-            data.uf = response.data.uf;
-            data.city = response.data.localidade;
-            data.neighborhood = response.data.bairro;
-            return response;
-        },
+    //     async viaCep({ }, data) {
+    //         const response = await axiosLib.get(`https://viacep.com.br/ws/${data.zipcode}/json/`);
+    //         data.address = response.data.logradouro;
+    //         data.uf = response.data.uf;
+    //         data.city = response.data.localidade;
+    //         data.neighborhood = response.data.bairro;
+    //         return response;
+    //     },
     }
 }
 

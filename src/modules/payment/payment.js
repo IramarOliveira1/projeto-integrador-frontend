@@ -59,7 +59,6 @@ const payment = {
             return state.typePayments = payload;
         },
         clearForm(state, payload) {
-            console.log(payload);
             state.data = payload;
         },
     },
@@ -77,13 +76,9 @@ const payment = {
         },
 
         async execute({ }, data) {
-            try {
-                const response = await axios.post('/reserve/register', data);
+            const response = await axios.post('/reserve/register', data);
 
-                commit('setTypePayment', response.data);
-            } catch (error) {
-                notifications(error.response.status, error.response.data.message);
-            }
+            return response;
         }
     }
 

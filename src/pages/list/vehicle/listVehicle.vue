@@ -24,8 +24,8 @@
                 </a-card-meta>
 
                 <a-button type="primary" html-type="submit" class="button-select-vehicle"
-                    @click="chooseVehicle(vehicle)">ESCOLHER
-                    VEICULO</a-button>
+                    :disabled="!this.$store.getters.isAuthenticated" @click="chooseVehicle(vehicle)"> {{
+                        this.$store.getters.isAuthenticated ? 'ESCOLHER VEICULO' : 'FAZER LOGIN' }} </a-button>
             </a-card>
         </div>
     </div>
@@ -51,34 +51,6 @@ export default {
         chooseVehicle(vehicle) {
             const dateOne = dayjs(this.$store.getters['home/getData'].startDate);
             const dateTwo = dayjs(this.$store.getters['home/getData'].endDate);
-
-            // const data = {
-            //     startDateRent: JSON.parse(localStorage.getItem('vuex')).home.data.startDate,
-            //     endDateRent: JSON.parse(localStorage.getItem('vuex')).home.data.endDate,
-            //     startAgency: {
-            //         id: JSON.parse(localStorage.getItem('vuex')).home.data.agencia.id.option.id
-            //     },
-            //     endAgency: {
-            //         id: JSON.parse(localStorage.getItem('vuex')).home.data.devolution.id.option.id
-            //     },
-
-            //     insurance: {
-            //         id: null
-            //     },
-            //     payment: {
-            //         preco: null,
-            //         tipo_pagamento: {
-
-            //             id: null
-            //         }
-            //     },
-            //     user: {
-            //         id: 1
-            //     },
-            //     vehicle: {
-            //         id: id
-            //     }
-            // }
 
             this.$store.commit('payment/setResume',
                 {
