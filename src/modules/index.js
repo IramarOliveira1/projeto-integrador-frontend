@@ -1,7 +1,5 @@
 import { createStore } from "vuex";
 
-// import createPersistedState from 'vuex-persistedstate';
-
 import user from './user/user';
 import generic from './generic/generic';
 import insurance from './insurance/insurance';
@@ -24,7 +22,6 @@ const store = createStore({
         reserve: reserve,
         payment: payment,
     },
-    // plugins: [createPersistedState()]
 })
 
 export default store;

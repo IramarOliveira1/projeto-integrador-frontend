@@ -74,7 +74,7 @@
     margin-left: 20px;
 }
 
-.button-payment-finish button:nth-last-child(1):hover{
+.button-payment-finish button:nth-last-child(1):hover {
     background-color: #18d568;
 }
 
@@ -203,6 +203,15 @@
     width: 33%;
 }
 
+.extra button:nth-child(2) {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.extra .button-finish {
+    margin-right: 10px;
+}
+
 @media only screen and (max-width: 768px) {
     .div-button-update-profile {
         display: flex;
@@ -255,11 +264,16 @@
         width: 100% !important;
     }
 
-    /* 
-    .steps {
-        margin-top: 40%;
-        margin-bottom: 20px;
-    } */
+    .extra button:nth-child(2) {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .ellipsis h3 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 .colorValue {
@@ -301,4 +315,31 @@
 
 .card-item {
     margin-bottom: 50px;
+}
+
+@media only screen and (max-width: 620px) {
+
+    .extra button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .extra .button-finish {
+        margin-right: 0;
+    }
+
+    span.ant-tag {
+        text-align: center;
+        width: 100%;
+    }
+
+    .ant-collapse-extra {
+        width: 100%;
+    }
+
+    .ant-collapse-header {
+        display: flex;
+        flex-direction: column;
+    }
+
 }
