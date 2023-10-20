@@ -27,6 +27,10 @@
                         <router-link to="/perfil">
                             <a-menu-item key="profile">Perfil</a-menu-item>
                         </router-link>
+
+                        <router-link to="/reservas">
+                            <a-menu-item key="reserve">Reserva</a-menu-item>
+                        </router-link>
                     </div>
 
                     <div
@@ -90,6 +94,10 @@
 
                         <router-link to="/perfil">
                             <a-menu-item key="profile">Perfil</a-menu-item>
+                        </router-link>
+
+                        <router-link to="/reservas">
+                            <a-menu-item key="reserve">Reserva</a-menu-item>
                         </router-link>
                     </div>
 
@@ -185,8 +193,8 @@ export default {
             this.width = window.innerWidth
         },
         logout() {
-            this.$store.commit('isAuthenticated', false);
-            localStorage.clear();
+            localStorage.removeItem('token');
+            window.location.href = '/login'
         },
         openToggle() {
             this.toggle = true;

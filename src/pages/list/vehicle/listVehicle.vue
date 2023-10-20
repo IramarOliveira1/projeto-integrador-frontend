@@ -24,8 +24,8 @@
                 </a-card-meta>
 
                 <a-button type="primary" html-type="submit" class="button-select-vehicle"
-                    :disabled="!this.$store.getters.isAuthenticated" @click="chooseVehicle(vehicle)"> {{
-                        this.$store.getters.isAuthenticated ? 'ESCOLHER VEICULO' : 'FAZER LOGIN' }} </a-button>
+                    :disabled="!this.$store.getters['user/getUser'].isAuthenticated" @click="chooseVehicle(vehicle)"> {{
+                        this.$store.getters['user/getUser'].isAuthenticated ? 'ESCOLHER VEICULO' : 'FAZER LOGIN' }} </a-button>
             </a-card>
         </div>
     </div>
@@ -43,20 +43,22 @@ export default {
     computed: {
         data: {
             get() {
-                return this.$store.getters['reserve/getVehicles'];
+                return this.$store.getters['home/getVehicles'];
             }
         }
     },
     methods: {
         chooseVehicle(vehicle) {
+
             const dateOne = dayjs(this.$store.getters['home/getData'].startDate);
             const dateTwo = dayjs(this.$store.getters['home/getData'].endDate);
 
-            this.$store.commit('payment/setResume',
+            this.$store.commit('home/setData',
                 {
-                    data: this.$store.getters['home/getData'],
+                    ...this.$store.getters['home/getData'],
                     diffDay: dateTwo.diff(dateOne, 'd'),
-                    vehicle: vehicle
+                    vehicle: vehicle,
+                    user: this.$store.getters['user/getUser'].id
                 }
             );
 

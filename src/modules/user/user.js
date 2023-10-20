@@ -76,7 +76,6 @@ const user = {
             const request = { ...data.data, role: data.role }
             const response = await axios.post('/user/register', request);
 
-            console.log(state.user.isAuthenticated);
             if (state.user.isAuthenticated) {
                 dispatch('all', data);
             }

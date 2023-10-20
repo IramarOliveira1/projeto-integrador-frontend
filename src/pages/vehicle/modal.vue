@@ -142,6 +142,8 @@ export default {
 
                 this.$notification.notification(response.status, response.data.message);
 
+                this.$store.commit('generic/setFilterExits', false);
+
                 this.closeModal();
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
@@ -154,6 +156,8 @@ export default {
                 const response = await this.$store.dispatch('vehicle/update', { id: this.$props.idEdit, data });
 
                 this.$notification.notification(response.status, response.data.message);
+
+                this.$store.commit('generic/setFilterExits', false);
 
                 this.closeModal();
             } catch (error) {

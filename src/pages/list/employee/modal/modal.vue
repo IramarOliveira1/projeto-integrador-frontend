@@ -129,7 +129,7 @@ export default {
         },
         data: {
             get() {
-                return this.$store.getters.getUser;
+                return this.$store.getters['user/getData'];
             },
         },
         modalEdit: {
@@ -148,13 +148,13 @@ export default {
                     return;
                 }
 
-                const response = await this.$store.dispatch('save', { data: data, role: 'ADMIN' });
+                const response = await this.$store.dispatch('user/save', { data: data, role: 'ADMIN' });
 
                 this.$notification.notification(response.status, response.data.message);
 
                 this.closeModal();
 
-                this.$store.commit('clearForm', {
+                this.$store.commit('user/clearForm', {
                     name: null, email: null, password: null, cpf: null, phone: null, address: {
                         address: null, zipcode: '', uf: null, city: null, neighborhood: null,
                     }
@@ -167,7 +167,7 @@ export default {
         async update(data) {
             try {
 
-                const response = await this.$store.dispatch('update', { id: this.$props.idUserEdit, data: data, role: 'ADMIN' });
+                const response = await this.$store.dispatch('user/update', { id: this.$props.idUserEdit, data: data, role: 'ADMIN' });
 
                 this.$notification.notification(response.status, response.data.message);
 
@@ -180,12 +180,12 @@ export default {
         async viaCep() {
             try {
                 if (this.data.address.zipcode.length >= 9) {
-                    await this.$store.dispatch('viaCep', this.data.address);
+                    await this.$store.dispatch('user/viaCep', this.data.address);
                 }
             } catch (error) {
                 this.$notification.notification(400, "CEP inv�lido!");
 
-                this.$store.commit('clearForm',
+                this.$store.commit('user/clearForm',
                     {
                         address: {
                             address: null,
@@ -201,7 +201,7 @@ export default {
         closeModal(close) {
             this.$refs['form'].clearValidate();
 
-            this.$store.commit('clearForm', {
+            this.$store.commit('user/clearForm', {
                 name: null, email: null, password: null, cpf: null, phone: null, address: {
                     address: null, zipcode: '', uf: null, city: null, neighborhood: null,
                 }

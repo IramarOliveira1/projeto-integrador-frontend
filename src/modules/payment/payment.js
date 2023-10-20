@@ -33,16 +33,13 @@ const payment = {
             }
         },
         typePayments: [],
-        resume: []
     },
 
     getters: {
         getData(state) {
             return state.data;
         },
-        getResume(state) {
-            return state.resume;
-        },
+
         getTypePayment(state) {
             return state.typePayments;
         },
@@ -52,9 +49,7 @@ const payment = {
         setData(state, payload) {
             return state.data = payload;
         },
-        setResume(state, payload) {
-            return state.resume = payload;
-        },
+
         setTypePayment(state, payload) {
             return state.typePayments = payload;
         },

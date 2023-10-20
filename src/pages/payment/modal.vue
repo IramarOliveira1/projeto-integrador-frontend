@@ -101,7 +101,7 @@ export default {
         VuePaycard,
         locale
     },
-    props: ['openModal', 'calculateTotalValue', 'data', 'resume'],
+    props: ['openModal', 'calculateTotalValue', 'data'],
     data() {
         return {
             indicator: h(LoadingOutlined, {
@@ -150,6 +150,11 @@ export default {
                 return this.$store.getters['payment/getTypePayment'];
             }
         },
+        details: {
+            get() {
+                return this.$store.getters['home/getData'];
+            }
+        }
     },
     mounted() {
         let month = [];
@@ -165,45 +170,49 @@ export default {
 
         async execute() {
             try {
-
-                console.log(this.$store.getters.getUserLogin.id);
-
                 if (this.data.payment.tipo_pagamento.id === null) {
                     return this.$notification.notification(400, 'Campo tipo de pagamento È obrigat√≥rio');
                 }
 
                 this.loading = true;
+
                 const data =
                 {
-                    startDateRent: dayjs(this.resume.data.startDate).format('YYYY-MM-DD'),
-                    endDateRent: dayjs(this.resume.data.endDate).format('YYYY-MM-DD'),
+                    startDateRent: dayjs(this.details.startDate).format('YYYY-MM-DD'),
+                    endDateRent: dayjs(this.details.endDate).format('YYYY-MM-DD'),
                     startAgency: {
-                        id: this.resume.data.agencia.id.option.id
+                        id: this.details.agencia.id.option.id
                     },
                     endAgency: {
-                        id: this.resume.data.devolution.id.option.id
+                        id: this.details.devolution.id.option.id
 
                     },
                     insurance: {
                         id: this.data.insurance.id
                     },
                     payment: {
-                        preco: String(`${this.calculateTotalValue}`),
+                        preco: String(this.calculateTotalValue),
                         tipo_pagamento: {
                             id: this.data.payment.tipo_pagamento.id
                         }
                     },
                     user: {
-                        id: 2
+                        id: this.details.user
                     },
                     vehicle: {
-                        id: this.resume.vehicle.id
+                        id: this.details.vehicle.id
                     }
                 }
 
                 const response = await this.$store.dispatch('payment/execute', data);
 
                 this.$notification.notification(response.status, response.data.message);
+
+                this.data.payment.tipo_pagamento.id = null;
+
+                this.data.insurance.id = null;
+
+                this.$router.push('reservas');
 
                 this.loading = false;
             } catch (error) {

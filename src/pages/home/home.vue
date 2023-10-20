@@ -95,7 +95,6 @@ export default {
 
         async search(data) {
             try {
-
                 const response = await this.$store.dispatch('home/search', {
                     startDate: data.startDate.format('YYYY-MM-DD'),
                     endDate: data.endDate.format('YYYY-MM-DD'),
@@ -104,7 +103,8 @@ export default {
                     },
                 });
 
-                this.$store.commit('reserve/setVehicles', response.data);
+                this.$store.commit('home/setVehicles', response.data);
+
                 this.$router.push('/listar-veiculos');
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);

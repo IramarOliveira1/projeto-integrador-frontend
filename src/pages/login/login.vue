@@ -72,10 +72,6 @@ export default {
 
                 this.$store.commit('user/setUser', response.data);
 
-                // this.$store.commit('generic/setModalEdit', true);
-
-                // this.$store.commit('setUserLogin', response.data);
-
                 this.$router.push('/dashboard');
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);

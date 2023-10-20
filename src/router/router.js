@@ -48,6 +48,12 @@ const routes = [
     {
         path: '/pagamento', component: () => import('../pages/payment/payment.vue'), meta: { admin: true, guest: true }, name: 'payment'
     },
+    {
+        path: '/reservas', component: () => import('../pages/reserve/reserve.vue'), meta: { admin: true, guest: true }, name: 'reserve'
+    },
+    {
+        path: '/:notFound', component: () => import('../pages/notfound/notfound.vue'), meta: { admin: true, guest: true }, name: 'notfound'
+    },
 ];
 
 const router = createRouter({
@@ -57,6 +63,11 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
     if (to.name === 'list-vehicle' && !store.getters['home/getData'].startDate) {
+        next('/');
+        return;
+    }
+
+    if (to.name === 'payment' && !store.getters['home/getData'].startDate) {
         next('/');
         return;
     }

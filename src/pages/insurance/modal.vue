@@ -15,7 +15,7 @@
                     <a-col :xs="{ span: 24 }" :sm="{ span: 24 }" :xl="{ span: 24 }">
                         <a-form-item label="Preço" name="preco"
                             :rules="[{ required: true, message: 'Campo preço é obrigat�rio' }]">
-                            <a-input v-model:value="data.preco" v-money="money"  />
+                            <a-input v-model:value="data.preco" v-money="money" />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -83,6 +83,8 @@ export default {
 
                 this.$notification.notification(response.status, response.data.message);
 
+                this.$store.commit('generic/setFilterExits', false);
+                
                 this.closeModal();
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
@@ -95,6 +97,8 @@ export default {
                 const response = await this.$store.dispatch('insurance/update', { id: this.$props.idEdit, data: data });
 
                 this.$notification.notification(response.status, response.data.message);
+
+                this.$store.commit('generic/setFilterExits', false);
 
                 this.closeModal();
             } catch (error) {

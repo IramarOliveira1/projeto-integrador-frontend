@@ -14,8 +14,8 @@
 
             <div class="vehicle-payment">
                 <h3>Veiculo escolhido</h3>
-                <h4>Modelo - {{ getResume.vehicle.model.nome }}</h4>
-                <img :src="getResume.vehicle.model.url_imagem" alt="">
+                <h4>Modelo - {{ data.vehicle.model.nome }}</h4>
+                <img :src="data.vehicle.model.url_imagem" alt="">
             </div>
 
             <a-divider style="height: 2px; background-color: #d6d6d6" />
@@ -23,7 +23,7 @@
             <div class="withdrawal">
                 <h3>Retirada</h3>
                 <h4> {{ startDateRent }}</h4>
-                <h4> {{ `${getResume.data.agencia.id.label} - ${getResume.data.agencia.id.option.address.uf}` }}</h4>
+                <h4> {{ `${data.agencia.id.label} - ${data.agencia.id.option.address.uf}` }}</h4>
             </div>
 
             <a-divider style="height: 2px; background-color: #d6d6d6" />
@@ -31,14 +31,14 @@
             <div class="devolution">
                 <h3>Devolucao</h3>
                 <h4>{{ endDateRent }}</h4>
-                <h4>{{ `${getResume.data.devolution.id.label} - ${getResume.data.devolution.id.option.address.uf}` }}</h4>
+                <h4>{{ `${data.devolution.id.label} - ${data.devolution.id.option.address.uf}` }}</h4>
             </div>
 
             <a-divider style="height: 2px; background-color: #d6d6d6" />
 
             <div class="special-offer">
                 <h3>OFERTA ESPECIAL</h3>
-                <h4> {{ this.$store.getters['payment/getResume'].diffDay }} DIARIAS X
+                <h4> {{ data.diffDay }} DIARIAS X
                     {{ parseFloat(valueDay).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}
                     - TOTAL: {{ parseFloat(calculateDay).toLocaleString('pt-BR', {
                         style: 'currency',
@@ -51,7 +51,7 @@
 
             <div v-if="valueInsurance != 0">
                 <h3>PROTECAO</h3>
-                <h4> {{ this.$store.getters['payment/getResume'].diffDay }} DIARIAS X
+                <h4> {{ data.diffDay }} DIARIAS X
                     {{
                         parseFloat(valueInsurance).toLocaleString('pt-BR', {
                             style: 'currency',
@@ -78,19 +78,19 @@
             </a-row>
 
             <a-divider style="height: 2px; background-color: #d6d6d6" />
-
+            
             <div class="selected-insurance">
                 <h3>SELECIONE UM SEGURO</h3>
                 <a-select placeholder="Selecione um seguro" :options="getInsurancies"
-                    :field-names="{ label: 'nome', value: 'id' }" v-model:value="data.insurance.id"
-                    @change="changeValueTotal(data.insurance.id)">
+                    :field-names="{ label: 'nome', value: 'id' }" v-model:value="payment.insurance.id"
+                    @change="changeValueTotal(payment.insurance.id)">
                 </a-select>
 
                 <div class="group-button-payment">
                     <a-button key="back" size="large" @click="back" class="button-back">Voltar</a-button>
 
                     <a-button type="primary" html-type="submit" class="button-continue" size="large"
-                        @click="finalizeReservation(data.insurance.id)">
+                        @click="finalizeReservation(payment.insurance.id)">
                         CONTINUAR
                     </a-button>
                 </div>
@@ -98,7 +98,7 @@
         </div>
     </div>
 
-    <modal :openModal="showModal" :calculateTotalValue="calculateTotalValue" :data="data" :resume="getResume"
+    <modal :openModal="showModal" :calculateTotalValue="calculateTotalValue" :data="payment"
         @close="showModal = false" />
 </template>
 
@@ -115,23 +115,23 @@ export default {
     data() {
         return {
             showModal: false,
-            valueDay: this.$store.getters['payment/getResume'].vehicle.model.valor_diaria,
-            calculateDay: this.$store.getters['payment/getResume'].vehicle.model.valor_diaria * this.$store.getters['payment/getResume'].diffDay,
+            valueDay: this.$store.getters['home/getData'].vehicle.model.valor_diaria,
+            calculateDay: this.$store.getters['home/getData'].vehicle.model.valor_diaria * this.$store.getters['home/getData'].diffDay,
             valueInsurance: 0,
             calculateInsurance: null,
-            valueTotal: this.$store.getters['payment/getResume'].vehicle.model.valor_diaria * this.$store.getters['payment/getResume'].diffDay,
+            valueTotal: this.$store.getters['home/getData'].vehicle.model.valor_diaria * this.$store.getters['home/getData'].diffDay,
             calculateTotalValue: null,
-            startDateRent: dayjs(this.$store.getters['payment/getResume'].data.startDate).format('DD-MM-YYYY'),
-            endDateRent: dayjs(this.$store.getters['payment/getResume'].data.endDate).format('DD-MM-YYYY'),
+            startDateRent: dayjs(this.$store.getters['home/getData'].startDate).format('DD-MM-YYYY'),
+            endDateRent: dayjs(this.$store.getters['home/getData'].endDate).format('DD-MM-YYYY'),
         }
     },
     computed: {
-        getResume: {
+        data: {
             get() {
-                return this.$store.getters['payment/getResume'];
+                return this.$store.getters['home/getData'];
             }
         },
-        data: {
+        payment: {
             get() {
                 return this.$store.getters['payment/getData'];
             }
@@ -152,7 +152,7 @@ export default {
         changeValueTotal(id) {
             const filter = this.$store.getters['insurance/getInsurancies'].filter(index => index.id === id);
 
-            const calculateInsurance = filter[0].preco * this.$store.getters['payment/getResume'].diffDay;
+            const calculateInsurance = filter[0].preco * this.data.diffDay;
 
             this.valueInsurance = filter[0].preco;
 
@@ -168,10 +168,12 @@ export default {
             }
             this.showModal = true;
         },
-        back(){
+        back() {
+            this.$store.commit('home/setData', this.data);
+
             this.$router.push('/listar-veiculos');
 
-            this.data.insurance.id = null;
+            this.payment.insurance.id = null;
         }
     },
 }
