@@ -8,8 +8,7 @@ const user = {
     namespaced: true,
     state: {
         user: [],
-        // userLogin: [],
-        // users: [],
+        users: [],
         data: {
             name: null,
             email: null,
@@ -28,136 +27,130 @@ const user = {
         },
     },
 
-    mutations: {
-        // isAuthenticated(state, payload) {
-        //     state.isAuthenticated = payload;
-        // },
-        // setUsers(state, payload) {
-        //     state.clients = payload;
-        // },
-
-        setUser(state, payload) {
-            state.user = payload;
-        },
-
-        // setUser(state, payload) {
-        //     state.data = payload;
-        // },
-
-        // clearForm(state, payload) {
-        //     state.data = payload;
-        // },
-
-        // setUserLogin(state, payload) {
-        //     state.userLogin = payload;
-        // },
-    },
-
     getters: {
-        // isAuthenticated(state) {
-        //     return state.isAuthenticated;
-        // },
-
-        // getUsers(state) {
-        //     return state.clients;
-        // },
+        getData(state) {
+            return state.data;
+        },
 
         getUser(state) {
             return state.user;
         },
 
-        // getUserLogin(state) {
-        //     return state.userLogin;
-        // },
+        getUsers(state) {
+            return state.users;
+        },
+    },
+
+    mutations: {
+        setUsers(state, payload) {
+            state.users = payload;
+        },
+
+        setUser(state, payload) {
+            state.user = payload;
+        },
+
+        setData(state, payload) {
+            state.data = payload;
+        },
+
+        clearForm(state, payload) {
+            state.data = payload;
+        },
     },
 
     actions: {
-    //     async getUser({ commit }, id) {
-    //         try {
+        async getUser({ commit }) {
+            try {
 
-    //             const response = await axios.get(`/user/${id}`);
+                const response = await axios.get('/user/me');
 
-    //             commit('setUserLogin', response.data[0]);
+                commit('setUser', response.data);
 
-    //         } catch (error) {
-    //             notifications(error.response.status, 'token invalido')
-    //         }
-    //     },
+            } catch (error) {
+                notifications(error.response.status, 'token invalido')
+            }
+        },
 
-    //     async save({ dispatch, state }, data) {
-    //         const request = { ...data.data, role: data.role }
-    //         const response = await axios.post('/user/register', request);
+        async save({ dispatch, state }, data) {
+            const request = { ...data.data, role: data.role }
+            const response = await axios.post('/user/register', request);
 
-    //         if (state.isAuthenticated) {
-    //             dispatch('getUsers', data);
-    //         }
-    //         return response;
-    //     },
+            console.log(state.user.isAuthenticated);
+            if (state.user.isAuthenticated) {
+                dispatch('all', data);
+            }
+            return response;
+        },
 
-    //     async getUsers({ commit }, role) {
-    //         try {
-    //             const response = await axios.get('/user/all', { params: { role: role.role } });
+        async all({ commit }, role) {
+            try {
+                const response = await axios.get('/user/all', { params: { role: role.role } });
 
-    //             commit('setUsers', response.data);
+                commit('setUsers', response.data);
 
-    //             return response;
-    //         } catch (error) {
-    //             notifications(error.response.status, error.response.data.message)
-    //         }
-    //     },
+                return response;
+            } catch (error) {
+                notifications(error.response.status, error.response.data.message)
+            }
+        },
 
-    //     async filter({ commit }, data) {
-    //         const response = await axios.post('user/filter', { nameOrCpf: data.data, role: data.role });
+        async filter({ commit }, data) {
+            const response = await axios.post('user/filter', { nameOrCpf: data.data, role: data.role });
 
-    //         commit('setUsers', response.data);
-    //     },
+            commit('setUsers', response.data);
+        },
 
-    //     async index({ commit }, id) {
-    //         const response = await axios.get(`user/${id}`);
+        async index({ commit }, id) {
 
-    //         const data = {
-    //             name: response.data[0].name,
-    //             email: response.data[0].email,
-    //             cpf: response.data[0].cpf,
-    //             phone: response.data[0].phone,
-    //             address: {
-    //                 complement: response.data[0].address.complemento,
-    //                 uf: response.data[0].address.uf,
-    //                 city: response.data[0].address.cidade,
-    //                 neighborhood: response.data[0].address.bairro,
-    //                 number: response.data[0].address.numero,
-    //                 zipcode: response.data[0].address.cep,
-    //                 address: response.data[0].address.logradouro
-    //             }
-    //         }
-    //         commit('setUser', data);
-    //         return response;
-    //     },
+            const response = await axios.get(`user/${id}`);
 
-    //     async update({ dispatch }, data) {
+            const data = {
+                name: response.data[0].name,
+                email: response.data[0].email,
+                cpf: response.data[0].cpf,
+                phone: response.data[0].phone,
+                address: {
+                    complement: response.data[0].address.complemento,
+                    uf: response.data[0].address.uf,
+                    city: response.data[0].address.cidade,
+                    neighborhood: response.data[0].address.bairro,
+                    number: response.data[0].address.numero,
+                    zipcode: response.data[0].address.cep,
+                    address: response.data[0].address.logradouro
+                }
+            }
 
-    //         const response = await axios.put(`/user/${data.id}`, data.data);
+            commit('setData', data);
 
-    //         dispatch('getUsers', data);
+            return response;
+        },
 
-    //         return response;
-    //     },
+        async update({ dispatch }, data) {
 
-    //     async destroy({ dispatch }, data) {
-    //         const response = await axios.delete(`user/${data.id}`);
-    //         dispatch('getUsers', data);
+            const response = await axios.put(`/user/${data.id}`, data.data);
 
-    //         return response;
-    //     },
+            dispatch('all', data)
 
-    //     async viaCep({ }, data) {
-    //         const response = await axiosLib.get(`https://viacep.com.br/ws/${data.zipcode}/json/`);
-    //         data.address = response.data.logradouro;
-    //         data.uf = response.data.uf;
-    //         data.city = response.data.localidade;
-    //         data.neighborhood = response.data.bairro;
-    //         return response;
-    //     },
+            return response;
+        },
+
+        async destroy({ dispatch }, data) {
+            const response = await axios.delete(`user/${data.id}`);
+
+            dispatch('all', data);
+
+            return response;
+        },
+
+        async viaCep({ }, data) {
+            const response = await axiosLib.get(`https://viacep.com.br/ws/${data.zipcode}/json/`);
+            data.address = response.data.logradouro;
+            data.uf = response.data.uf;
+            data.city = response.data.localidade;
+            data.neighborhood = response.data.bairro;
+            return response;
+        },
     }
 }
 

@@ -68,18 +68,15 @@ export default {
 
                 const response = await axios.post('/user/login', data);
 
-                const user = { isAuthenticated: true, ...response.data }
+                localStorage.setItem('token', response.data.token);
 
-                localStorage.setItem('user', JSON.stringify(user));
+                this.$store.commit('user/setUser', response.data);
 
-                this.$store.commit('user/setUser', user);
-
-                
                 // this.$store.commit('generic/setModalEdit', true);
 
                 // this.$store.commit('setUserLogin', response.data);
 
-                this.$router.push('/dashboard')
+                this.$router.push('/dashboard');
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }

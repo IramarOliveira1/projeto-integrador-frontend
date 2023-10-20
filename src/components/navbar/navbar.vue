@@ -19,7 +19,7 @@
                         <a-menu-item key="home">Home</a-menu-item>
                     </router-link>
 
-                    <div v-if="this.$store.getters.isAuthenticated">
+                    <div v-if="this.$store.getters['user/getUser'].isAuthenticated">
                         <router-link to="/dashboard">
                             <a-menu-item key="dashboard">Dashboard</a-menu-item>
                         </router-link>
@@ -27,10 +27,10 @@
                         <router-link to="/perfil">
                             <a-menu-item key="profile">Perfil</a-menu-item>
                         </router-link>
-
                     </div>
 
-                    <div v-if="this.$store.getters.isAuthenticated && this.$store.getters.getUserLogin.role === 'ADMIN'">
+                    <div
+                        v-if="this.$store.getters['user/getUser'].isAuthenticated && this.$store.getters['user/getUser'].role === 'ADMIN'">
                         <router-link to="/clientes">
                             <a-menu-item key="client">Cliente</a-menu-item>
                         </router-link>
@@ -55,7 +55,7 @@
                         </router-link>
                     </div>
 
-                    <div v-if="this.$store.getters.isAuthenticated">
+                    <div v-if="this.$store.getters['user/getUser'].isAuthenticated">
                         <router-link to="/login">
                             <a-menu-item key="logout" @click="logout">Logout</a-menu-item>
                         </router-link>
@@ -83,7 +83,7 @@
                         <a-menu-item key="home">Home</a-menu-item>
                     </router-link>
 
-                    <div v-if="this.$store.getters.isAuthenticated">
+                    <div v-if="this.$store.getters['user/getUser'].isAuthenticated">
                         <router-link to="/dashboard">
                             <a-menu-item key="dashboard">Dashboard</a-menu-item>
                         </router-link>
@@ -93,7 +93,8 @@
                         </router-link>
                     </div>
 
-                    <div v-if="this.$store.getters.isAuthenticated && this.$store.getters.getUserLogin.role === 'ADMIN'">
+                    <div
+                        v-if="this.$store.getters['user/getUser'].isAuthenticated && this.$store.getters['user/getUser'].role === 'ADMIN'">
                         <router-link to="/clientes">
                             <a-menu-item key="client">Cliente</a-menu-item>
                         </router-link>
@@ -118,7 +119,7 @@
                         </router-link>
                     </div>
 
-                    <div v-if="this.$store.getters.isAuthenticated">
+                    <div v-if="this.$store.getters['user/getUser'].isAuthenticated">
                         <router-link to="/login">
                             <a-menu-item key="logout" @click="logout">Logout</a-menu-item>
                         </router-link>

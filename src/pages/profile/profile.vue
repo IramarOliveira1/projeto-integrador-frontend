@@ -10,8 +10,7 @@
                     </a-form-item>
                 </a-col>
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                    <a-form-item label="CPF" name="cpf"
-                        :rules="[{ required: true, message: 'Campo cpf é obrigatório' }]">
+                    <a-form-item label="CPF" name="cpf" :rules="[{ required: true, message: 'Campo cpf é obrigatório' }]">
                         <a-input v-model:value="data.cpf" v-mask="'###.###.###-##'" />
                     </a-form-item>
                 </a-col>
@@ -90,7 +89,9 @@
             <a-form-item>
                 <div class="div-button-update-profile">
                     <a-button type="primary" danger class="button-update-profile" html-type="submit"
-                        v-if="this.$store.getters.getUserLogin.id !== 1">Excluir conta</a-button>
+                        v-if="this.$store.getters['user/getUser'].id !== 1">
+                        Excluir conta
+                    </a-button>
                     <a-button type="primary" class="button-update-profile" html-type="submit">Atualizar</a-button>
                 </div>
             </a-form-item>
@@ -111,20 +112,18 @@ export default {
     computed: {
         data: {
             get() {
-                return this.$store.getters.getUser;
+                return this.$store.getters['user/getData'];
             },
         },
     },
     mounted() {
-        this.$store.dispatch('index', this.$store.getters.getUserLogin.id);
+        this.$store.dispatch('user/index', this.$store.getters['user/getUser'].id);
     },
     methods: {
         async update(data) {
             try {
 
-                const response = await axios.put(`user/${this.$store.getters.getUserLogin.id}`, data);
-
-                this.$store.dispatch('getUser', this.$store.getters.getUserLogin.id);
+                const response = await axios.put(`user/${this.$store.getters['user/getUser'].id}`, data);
 
                 this.$notification.notification(response.status, response.data.message);
             } catch (error) {
@@ -137,8 +136,6 @@ export default {
 
                 await axios.delete(`user/${this.$store.getters.getUserLogin.id}`);
 
-                this.$store.commit('isAuthenticated', false);
-
                 this.$router.push('/login');
 
                 localStorage.clear();
@@ -150,7 +147,7 @@ export default {
         async viaCep() {
             try {
                 if (this.data.address.zipcode.length >= 9) {
-                    await this.$store.dispatch('viaCep', this.data.address);
+                    await this.$store.dispatch('user/viaCep', this.data.address);
                 }
             } catch (error) {
                 this.$notification.notification(400, "CEP inv�lido!");

@@ -1,12 +1,10 @@
 
 <template>
-
-  {{ this.$store.getters['user/getUser'] }}
-  <navbar v-if="this.$store.getters.isAuthenticated || $route.name === 'home'  || $route.name === 'list-vehicle' || $route.name === 'payment'" />
+  <navbar
+    v-if="this.$store.getters['user/getUser'].isAuthenticated || $route.name === 'home' || $route.name === 'list-vehicle' || $route.name === 'payment'" />
 
   <router-view />
 </template>
-
 
 <script>
 
@@ -17,10 +15,8 @@ export default {
     navbar
   },
   mounted() {
-    if (this.$store.getters.isAuthenticated) {
-      if (JSON.parse(localStorage.getItem('user'))) {
-        this.$store.dispatch('getUser', this.$store.getters.getUserLogin.id);
-      }
+    if (localStorage.getItem('token')) {
+      this.$store.dispatch('user/getUser');
     }
   },
 }

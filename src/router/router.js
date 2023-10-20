@@ -61,28 +61,28 @@ router.beforeEach(async (to, from, next) => {
         return;
     }
 
-    if (!store.getters.isAuthenticated && to.name === 'home' || to.name === 'list-vehicle' || to.name == 'payment') {
+    if (!store.getters['user/getUser'].isAuthenticated && to.name === 'home' || to.name === 'list-vehicle' || to.name == 'payment') {
         next();
         return;
     }
 
-    if (store.getters.isAuthenticated && to.meta.admin && !to.meta.guest && store.getters.getUserLogin.role === 'ADMIN') {
+    if (store.getters['user/getUser'].isAuthenticated && to.meta.admin && !to.meta.guest && store.getters['user/getUser'].role === 'ADMIN') {
         next();
         return;
     }
 
-    if (store.getters.isAuthenticated && to.meta.admin && to.meta.guest && store.getters.getUserLogin.role === 'USER') {
+    if (store.getters['user/getUser'].isAuthenticated && to.meta.admin && to.meta.guest && store.getters['user/getUser'].role === 'USER') {
         next();
         return;
-    } else if (store.getters.isAuthenticated && !to.meta.guest) {
+    } else if (store.getters['user/getUser'].isAuthenticated && !to.meta.guest) {
         next('/dashboard');
         return;
     }
 
     if (to.matched.some(record => record.meta.admin)) {
-        const user = localStorage.getItem('user');
+        const token = localStorage.getItem('token');
 
-        if (!user) {
+        if (!token) {
             localStorage.clear();
             next('/login');
             return;
