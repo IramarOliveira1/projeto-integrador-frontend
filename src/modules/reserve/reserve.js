@@ -20,8 +20,13 @@ const reserve = {
     },
 
     actions: {
-        async all({ commit }, id) {
-            const response = await axios.get(`reserve/${id}`);
+        async all({ commit }, data) {
+            const response = await axios.get(`reserve/${data.idUser}`, {
+                params: {
+                    page: data.page,
+                    size: 6
+                }
+            });
 
             commit('setReserves', response.data);
 
@@ -32,7 +37,7 @@ const reserve = {
             const response = await axios.post(`reserve/startRent/${data.idReserve}`);
 
             dispatch('all', data.idUser);
-            
+
             return response;
         },
         async endRent({ dispatch }, data) {
@@ -40,7 +45,7 @@ const reserve = {
             const response = await axios.post(`reserve/endRent/${data.idReserve}`);
 
             dispatch('all', data.idUser);
-            
+
             return response;
         },
         async cancellationRent({ dispatch }, data) {
@@ -48,7 +53,23 @@ const reserve = {
             const response = await axios.post(`reserve/cancellation/${data.idReserve}`);
 
             dispatch('all', data.idUser);
-            
+
+            return response;
+        },
+        async filter({ commit }, data) {
+
+            const response = await axios.post(`reserve/filter/${data.idUser}`, { status: data.status });
+
+            commit('setReserves', response.data);
+
+            return response;
+        },
+        async filterCode({ commit }, data) {
+
+            const response = await axios.post(`reserve/filterCode/${data.idUser}`, { code: data.code });
+
+            commit('setReserves', response.data);
+
             return response;
         },
     }
