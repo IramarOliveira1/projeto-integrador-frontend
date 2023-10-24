@@ -49,7 +49,10 @@ const routes = [
         path: '/pagamento', component: () => import('../pages/payment/payment.vue'), meta: { admin: true, guest: true }, name: 'payment'
     },
     {
-        path: '/reservas', component: () => import('../pages/reserve/reserve.vue'), meta: { admin: true, guest: true }, name: 'reserve'
+        path: '/reservas', component: () => import('../pages/reserve/reserve.vue'), meta: { admin: true, guest: false }, name: 'reserve'
+    },
+    {
+        path: '/minhas-reservas', component: () => import('../pages/reserve/reserveUser.vue'), meta: { admin: true, guest: true }, name: 'reserveUser'
     },
     {
         path: '/:notFound', component: () => import('../pages/notfound/notfound.vue'), meta: { admin: true, guest: true }, name: 'notfound'
@@ -62,6 +65,10 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+    console.log(store.getters['user/getUser'].role);
+
+    // return
+
     if (to.name === 'list-vehicle' && !store.getters['home/getData'].startDate) {
         next('/');
         return;

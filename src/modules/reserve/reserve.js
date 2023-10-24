@@ -21,6 +21,20 @@ const reserve = {
 
     actions: {
         async all({ commit }, data) {
+            const response = await axios.get('reserve/all', {
+                params: {
+                    page: data.page,
+                    size: 6
+                }
+            });
+
+            commit('setReserves', response.data);
+
+            return response;
+        },
+
+        async index({ commit }, data) {
+
             const response = await axios.get(`reserve/${data.idUser}`, {
                 params: {
                     page: data.page,
@@ -32,6 +46,7 @@ const reserve = {
 
             return response;
         },
+
         async startRent({ dispatch }, data) {
 
             const response = await axios.post(`reserve/startRent/${data.idReserve}`);
@@ -58,7 +73,15 @@ const reserve = {
         },
         async filter({ commit }, data) {
 
-            const response = await axios.post(`reserve/filter/${data.idUser}`, { status: data.status });
+            const response = await axios.post(`reserve/filter/${data.idUser}`,
+                {
+                    status: data.status,
+                }, {
+                params: {
+                    page: data.page,
+                    size: 6
+                }
+            });
 
             commit('setReserves', response.data);
 
@@ -66,7 +89,50 @@ const reserve = {
         },
         async filterCode({ commit }, data) {
 
-            const response = await axios.post(`reserve/filterCode/${data.idUser}`, { code: data.code });
+            const response = await axios.post(`reserve/filterCode/${data.idUser}`,
+                {
+                    code: data.code
+                },
+                {
+                    params: {
+                        page: data.page,
+                        size: 6
+                    }
+                });
+
+            commit('setReserves', response.data);
+
+            return response;
+        },
+
+        async filterStatusAll({ commit }, data) {
+
+            const response = await axios.post('reserve/filterStatusAll',
+                {
+                    status: data.status,
+                }, {
+                params: {
+                    page: data.page,
+                    size: 6
+                }
+            });
+
+            commit('setReserves', response.data);
+
+            return response;
+        },
+        async filterCodeAll({ commit }, data) {
+
+            const response = await axios.post('reserve/filterCodeAll',
+                {
+                    code: data.code
+                },
+                {
+                    params: {
+                        page: data.page,
+                        size: 6
+                    }
+                });
 
             commit('setReserves', response.data);
 

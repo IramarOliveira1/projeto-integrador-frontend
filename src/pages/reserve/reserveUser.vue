@@ -40,24 +40,6 @@
             <a-collapse-panel key="2" :header="reserves.codeReserve">
                 <template #extra>
                     <div class="extra">
-                        <a-button
-                            v-if="reserves.status === 'RESERVADO' && this.$store.getters['user/getUser'].role === 'ADMIN'"
-                            size="small" :disabled="loading" @click="startRent(reserves.id)">Iniciar Reserva</a-button>
-
-                        <a-button class="button-finish" type="primary" ghost size="small" :disabled="loading"
-                            v-if="reserves.status === 'EM ANDAMENTO' && this.$store.getters['user/getUser'].role === 'ADMIN'"
-                            @click="endRent(reserves.id)">Finalizar
-                            Reserva
-                        </a-button>
-                        <a-button class="button-cancellation" size="small"
-                            v-if="reserves.status === 'RESERVADO' && this.$store.getters['user/getUser'].role === 'ADMIN'"
-                            danger @click="cancellationRent(reserves.id)" :disabled="loading">
-                            <a-spin v-if="loading && reserves.id === idLoding" :indicator="indicator" />
-                            <div v-else>
-                                Cancelar
-                                Reserva
-                            </div>
-                        </a-button>
                         <a-tag color="green" v-if="reserves.status === 'FINALIZADO'">{{ reserves.status }}</a-tag>
                         <a-tag color="orange" v-if="reserves.status === 'CANCELADO'">{{ reserves.status }}</a-tag>
                         <a-tag color="cyan" v-if="reserves.status === 'EM ANDAMENTO'">{{ reserves.status }}</a-tag>
@@ -134,7 +116,7 @@
                 </div>
             </a-collapse-panel>
         </a-collapse>
-        <a-pagination v-model:current="current" v-model:pageSize="pageSize" :total="data[0]?.totalElements" @change="all"
+        <a-pagination v-model:current="current" v-model:pageSize="pageSize" :total="data[0]?.totalElements" @change="index"
             class="pagination" v-if="data.length > 0" />
     </div>
 </template>
@@ -189,55 +171,18 @@ export default {
     },
 
     mounted() {
-        this.all();
         this.$store.commit('generic/setFilterExits', false);
+        this.index();
     },
     methods: {
-        async all(page) {
+        async index(page) {
             try {
 
                 if (page) {
                     this.page = page - 1;
                 }
-                await this.$store.dispatch('reserve/all', { page: this.page ?? page });
+                await this.$store.dispatch('reserve/index', { page: this.page ?? page, idUser: this.$store.getters['user/getUser'].id });
 
-            } catch (error) {
-                this.$notification.notification(error.response.status, error.response.data.message);
-            }
-        },
-
-        async startRent(id) {
-            try {
-
-                const response = await this.$store.dispatch('reserve/startRent', { idReserve: id, idUser: this.$store.getters['user/getUser'].id });
-
-                this.$notification.notification(response.status, response.data.message);
-            } catch (error) {
-                this.$notification.notification(error.response.status, error.response.data.message);
-            }
-        },
-        async endRent(id) {
-            try {
-
-                const response = await this.$store.dispatch('reserve/endRent', { idReserve: id, idUser: this.$store.getters['user/getUser'].id });
-
-                this.$notification.notification(response.status, response.data.message);
-            } catch (error) {
-                this.$notification.notification(error.response.status, error.response.data.message);
-            }
-        },
-        async cancellationRent(id) {
-            try {
-                this.loading = true;
-
-                this.idLoding = id;
-
-                const response = await this.$store.dispatch('reserve/cancellationRent', { idReserve: id, idUser: this.$store.getters['user/getUser'].id });
-
-                this.loading = false;
-
-                this.idLoding = null;
-                this.$notification.notification(response.status, response.data.message);
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
@@ -245,7 +190,7 @@ export default {
 
         async filter(data) {
             try {
-                await this.$store.dispatch('reserve/filterStatusAll', { page: 0, status: data });
+                await this.$store.dispatch('reserve/filter', { page: 0, status: data, idUser: this.$store.getters['user/getUser'].id });
 
                 this.$store.commit('generic/setFilterExits', true);
 
@@ -261,7 +206,7 @@ export default {
                     return this.$notification.notification(400, 'Campo código é obrigatÃ³rio');
                 }
 
-                await this.$store.dispatch('reserve/filterCodeAll', { page: 0, code: this.code });
+                await this.$store.dispatch('reserve/filterCode', { page: 0, code: this.code, idUser: this.$store.getters['user/getUser'].id });
 
                 this.$store.commit('generic/setFilterExits', true);
             } catch (error) {
@@ -270,7 +215,7 @@ export default {
         },
 
         async clearFilter() {
-            await this.$store.dispatch('reserve/all', { page: this.page, idUser: this.$store.getters['user/getUser'].id });
+            await this.$store.dispatch('reserve/index', { page: this.page, idUser: this.$store.getters['user/getUser'].id });
 
             this.$store.commit('generic/setFilterExits', false);
             this.status.label = null

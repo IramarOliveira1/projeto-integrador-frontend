@@ -372,3 +372,9 @@
     }
 
 }
+
+
+.pagination {
+    text-align: end;
+    margin-bottom: 20px;
+}

@@ -14,9 +14,12 @@ export default {
   components: {
     navbar
   },
-  mounted() {
+  beforeRouteUpdate (to, from, next) {
+    console.log(to);
+  },
+  async mounted() {
     if (localStorage.getItem('token')) {
-      this.$store.dispatch('user/getUser');
+      await this.$store.dispatch('user/getUser');
     }
   },
 }

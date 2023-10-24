@@ -66,7 +66,6 @@ const user = {
                 const response = await axios.get('/user/me');
 
                 commit('setUser', response.data);
-
             } catch (error) {
                 notifications(error.response.status, 'token invalido')
             }

@@ -212,7 +212,7 @@ export default {
 
                 this.data.insurance.id = null;
 
-                this.$router.push('reservas');
+                this.$router.push('dashboard');
 
                 this.loading = false;
             } catch (error) {

@@ -28,8 +28,8 @@
                             <a-menu-item key="profile">Perfil</a-menu-item>
                         </router-link>
 
-                        <router-link to="/reservas">
-                            <a-menu-item key="reserve">Reserva</a-menu-item>
+                        <router-link to="/minhas-reservas">
+                            <a-menu-item key="reserveUser">Minhas Reservas</a-menu-item>
                         </router-link>
                     </div>
 
@@ -38,6 +38,7 @@
                         <router-link to="/clientes">
                             <a-menu-item key="client">Cliente</a-menu-item>
                         </router-link>
+                        
                         <router-link to="/funcionarios">
                             <a-menu-item key="employee">Funcionário</a-menu-item>
                         </router-link>
@@ -56,6 +57,10 @@
 
                         <router-link to="/agencias">
                             <a-menu-item key="agency">Agência</a-menu-item>
+                        </router-link>
+
+                        <router-link to="/reservas">
+                            <a-menu-item key="reserve">Reservas</a-menu-item>
                         </router-link>
                     </div>
 
@@ -96,8 +101,8 @@
                             <a-menu-item key="profile">Perfil</a-menu-item>
                         </router-link>
 
-                        <router-link to="/reservas">
-                            <a-menu-item key="reserve">Reserva</a-menu-item>
+                        <router-link to="/minhas-reservas">
+                            <a-menu-item key="reserveUser">Minhas Reservas</a-menu-item>
                         </router-link>
                     </div>
 
@@ -125,6 +130,10 @@
                         <router-link to="/agencias">
                             <a-menu-item key="agency">Ag�ncia</a-menu-item>
                         </router-link>
+
+                        <router-link to="/reservas">
+                            <a-menu-item key="reserve">Reservas</a-menu-item>
+                        </router-link>
                     </div>
 
                     <div v-if="this.$store.getters['user/getUser'].isAuthenticated">
@@ -138,7 +147,6 @@
                             <a-menu-item key="login">Login</a-menu-item>
                         </router-link>
                     </div>
-
                 </a-menu>
             </a-drawer>
         </a-layout-header>
