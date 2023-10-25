@@ -9,6 +9,7 @@ const user = {
     state: {
         user: [],
         users: [],
+        isAuthenticated: false,
         data: {
             name: null,
             email: null,
@@ -39,6 +40,10 @@ const user = {
         getUsers(state) {
             return state.users;
         },
+
+        getIsAuthenticated(state) {
+            return state.isAuthenticated;
+        },
     },
 
     mutations: {
@@ -57,18 +62,19 @@ const user = {
         clearForm(state, payload) {
             state.data = payload;
         },
+        setIsAuthenticated(state, payload) {
+            state.isAuthenticated = payload;
+        },
     },
 
     actions: {
-        async getUser({ commit }) {
-            try {
+        async me({ commit }) {
 
-                const response = await axios.get('/user/me');
+            const response = await axios.get('/user/me');
 
-                commit('setUser', response.data);
-            } catch (error) {
-                notifications(error.response.status, 'token invalido')
-            }
+            commit('setUser', response.data);
+
+            commit('setIsAuthenticated', true);
         },
 
         async save({ dispatch, state }, data) {

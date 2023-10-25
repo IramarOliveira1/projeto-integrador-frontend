@@ -19,7 +19,7 @@
                         <a-menu-item key="home">Home</a-menu-item>
                     </router-link>
 
-                    <div v-if="this.$store.getters['user/getUser'].isAuthenticated">
+                    <div v-if="this.$store.getters['user/getIsAuthenticated']">
                         <router-link to="/dashboard">
                             <a-menu-item key="dashboard">Dashboard</a-menu-item>
                         </router-link>
@@ -34,7 +34,7 @@
                     </div>
 
                     <div
-                        v-if="this.$store.getters['user/getUser'].isAuthenticated && this.$store.getters['user/getUser'].role === 'ADMIN'">
+                        v-if="this.$store.getters['user/getIsAuthenticated'] && this.$store.getters['user/getUser'].role === 'ADMIN'">
                         <router-link to="/clientes">
                             <a-menu-item key="client">Cliente</a-menu-item>
                         </router-link>
@@ -64,7 +64,7 @@
                         </router-link>
                     </div>
 
-                    <div v-if="this.$store.getters['user/getUser'].isAuthenticated">
+                    <div v-if="this.$store.getters['user/getIsAuthenticated']">
                         <router-link to="/login">
                             <a-menu-item key="logout" @click="logout">Logout</a-menu-item>
                         </router-link>
@@ -92,7 +92,7 @@
                         <a-menu-item key="home">Home</a-menu-item>
                     </router-link>
 
-                    <div v-if="this.$store.getters['user/getUser'].isAuthenticated">
+                    <div v-if="this.$store.getters['user/getIsAuthenticated']">
                         <router-link to="/dashboard">
                             <a-menu-item key="dashboard">Dashboard</a-menu-item>
                         </router-link>
@@ -107,7 +107,7 @@
                     </div>
 
                     <div
-                        v-if="this.$store.getters['user/getUser'].isAuthenticated && this.$store.getters['user/getUser'].role === 'ADMIN'">
+                        v-if="this.$store.getters['user/getIsAuthenticated'] && this.$store.getters['user/getUser'].role === 'ADMIN'">
                         <router-link to="/clientes">
                             <a-menu-item key="client">Cliente</a-menu-item>
                         </router-link>
@@ -136,7 +136,7 @@
                         </router-link>
                     </div>
 
-                    <div v-if="this.$store.getters['user/getUser'].isAuthenticated">
+                    <div v-if="this.$store.getters['user/getIsAuthenticated']">
                         <router-link to="/login">
                             <a-menu-item key="logout" @click="logout">Logout</a-menu-item>
                         </router-link>
@@ -201,8 +201,9 @@ export default {
             this.width = window.innerWidth
         },
         logout() {
+            this.$store.commit('user/setIsAuthenticated', false)
             localStorage.removeItem('token');
-            window.location.href = '/login'
+            this.$router.push('login');
         },
         openToggle() {
             this.toggle = true;

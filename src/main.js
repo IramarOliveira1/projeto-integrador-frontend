@@ -30,5 +30,18 @@ app.config.globalProperties.$axios = { ...axiosInstance }
 
 app.config.globalProperties.$notification = { notification }
 
+if (localStorage.getItem('token')) {
+    (async () => {
+        try {
+            await vuex.dispatch('user/me');
+        } catch (error) {
+            vuex.commit('user/setIsAuthenticated', false);
+            router.push('/login');
+            localStorage.clear();
+            notification(error.response.status, error.response.data.message);
+        }
+    })()
+}
+
 app.mount("#app");
 

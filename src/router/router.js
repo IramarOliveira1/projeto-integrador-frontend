@@ -64,10 +64,55 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach(async (to, from, next) => {
-    console.log(store.getters['user/getUser'].role);
+// router.beforeEach(async (to, from, next) => {
+//     console.log(store.getters['user/getUser'].role);
 
-    // return
+//     // return
+
+//     if (to.name === 'list-vehicle' && !store.getters['home/getData'].startDate) {
+//         next('/');
+//         return;
+//     }
+
+//     if (to.name === 'payment' && !store.getters['home/getData'].startDate) {
+//         next('/');
+//         return;
+//     }
+
+//     if (!store.getters['user/getUser'].isAuthenticated && to.name === 'home' || to.name === 'list-vehicle' || to.name == 'payment') {
+//         next();
+//         return;
+//     }
+
+//     if (store.getters['user/getUser'].isAuthenticated && to.meta.admin && !to.meta.guest && store.getters['user/getUser'].role === 'ADMIN') {
+//         next();
+//         return;
+//     }
+
+//     if (store.getters['user/getUser'].isAuthenticated && to.meta.admin && to.meta.guest && store.getters['user/getUser'].role === 'USER') {
+//         next();
+//         return;
+//     } else if (store.getters['user/getUser'].isAuthenticated && !to.meta.guest) {
+//         next('/dashboard');
+//         return;
+//     }
+
+//     if (to.matched.some(record => record.meta.admin)) {
+//         const token = localStorage.getItem('token');
+
+//         if (!token) {
+//             localStorage.clear();
+//             next('/login');
+//             return;
+//         }
+
+//         next()
+//     } else {
+//         next()
+//     }
+// })
+
+router.beforeResolve(async (to, from, next) => {
 
     if (to.name === 'list-vehicle' && !store.getters['home/getData'].startDate) {
         next('/');
@@ -79,20 +124,19 @@ router.beforeEach(async (to, from, next) => {
         return;
     }
 
-    if (!store.getters['user/getUser'].isAuthenticated && to.name === 'home' || to.name === 'list-vehicle' || to.name == 'payment') {
+    if (!store.getters['user/getIsAuthenticated'] && to.name === 'home' || to.name === 'list-vehicle' || to.name == 'payment') {
+        next();
+        return;
+    }
+    if (store.getters['user/getIsAuthenticated'] && to.meta.admin && !to.meta.guest && store.getters['user/getUser'].role === 'ADMIN') {
         next();
         return;
     }
 
-    if (store.getters['user/getUser'].isAuthenticated && to.meta.admin && !to.meta.guest && store.getters['user/getUser'].role === 'ADMIN') {
+    if (store.getters['user/getIsAuthenticated'] && to.meta.admin && to.meta.guest && store.getters['user/getUser'].role === 'USER') {
         next();
         return;
-    }
-
-    if (store.getters['user/getUser'].isAuthenticated && to.meta.admin && to.meta.guest && store.getters['user/getUser'].role === 'USER') {
-        next();
-        return;
-    } else if (store.getters['user/getUser'].isAuthenticated && !to.meta.guest) {
+    } else if (store.getters['user/getIsAuthenticated'] && !to.meta.guest) {
         next('/dashboard');
         return;
     }
@@ -100,16 +144,15 @@ router.beforeEach(async (to, from, next) => {
     if (to.matched.some(record => record.meta.admin)) {
         const token = localStorage.getItem('token');
 
-        if (!token) {
+        if (!token && !store.getters['user/getIsAuthenticated']) {
             localStorage.clear();
             next('/login');
             return;
         }
-
         next()
     } else {
         next()
     }
-})
+});
 
 export default router;

@@ -71,6 +71,8 @@ export default {
                 localStorage.setItem('token', response.data.token);
 
                 this.$store.commit('user/setUser', response.data);
+                
+                this.$store.commit('user/setIsAuthenticated', true);
 
                 this.$router.push('/dashboard');
             } catch (error) {
