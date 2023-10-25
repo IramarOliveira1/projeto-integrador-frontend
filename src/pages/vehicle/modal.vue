@@ -24,8 +24,8 @@
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Placa" name="placa"
-                            :rules="[{ required: true, message: 'Campo placa é obrigatório' }]">
-                            <a-input v-model:value="data.placa" v-mask="'AAA-####'" />
+                            :rules="[{ required: true, message: 'Campo placa � obrigat�rio' }]">
+                            <a-input v-model:value="data.placa" v-mask="'AAA-#X##'" />
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">

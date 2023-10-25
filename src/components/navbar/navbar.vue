@@ -36,7 +36,7 @@
                     <div
                         v-if="this.$store.getters['user/getIsAuthenticated'] && this.$store.getters['user/getUser'].role === 'ADMIN'">
                         <router-link to="/clientes">
-                            <a-menu-item key="client">Cliente</a-menu-item>
+                                <a-menu-item key="client">Cliente</a-menu-item>
                         </router-link>
                         
                         <router-link to="/funcionarios">

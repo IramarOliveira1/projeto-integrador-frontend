@@ -82,6 +82,10 @@
     width: 18%;
 }
 
+.button-filter-dashboard>button:nth-child(2) {
+    margin-left: 20px;
+}
+
 @media only screen and (max-width: 579px) {
     .button-filter-general {
         width: 100%;
@@ -104,6 +108,15 @@
 
     .button-payment-finish>.active {
         width: 100%;
+    }
+
+    .button-filter-dashboard>button {
+        width: 100%;
+    }
+
+    .button-filter-dashboard>button:nth-child(2) {
+        margin-left: 0;
+        margin-top: 20px;
     }
 }
 
@@ -372,7 +385,6 @@
     }
 
 }
-
 
 .pagination {
     text-align: end;

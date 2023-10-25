@@ -24,8 +24,8 @@
                 </a-card-meta>
 
                 <a-button type="primary" html-type="submit" class="button-select-vehicle"
-                    :disabled="!this.$store.getters['user/getUser'].isAuthenticated" @click="chooseVehicle(vehicle)"> {{
-                        this.$store.getters['user/getUser'].isAuthenticated ? 'ESCOLHER VEICULO' : 'FAZER LOGIN' }} </a-button>
+                    :disabled="!this.$store.getters['user/getIsAuthenticated'] " @click="chooseVehicle(vehicle)"> {{
+                        this.$store.getters['user/getIsAuthenticated']  ? 'ESCOLHER VEICULO' : 'FAZER LOGIN' }} </a-button>
             </a-card>
         </div>
     </div>

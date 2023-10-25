@@ -127,7 +127,7 @@
                             parseFloat(reserves.payment.preco
                             ).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}</h3>
                         <h3><strong>Tipo de pagamento:</strong> {{ reserves.payment.tipo_pagamento.nome }}</h3>
-                        <h3 v-if="reserves.dateDevolution"><strong>Data Devolucao: </strong>{{
+                        <h3 v-if="reserves.dateDevolution"><strong>Data quando o veiculo foi devolvido: </strong>{{
                             new Date(reserves.dateDevolution).toLocaleDateString('pt-BR') }}
                         </h3>
                     </div>
@@ -199,6 +199,7 @@ export default {
                 if (page) {
                     this.page = page - 1;
                 }
+
                 await this.$store.dispatch('reserve/all', { page: this.page ?? page });
 
             } catch (error) {
@@ -209,7 +210,7 @@ export default {
         async startRent(id) {
             try {
 
-                const response = await this.$store.dispatch('reserve/startRent', { idReserve: id, idUser: this.$store.getters['user/getUser'].id });
+                const response = await this.$store.dispatch('reserve/startRent', { idReserve: id, page: this.page });
 
                 this.$notification.notification(response.status, response.data.message);
             } catch (error) {
@@ -219,7 +220,7 @@ export default {
         async endRent(id) {
             try {
 
-                const response = await this.$store.dispatch('reserve/endRent', { idReserve: id, idUser: this.$store.getters['user/getUser'].id });
+                const response = await this.$store.dispatch('reserve/endRent', { idReserve: id, page: this.page });
 
                 this.$notification.notification(response.status, response.data.message);
             } catch (error) {
@@ -232,7 +233,7 @@ export default {
 
                 this.idLoding = id;
 
-                const response = await this.$store.dispatch('reserve/cancellationRent', { idReserve: id, idUser: this.$store.getters['user/getUser'].id });
+                const response = await this.$store.dispatch('reserve/cancellationRent', { idReserve: id, page: this.page });
 
                 this.loading = false;
 
@@ -270,8 +271,8 @@ export default {
         },
 
         async clearFilter() {
-            await this.$store.dispatch('reserve/all', { page: this.page, idUser: this.$store.getters['user/getUser'].id });
-
+            this.all();
+            this.current = 1;
             this.$store.commit('generic/setFilterExits', false);
             this.status.label = null
             this.code = null;

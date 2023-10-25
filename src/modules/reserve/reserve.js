@@ -51,7 +51,7 @@ const reserve = {
 
             const response = await axios.post(`reserve/startRent/${data.idReserve}`);
 
-            dispatch('all', data.idUser);
+            dispatch('all', { page: data.page });
 
             return response;
         },
@@ -59,7 +59,7 @@ const reserve = {
 
             const response = await axios.post(`reserve/endRent/${data.idReserve}`);
 
-            dispatch('all', data.idUser);
+            dispatch('all', { page: data.page });
 
             return response;
         },
@@ -67,7 +67,7 @@ const reserve = {
 
             const response = await axios.post(`reserve/cancellation/${data.idReserve}`);
 
-            dispatch('all', data.idUser);
+            dispatch('all', { page: data.page });
 
             return response;
         },
