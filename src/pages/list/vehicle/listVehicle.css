@@ -1,0 +1,60 @@
+.card-vehicles {
+    display: grid;
+    grid-template-columns: 35% 35% 35%;
+    justify-content: center;
+}
+
+.card-vehicles .ant-card {
+    margin: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+    .card-vehicles {
+        display: grid;
+        grid-template-columns: 120%;
+        justify-content: center;
+    }
+}
+
+
+.ant-card-head-wrapper .ant-card-head-title {
+    text-align: center;
+    font-weight: bold;
+}
+
+.ant-card-body .ant-card-meta-title {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.ant-card-meta-detail .ant-card-meta-description {
+    text-align: center;
+}
+
+
+.image-card-vehicles {
+    width: 60% !important;
+    margin: 0 auto;
+}
+
+
+.button-select-vehicle {
+    margin-top: 20px;
+    width: 100%;
+    margin-top: 10px;
+    background-color: #001529;
+}
+
+
+.button-select-vehicle:hover {
+    background-color: #062441 !important;
+}
+
+.button-select-vehicle:disabled {
+    background-color: gray !important;
+}
+
+.card-vehicles>.ant-card {
+    box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09) !important;
+    margin-bottom: 30px;
+}

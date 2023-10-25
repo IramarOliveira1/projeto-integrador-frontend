@@ -13,7 +13,7 @@
                     </div>
 
                     <a-form-item label="E-mail" name="email"
-                        :rules="[{ required: true, message: 'Campo e-mail é obrigatório' }]">
+                        :rules="[{ required: true, message: 'Campo e-mail Ã© obrigatÃ³rio' }]">
                         <a-input v-model:value="data.email" size="large" />
                     </a-form-item>
 

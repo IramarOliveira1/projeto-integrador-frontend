@@ -4,9 +4,9 @@
             <a-row class="row-filter-general">
 
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 8 }">
-                    <a-form-item label="FILTRAR POR TIPO DE COBERTURA" name="tipo"
+                    <a-form-item label="FILTRAR POR TIPO DE COBERTURA" name="nome"
                         :rules="[{ required: true, message: 'Campo filtrar � obrigat�rio!' }]">
-                        <a-input v-model:value="data.tipo" size="large" />
+                        <a-input v-model:value="data.nome" size="large" />
                     </a-form-item>
                 </a-col>
 
@@ -71,7 +71,7 @@ export default {
     data() {
         return {
             data: {
-                tipo: null,
+                nome: null,
             },
             columns: [
                 {
@@ -82,7 +82,7 @@ export default {
                 },
                 {
                     title: 'Tipo',
-                    dataIndex: 'tipo',
+                    dataIndex: 'nome',
                     width: '20%',
                 },
                 {

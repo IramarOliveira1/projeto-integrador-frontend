@@ -43,16 +43,6 @@
     background-color: #404dac !important;
 }
 
-@media only screen and (max-width: 768px) {
-    .image-init {
-        display: none;
-    }
-
-    .form-init {
-        width: 100% !important;
-    }
-}
-
 .title h2 {
     color: #222358
 }
@@ -67,7 +57,7 @@
 }
 
 .container-main {
-    padding: 0 10%;
+    padding: 1px 10%;
 }
 
 .navbar {
@@ -79,13 +69,21 @@
     margin-left: 20px;
 }
 
-.button-filter-dashboard>button:nth-child(2) {
+.button-payment-finish button:nth-last-child(1) {
+    background-color: #12aa52;
     margin-left: 20px;
 }
 
+.button-payment-finish button:nth-last-child(1):hover {
+    background-color: #18d568;
+}
 
-.button-filter-dashboard {
-    margin-bottom: 20px;
+.button-payment-finish>.active {
+    width: 18%;
+}
+
+.button-filter-dashboard>button:nth-child(2) {
+    margin-left: 20px;
 }
 
 @media only screen and (max-width: 579px) {
@@ -94,7 +92,25 @@
         margin: 0;
     }
 
-    .button-filter-dashboard>button{
+    .button-payment-finish {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .button-payment-finish button {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .button-payment-finish button:nth-last-child(1) {
+        margin-left: 0;
+    }
+
+    .button-payment-finish>.active {
+        width: 100%;
+    }
+
+    .button-filter-dashboard>button {
         width: 100%;
     }
 
@@ -117,6 +133,20 @@
     display: flex;
     align-items: center;
     justify-content: end;
+}
+
+.button-filter-reserve {
+    margin-top: 30px;
+    width: 40%;
+}
+
+
+
+
+@media only screen and (max-width: 1471px) {
+    .button-filter-reserve {
+        margin-top: 0;
+    }
 }
 
 @media only screen and (max-width: 1200px) {
@@ -171,6 +201,54 @@
     justify-content: end;
 }
 
+.steps {
+    margin-bottom: 50px;
+}
+
+.header-list-vehicle {
+    margin-bottom: 50px;
+}
+
+.button-continue {
+    width: 18%;
+    background-color: #303D97;
+    margin-bottom: 30px;
+}
+
+.button-continue:hover {
+    background-color: #404dac !important;
+}
+
+.button-back {
+    width: 14%;
+    margin-right: 14px;
+}
+
+.selected-insurance .ant-select {
+    display: flex;
+    margin-bottom: 20px;
+    width: 33%;
+}
+
+.extra button:nth-child(2) {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.extra .button-finish {
+    margin-right: 10px;
+}
+
+.filter-code {
+    margin-left: 20px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .filter-code {
+        margin-left: 0px;
+    }
+}
+
 @media only screen and (max-width: 768px) {
     .div-button-update-profile {
         display: flex;
@@ -191,5 +269,124 @@
         margin-bottom: 100px;
     }
 
+    .header-list-vehicle {
+        font-size: 10px;
+        margin-bottom: 20px;
+    }
+
+    .button-continue {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .group-button-payment {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .button-back {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .selected-insurance .ant-select {
+        width: 100%;
+    }
+
+    .image-init {
+        display: none;
+    }
+
+    .form-init {
+        width: 100% !important;
+    }
+
+    .extra button:nth-child(2) {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .ellipsis h3 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .button-filter-reserve {
+        margin-top: 10px;
+        width: 100%;
+    }
 }
 
+.colorValue {
+    color: #12aa52;
+}
+
+.title-payment {
+    background-color: #E6E6E6;
+    color: #383838;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.color-title h3 {
+    color: #383838
+}
+
+.total {
+    display: flex;
+    align-items: center;
+}
+
+.total h3:nth-child(2) {
+    margin-left: 10px;
+    font-weight: bold;
+    color: #12aa52
+}
+
+.vehicle-payment img {
+    width: 10% !important;
+}
+
+.button-payment-finish {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-top: 20px;
+}
+
+.card-item {
+    margin-bottom: 50px;
+}
+
+@media only screen and (max-width: 620px) {
+
+    .extra button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .extra .button-finish {
+        margin-right: 0;
+    }
+
+    span.ant-tag {
+        text-align: center;
+        width: 100%;
+    }
+
+    .ant-collapse-extra {
+        width: 100%;
+    }
+
+    .ant-collapse-header {
+        display: flex;
+        flex-direction: column;
+    }
+
+}
+
+.pagination {
+    text-align: end;
+    margin-bottom: 20px;
+}

@@ -8,13 +8,13 @@
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Marca" name="marca"
-                            :rules="[{ required: true, message: 'Campo marca � obrigat�rio' }]">
+                            :rules="[{ required: true, message: 'Campo marca é obrigatório' }]">
                             <a-input v-model:value="data.marca" />
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Modelo" name="modelo"
-                            :rules="[{ required: true, message: 'Campo modelo � obrigat�rio' }]">
+                            :rules="[{ required: true, message: 'Campo modelo é obrigatório' }]">
 
                             <a-select v-model:value="data.modelo.id" placeholder="Selecione um modelo" :options="models"
                                 :field-names="{ label: 'nome', value: 'id' }"></a-select>
@@ -30,7 +30,7 @@
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Ano" name="ano"
-                            :rules="[{ required: true, message: 'Campo ano � obrigat�rio' }]">
+                            :rules="[{ required: true, message: 'Campo ano é obrigatório' }]">
                             <a-input v-model:value="data.ano" type="number" min="0" />
                         </a-form-item>
                     </a-col>
@@ -39,16 +39,16 @@
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Cor" name="cor"
-                            :rules="[{ required: true, message: 'Campo cor � obrigat�rio' }]">
+                            :rules="[{ required: true, message: 'Campo cor é obrigatório' }]">
                             <a-input v-model:value="data.cor" />
                         </a-form-item>
                     </a-col>
 
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item label="Ag�ncia" name="agencia"
-                            :rules="[{ required: true, message: 'Campo agencia � obrigat�rio' }]">
+                        <a-form-item label="Agência" name="agencia"
+                            :rules="[{ required: true, message: 'Campo agencia é obrigatório' }]">
 
-                            <a-select v-model:value="data.agencia.id" placeholder="Selecione uma ag�ncia"
+                            <a-select v-model:value="data.agencia.id" placeholder="Selecione uma agência"
                                 :options="agencies" :field-names="{ label: 'nome', value: 'id' }"></a-select>
                         </a-form-item>
                     </a-col>
@@ -57,7 +57,7 @@
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Capacidade" name="capacidade"
-                            :rules="[{ required: true, message: 'Campo capacidade � obrigat�rio' }]">
+                            :rules="[{ required: true, message: 'Campo capacidade é obrigatório' }]">
                             <a-input v-model:value="data.capacidade" type="number" min="0" />
                         </a-form-item>
                     </a-col>
@@ -142,6 +142,8 @@ export default {
 
                 this.$notification.notification(response.status, response.data.message);
 
+                this.$store.commit('generic/setFilterExits', false);
+
                 this.closeModal();
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
@@ -154,6 +156,8 @@ export default {
                 const response = await this.$store.dispatch('vehicle/update', { id: this.$props.idEdit, data });
 
                 this.$notification.notification(response.status, response.data.message);
+
+                this.$store.commit('generic/setFilterExits', false);
 
                 this.closeModal();
             } catch (error) {

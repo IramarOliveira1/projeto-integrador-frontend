@@ -18,11 +18,11 @@ export default function notifications(status, message) {
                 description: message,
             });
 
-            if (router.currentRoute.value.path !== '/login') {
-                store.commit('isAuthenticated', false);
-                localStorage.clear();
-                router.push('/login')
-            }
+            // if (router.currentRoute.value.path !== '/login') {
+            //     store.commit('isAuthenticated', false);
+            //     localStorage.clear();
+            //     router.push('/login')
+            // }
             break;
 
         case 400:

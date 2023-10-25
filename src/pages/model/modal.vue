@@ -173,6 +173,8 @@ export default {
 
                 this.removeImage();
 
+                this.$store.commit('generic/setFilterExits', false);
+
                 this.closeModal();
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
@@ -187,6 +189,8 @@ export default {
                 this.$notification.notification(response.status, response.data.message);
 
                 this.removeImage();
+
+                this.$store.commit('generic/setFilterExits', false);
 
                 this.closeModal();
             } catch (error) {
