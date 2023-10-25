@@ -1,6 +1,6 @@
 <template>
     <div class="container-main">
-        <a-form layout="vertical" ref="form" name="basic" :model="data" @finish="filter" :hideRequiredMark="true" v-if="this.$store.getters.getUserLogin.role === 'ADMIN'">
+        <a-form layout="vertical" ref="form" name="basic" :model="data" @finish="filter" :hideRequiredMark="true" v-if="this.$store.getters['user/getUser'].role === 'ADMIN'">
             <a-form-item label="FILTRAR FATURAMENTO POR PERIODO" name="date"
                 :rules="[{ required: true, message: 'Campo filtrar � obrigat�rio!' }]">
                 <a-range-picker v-model:value="data.date" :disabled-date="disabledDate" @change="onChange"
@@ -13,11 +13,11 @@
             </div>
         </a-form>
 
-        <div id="donut" v-if="this.$store.getters.getUserLogin.role === 'ADMIN'">
-            <h3>Faturamento mensal do ano atual por 12 meses.</h3>
+        <div id="donut" v-if="this.$store.getters['user/getUser'].role === 'ADMIN'">
+            <h3 style="margin-top: 20px;">Faturamento mensal do ano atual por 12 meses.</h3>
             <apexchart ref="chart" type="bar" height="350" :options="barHorizontalOptions" :series="barHorizontal" />
         </div>
-        <div id="bar">
+        <div id="bar" style="margin-bottom: 20px;">
             <h3>Quantidade de veiculo alugado por mes</h3>
             <apexchart ref="chart" type="bar" height="350" :options="barOptions" :series="bar" />
         </div>
@@ -184,7 +184,7 @@ export default {
         },
         async index() {
             try {
-                const response = await axios.get(`/dashboard/${this.$store.getters.getUserLogin.id}`);
+                const response = await axios.get(`/dashboard/${this.$store.getters['user/getUser'].id}`);
 
                 response.data.map(index => {
                     this.bar[0].data.push((index.amountTotal));

@@ -6,16 +6,16 @@
             <a-form layout="vertical" ref="form" name="basic" :model="data" @finish="save" :hideRequiredMark="true">
                 <a-row>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 24 }" :xl="{ span: 24 }">
-                        <a-form-item label="Tipo de Cobertura" name="tipo"
+                        <a-form-item label="Tipo de Cobertura" name="nome"
                             :rules="[{ required: true, message: 'Campo tipo é obrigat�rio' }]">
-                            <a-input v-model:value="data.tipo" />
+                            <a-input v-model:value="data.nome" />
                         </a-form-item>
                     </a-col>
 
                     <a-col :xs="{ span: 24 }" :sm="{ span: 24 }" :xl="{ span: 24 }">
                         <a-form-item label="Preço" name="preco"
                             :rules="[{ required: true, message: 'Campo preço é obrigat�rio' }]">
-                            <a-input v-model:value="data.preco" v-money="money"  />
+                            <a-input v-model:value="data.preco" v-money="money" />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -83,6 +83,8 @@ export default {
 
                 this.$notification.notification(response.status, response.data.message);
 
+                this.$store.commit('generic/setFilterExits', false);
+                
                 this.closeModal();
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
@@ -96,6 +98,8 @@ export default {
 
                 this.$notification.notification(response.status, response.data.message);
 
+                this.$store.commit('generic/setFilterExits', false);
+
                 this.closeModal();
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
@@ -105,7 +109,7 @@ export default {
         closeModal(close) {
             this.$refs['form'].clearValidate();
 
-            this.$store.commit('insurance/clearForm', { tipo: null, preco: null, });
+            this.$store.commit('insurance/clearForm', { nome: null, preco: null, });
 
             this.$emit('close', close);
         },

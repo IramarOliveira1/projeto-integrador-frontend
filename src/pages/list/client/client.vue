@@ -5,7 +5,7 @@
 
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 8 }">
                     <a-form-item label="FILTRAR POR NOME OU CPF" name="nameOrCpf"
-                        :rules="[{ required: true, message: 'Campo filtrar é obrigatório!' }]">
+                        :rules="[{ required: true, message: 'Campo filtrar ï¿½ obrigatï¿½rio!' }]">
                         <a-input v-model:value="data.nameOrCpf" size="large" />
                     </a-form-item>
                 </a-col>
@@ -39,7 +39,7 @@
                     <a-button @click="index(record.id)">
                         <EditTwoTone />
                     </a-button>
-                    <a-popconfirm title="Deseja realmente excluir esse registro ?" ok-text="Sim" cancel-text="Não"
+                    <a-popconfirm title="Deseja realmente excluir esse registro ?" ok-text="Sim" cancel-text="Nï¿½o"
                         @confirm="destroy(record.id)">
                         <a-button>
                             <DeleteTwoTone two-tone-color="#ef3413" />
@@ -103,7 +103,7 @@ export default {
     computed: {
         getUsers: {
             get() {
-                return this.$store.getters.getUsers;
+                return this.$store.getters['user/getUsers'];
             }
         },
 
@@ -116,7 +116,7 @@ export default {
     mounted() {
 
         this.$store.commit('generic/setFilterExits', false);
-        this.$store.dispatch('getUsers', {
+        this.$store.dispatch('user/all', {
             role: 'USER'
         });
     },
@@ -124,7 +124,7 @@ export default {
 
         async index(id) {
             try {
-                await this.$store.dispatch('index', id);
+                await this.$store.dispatch('user/index', id);
 
                 this.$store.commit('generic/setModalEdit', true);
 
@@ -138,7 +138,7 @@ export default {
         async filter(data) {
             try {
 
-                await this.$store.dispatch('filter', { data: data.nameOrCpf, role: 'USER' });
+                await this.$store.dispatch('user/filter', { data: data.nameOrCpf, role: 'USER' });
 
                 this.data.nameOrCpf = null;
 
@@ -149,14 +149,14 @@ export default {
         },
 
         async clearFilter() {
-            this.$store.dispatch('getUsers', { role: 'USER' });
+            this.$store.dispatch('user/all', { role: 'USER' });
 
             this.$store.commit('generic/setFilterExits', false);
         },
 
         async destroy(id) {
             try {
-                const response = await this.$store.dispatch('destroy', { id: id, role: 'USER' });
+                const response = await this.$store.dispatch('user/destroy', { id: id, role: 'USER' });
 
                 this.$notification.notification(response.status, response.data.message);
 

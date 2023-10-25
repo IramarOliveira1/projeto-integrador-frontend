@@ -37,7 +37,8 @@
             <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'action'">
 
-                    <a-tooltip :title="record.id === getUser.id ? 'Para atualizar ou excluir cadastro entre na aba de perfil.' : ''">
+                    <a-tooltip
+                        :title="record.id === getUser.id ? 'Para atualizar ou excluir cadastro entre na aba de perfil.' : ''">
                         <a-button @click="index(record.id)" :disabled="record.id === getUser.id">
                             <EditTwoTone />
                         </a-button>
@@ -108,12 +109,12 @@ export default {
     computed: {
         getUsers: {
             get() {
-                return this.$store.getters.getUsers;
+                return this.$store.getters['user/getUsers'];
             }
         },
         getUser: {
             get() {
-                return this.$store.getters.getUserLogin;
+                return this.$store.getters['user/getUser'];
             }
         },
         buttonFilter: {
@@ -125,14 +126,14 @@ export default {
     mounted() {
 
         this.$store.commit('generic/setFilterExits', false);
-        this.$store.dispatch('getUsers', {
+        this.$store.dispatch('user/all', {
             role: 'ADMIN'
         });
     },
     methods: {
         async index(id) {
             try {
-                await this.$store.dispatch('index', id);
+                await this.$store.dispatch('user/index', id);
 
                 this.$store.commit('generic/setModalEdit', true);
 
@@ -145,7 +146,7 @@ export default {
         async filter(data) {
             try {
 
-                await this.$store.dispatch('filter', { data: data.nameOrCpf, role: 'ADMIN' });
+                await this.$store.dispatch('user/filter', { data: data.nameOrCpf, role: 'ADMIN' });
 
                 this.data.nameOrCpf = null;
 
@@ -156,9 +157,9 @@ export default {
         },
 
         async clearFilter() {
-            this.$store.dispatch('getUsers', { role: 'ADMIN' });
+            this.$store.dispatch('user/all', { role: 'ADMIN' });
 
-            this.$store.commit('generic/setFilterExits', true);
+            this.$store.commit('generic/setFilterExits', false);
         },
 
         async destroy(id) {

@@ -6,6 +6,7 @@ import notifications from '../../helpers/notification/notification.js';
 const home = {
     namespaced: true,
     state: {
+        vehicles: [],
         data: {
             startDate: null,
             endDate: null,
@@ -14,7 +15,7 @@ const home = {
             },
             devolution: {
                 id: null
-            }
+            },
         },
         agencies: []
     },
@@ -26,8 +27,9 @@ const home = {
         getData(state) {
             return state.data;
         },
-        getAgencyDevolution(state) {
-            return state.data.endDate;
+
+        getVehicles(state) {
+            return state.vehicles;
         },
     },
 
@@ -39,8 +41,9 @@ const home = {
         setData(state, payload) {
             return state.data = payload;
         },
-        setAgencyDevolution(state, payload) {
-            return state.data.endDate = payload;
+
+        setVehicles(state, payload) {
+            return state.vehicles = payload;
         },
 
         clearForm(state, payload) {
@@ -49,7 +52,6 @@ const home = {
     },
 
     actions: {
-
         async all({ commit }) {
             try {
 
@@ -62,13 +64,10 @@ const home = {
         },
 
 
-        async search({ dispatch }, data) {
-
+        async search({ }, data) {
             const response = await axios.post('/vehicle/home', data);
 
-            console.log(response.data);
-            // dispatch('all');
-            return response;
+            return response
         },
     }
 }
