@@ -186,7 +186,6 @@
 import { MenuUnfoldOutlined } from '@ant-design/icons-vue';
 
 import './navbar.css'
-import { h } from 'vue';
 export default {
     components: {
         MenuUnfoldOutlined
@@ -195,51 +194,6 @@ export default {
         return {
             toggle: false,
             width: 0,
-            items: [
-                {
-                    key: 'sub1',
-                    // icon: () => h(SettingOutlined),
-                    label: 'Reserva',
-                    title: 'Navigation Three - Submenu',
-                    children: [
-                        {
-                            type: 'group',
-                            label: 'Item 1',
-                            children: [
-                                {
-                                    label: h(
-                                        'a',
-                                        {
-                                            onClick: () => this.$router.push('reserva')
-                                        },
-                                        'Minhas Reservas',
-                                    ),
-                                    key: 'setting:1',
-                                },
-                                {
-                                    label: 'Option 2',
-                                    key: 'setting:2',
-                                },
-                            ],
-                        },
-                        {
-                            type: 'group',
-                            label: 'Item 2',
-                            children: [
-                                {
-                                    label: 'Option 3',
-                                    key: 'setting:3',
-                                },
-                                {
-                                    label: 'Option 4',
-                                    key: 'setting:4',
-                                },
-                            ],
-                        },
-                    ],
-                },
-
-            ]
         }
     },
     computed: {
