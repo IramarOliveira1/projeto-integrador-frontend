@@ -28,39 +28,68 @@
                             <a-menu-item key="profile">Perfil</a-menu-item>
                         </router-link>
 
-                        <router-link to="/minhas-reservas">
-                            <a-menu-item key="reserveUser">Minhas Reservas</a-menu-item>
+                        <router-link to="#">
+                            <a-sub-menu key="sub1">
+                                <template #title>
+                                    <span>
+                                        Reserva
+                                    </span>
+                                </template>
+                                <router-link to="/minhas-reservas">
+                                    <a-menu-item key="reserveUser">Minhas Reservas</a-menu-item>
+                                </router-link>
+                                <div
+                                    v-if="this.$store.getters['user/getIsAuthenticated'] && this.$store.getters['user/getUser'].role === 'ADMIN'">
+                                    <router-link to="/reservas">
+                                        <a-menu-item key="reserve">Reservas Clientes</a-menu-item>
+                                    </router-link>
+                                </div>
+                            </a-sub-menu>
                         </router-link>
                     </div>
 
                     <div
                         v-if="this.$store.getters['user/getIsAuthenticated'] && this.$store.getters['user/getUser'].role === 'ADMIN'">
-                        <router-link to="/clientes">
-                                <a-menu-item key="client">Cliente</a-menu-item>
-                        </router-link>
-                        
-                        <router-link to="/funcionarios">
-                            <a-menu-item key="employee">Funcionário</a-menu-item>
+                        <router-link to="#">
+                            <a-sub-menu key="sub2">
+                                <template #title>
+                                    <span>
+                                        Cliente
+                                    </span>
+                                </template>
+                                <router-link to="/clientes">
+                                    <a-menu-item key="client">Cliente</a-menu-item>
+                                </router-link>
+
+                                <router-link to="/funcionarios">
+                                    <a-menu-item key="employee">Funcionário</a-menu-item>
+                                </router-link>
+                            </a-sub-menu>
                         </router-link>
 
-                        <router-link to="/seguros">
-                            <a-menu-item key="insurance">Seguro</a-menu-item>
-                        </router-link>
+                        <router-link to="#">
+                            <a-sub-menu key="sub3">
+                                <template #title>
+                                    <span>
+                                        Veiculo
+                                    </span>
+                                </template>
+                                <router-link to="/modelos">
+                                    <a-menu-item key="model">Modelo</a-menu-item>
+                                </router-link>
 
-                        <router-link to="/modelos">
-                            <a-menu-item key="model">Modelo</a-menu-item>
-                        </router-link>
+                                <router-link to="/carros">
+                                    <a-menu-item key="vehicle">Veiculo</a-menu-item>
+                                </router-link>
 
-                        <router-link to="/carros">
-                            <a-menu-item key="vehicle">Veiculo</a-menu-item>
-                        </router-link>
+                                <router-link to="/seguros">
+                                    <a-menu-item key="insurance">Seguro</a-menu-item>
+                                </router-link>
 
-                        <router-link to="/agencias">
-                            <a-menu-item key="agency">Agência</a-menu-item>
-                        </router-link>
-
-                        <router-link to="/reservas">
-                            <a-menu-item key="reserve">Reservas</a-menu-item>
+                                <router-link to="/agencias">
+                                    <a-menu-item key="agency">Agência</a-menu-item>
+                                </router-link>
+                            </a-sub-menu>
                         </router-link>
                     </div>
 
@@ -75,7 +104,6 @@
                             <a-menu-item key="login">Login</a-menu-item>
                         </router-link>
                     </div>
-
                 </a-menu>
             </div>
 
@@ -158,6 +186,7 @@
 import { MenuUnfoldOutlined } from '@ant-design/icons-vue';
 
 import './navbar.css'
+import { h } from 'vue';
 export default {
     components: {
         MenuUnfoldOutlined
@@ -166,6 +195,51 @@ export default {
         return {
             toggle: false,
             width: 0,
+            items: [
+                {
+                    key: 'sub1',
+                    // icon: () => h(SettingOutlined),
+                    label: 'Reserva',
+                    title: 'Navigation Three - Submenu',
+                    children: [
+                        {
+                            type: 'group',
+                            label: 'Item 1',
+                            children: [
+                                {
+                                    label: h(
+                                        'a',
+                                        {
+                                            onClick: () => this.$router.push('reserva')
+                                        },
+                                        'Minhas Reservas',
+                                    ),
+                                    key: 'setting:1',
+                                },
+                                {
+                                    label: 'Option 2',
+                                    key: 'setting:2',
+                                },
+                            ],
+                        },
+                        {
+                            type: 'group',
+                            label: 'Item 2',
+                            children: [
+                                {
+                                    label: 'Option 3',
+                                    key: 'setting:3',
+                                },
+                                {
+                                    label: 'Option 4',
+                                    key: 'setting:4',
+                                },
+                            ],
+                        },
+                    ],
+                },
+
+            ]
         }
     },
     computed: {
