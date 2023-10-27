@@ -167,7 +167,7 @@ export default {
         },
 
         showModal() {
-            this.$store.commit('clearForm', {
+            this.$store.commit('user/clearForm', {
                 name: null, email: null, password: null, cpf: null, phone: null, address: {
                     address: null, zipcode: '', uf: null, city: null, neighborhood: null,
                 }

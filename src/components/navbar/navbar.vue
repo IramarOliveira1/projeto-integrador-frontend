@@ -1,7 +1,6 @@
 <template>
     <a-layout class="layout navbar">
         <a-layout-header>
-
             <div class="button-toggle">
                 <a-button @click="openToggle">
                     <MenuUnfoldOutlined />
@@ -54,7 +53,7 @@
                             <a-sub-menu key="sub2">
                                 <template #title>
                                     <span>
-                                        Cliente
+                                        Usuários
                                     </span>
                                 </template>
                                 <router-link to="/clientes">
@@ -71,7 +70,7 @@
                             <a-sub-menu key="sub3">
                                 <template #title>
                                     <span>
-                                        Veiculo
+                                        Veículos
                                     </span>
                                 </template>
                                 <router-link to="/modelos">
