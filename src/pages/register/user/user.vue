@@ -123,7 +123,7 @@ export default {
     computed: {
         data: {
             get() {
-                return this.$store.getters.getUser;
+                return this.$store.getters['user/getData'];
             },
         }
     },
@@ -131,11 +131,11 @@ export default {
         async save(data) {
             try {
 
-                const response = await this.$store.dispatch('save', { data: data, role: 'USER' });
+                const response = await this.$store.dispatch('user/save', { data: data, role: 'USER' });
 
                 this.$notification.notification(response.status, response.data.message);
 
-                this.$store.commit('clearForm', {
+                this.$store.commit('user/clearForm', {
                     name: null, email: null, password: null, cpf: null, phone: null, address: {
                         address: null, zipcode: '', uf: null, city: null, neighborhood: null,
                     }
@@ -150,7 +150,7 @@ export default {
         async viaCep() {
             try {
                 if (this.data.address.zipcode.length >= 9) {
-                    await this.$store.dispatch('viaCep', this.data.address);
+                    await this.$store.dispatch('user/viaCep', this.data.address);
                 }
             } catch (error) {
                 this.$notification.notification(400, "CEP inv�lido!");
