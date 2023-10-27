@@ -1,7 +1,6 @@
 <template>
     <a-layout class="layout navbar">
         <a-layout-header>
-
             <div class="button-toggle">
                 <a-button @click="openToggle">
                     <MenuUnfoldOutlined />
@@ -28,39 +27,68 @@
                             <a-menu-item key="profile">Perfil</a-menu-item>
                         </router-link>
 
-                        <router-link to="/minhas-reservas">
-                            <a-menu-item key="reserveUser">Minhas Reservas</a-menu-item>
+                        <router-link to="#">
+                            <a-sub-menu key="sub1">
+                                <template #title>
+                                    <span>
+                                        Reserva
+                                    </span>
+                                </template>
+                                <router-link to="/minhas-reservas">
+                                    <a-menu-item key="reserveUser">Minhas Reservas</a-menu-item>
+                                </router-link>
+                                <div
+                                    v-if="this.$store.getters['user/getIsAuthenticated'] && this.$store.getters['user/getUser'].role === 'ADMIN'">
+                                    <router-link to="/reservas">
+                                        <a-menu-item key="reserve">Reservas Clientes</a-menu-item>
+                                    </router-link>
+                                </div>
+                            </a-sub-menu>
                         </router-link>
                     </div>
 
                     <div
                         v-if="this.$store.getters['user/getIsAuthenticated'] && this.$store.getters['user/getUser'].role === 'ADMIN'">
-                        <router-link to="/clientes">
-                                <a-menu-item key="client">Cliente</a-menu-item>
-                        </router-link>
-                        
-                        <router-link to="/funcionarios">
-                            <a-menu-item key="employee">Funcionário</a-menu-item>
+                        <router-link to="#">
+                            <a-sub-menu key="sub2">
+                                <template #title>
+                                    <span>
+                                        Usu�rios
+                                    </span>
+                                </template>
+                                <router-link to="/clientes">
+                                    <a-menu-item key="client">Cliente</a-menu-item>
+                                </router-link>
+
+                                <router-link to="/funcionarios">
+                                    <a-menu-item key="employee">Funcionário</a-menu-item>
+                                </router-link>
+                            </a-sub-menu>
                         </router-link>
 
-                        <router-link to="/seguros">
-                            <a-menu-item key="insurance">Seguro</a-menu-item>
-                        </router-link>
+                        <router-link to="#">
+                            <a-sub-menu key="sub3">
+                                <template #title>
+                                    <span>
+                                        Ve�culos
+                                    </span>
+                                </template>
+                                <router-link to="/modelos">
+                                    <a-menu-item key="model">Modelo</a-menu-item>
+                                </router-link>
 
-                        <router-link to="/modelos">
-                            <a-menu-item key="model">Modelo</a-menu-item>
-                        </router-link>
+                                <router-link to="/carros">
+                                    <a-menu-item key="vehicle">Veiculo</a-menu-item>
+                                </router-link>
 
-                        <router-link to="/carros">
-                            <a-menu-item key="vehicle">Veiculo</a-menu-item>
-                        </router-link>
+                                <router-link to="/seguros">
+                                    <a-menu-item key="insurance">Seguro</a-menu-item>
+                                </router-link>
 
-                        <router-link to="/agencias">
-                            <a-menu-item key="agency">Agência</a-menu-item>
-                        </router-link>
-
-                        <router-link to="/reservas">
-                            <a-menu-item key="reserve">Reservas</a-menu-item>
+                                <router-link to="/agencias">
+                                    <a-menu-item key="agency">Agência</a-menu-item>
+                                </router-link>
+                            </a-sub-menu>
                         </router-link>
                     </div>
 
@@ -75,7 +103,6 @@
                             <a-menu-item key="login">Login</a-menu-item>
                         </router-link>
                     </div>
-
                 </a-menu>
             </div>
 
