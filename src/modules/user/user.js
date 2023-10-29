@@ -5,10 +5,11 @@ import axiosLib from 'axios';
 import notifications from '../../helpers/notification/notification.js';
 
 const user = {
+    namespaced: true,
     state: {
-        userLogin: [],
-        isAuthenticated: false,
+        user: [],
         users: [],
+        isAuthenticated: false,
         data: {
             name: null,
             email: null,
@@ -27,69 +28,66 @@ const user = {
         },
     },
 
-    mutations: {
-        isAuthenticated(state, payload) {
-            state.isAuthenticated = payload;
+    getters: {
+        getData(state) {
+            return state.data;
         },
+
+        getUser(state) {
+            return state.user;
+        },
+
+        getUsers(state) {
+            return state.users;
+        },
+
+        getIsAuthenticated(state) {
+            return state.isAuthenticated;
+        },
+    },
+
+    mutations: {
         setUsers(state, payload) {
-            state.clients = payload;
+            state.users = payload;
         },
 
         setUser(state, payload) {
+            state.user = payload;
+        },
+
+        setData(state, payload) {
             state.data = payload;
         },
 
         clearForm(state, payload) {
             state.data = payload;
         },
-
-        setUserLogin(state, payload) {
-            state.userLogin = payload;
-        },
-    },
-
-    getters: {
-        isAuthenticated(state) {
-            return state.isAuthenticated;
-        },
-
-        getUsers(state) {
-            return state.clients;
-        },
-
-        getUser(state) {
-            return state.data;
-        },
-
-        getUserLogin(state) {
-            return state.userLogin;
+        setIsAuthenticated(state, payload) {
+            state.isAuthenticated = payload;
         },
     },
 
     actions: {
-        async getUser({ commit }, id) {
-            try {
+        async me({ commit }) {
 
-                const response = await axios.get(`/user/${id}`);
+            const response = await axios.get('/user/me');
 
-                commit('setUserLogin', response.data[0]);
+            commit('setUser', response.data);
 
-            } catch (error) {
-                notifications(error.response.status, 'token invalido')
-            }
+            commit('setIsAuthenticated', true);
         },
 
         async save({ dispatch, state }, data) {
             const request = { ...data.data, role: data.role }
             const response = await axios.post('/user/register', request);
 
-            if (state.isAuthenticated) {
-                dispatch('getUsers', data);
+            if (state.user.isAuthenticated) {
+                dispatch('all', data);
             }
             return response;
         },
 
-        async getUsers({ commit }, role) {
+        async all({ commit }, role) {
             try {
                 const response = await axios.get('/user/all', { params: { role: role.role } });
 
@@ -108,6 +106,7 @@ const user = {
         },
 
         async index({ commit }, id) {
+
             const response = await axios.get(`user/${id}`);
 
             const data = {
@@ -125,7 +124,9 @@ const user = {
                     address: response.data[0].address.logradouro
                 }
             }
-            commit('setUser', data);
+
+            commit('setData', data);
+
             return response;
         },
 
@@ -133,14 +134,15 @@ const user = {
 
             const response = await axios.put(`/user/${data.id}`, data.data);
 
-            dispatch('getUsers', data);
+            dispatch('all', data)
 
             return response;
         },
 
         async destroy({ dispatch }, data) {
             const response = await axios.delete(`user/${data.id}`);
-            dispatch('getUsers', data);
+
+            dispatch('all', data);
 
             return response;
         },

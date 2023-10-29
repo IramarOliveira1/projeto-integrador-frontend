@@ -13,7 +13,7 @@
                     </div>
 
                     <a-form-item label="E-mail" name="email"
-                        :rules="[{ required: true, message: 'Campo e-mail é obrigatório' }]">
+                        :rules="[{ required: true, message: 'Campo e-mail Ã© obrigatÃ³rio' }]">
                         <a-input v-model:value="data.email" size="large" />
                     </a-form-item>
 
@@ -22,8 +22,11 @@
                     </router-link>
 
                     <a-form-item>
-                        <a-button type="primary" html-type="submit" class="button-init" size="large">
-                            Continuar
+                        <a-button type="primary" html-type="submit" class="button-init" size="large" :disabled="loading">
+                            <a-spin v-if="data.loading" :indicator="data.indicator" />
+                            <div v-else>
+                                Continuar
+                            </div>
                         </a-button>
                     </a-form-item>
 
@@ -36,10 +39,21 @@
 <script>
 import axios from '../../services/api.js';
 
+import { LoadingOutlined } from '@ant-design/icons-vue';
+import { h } from 'vue';
 export default {
     data() {
         return {
+
             data: {
+                indicator: h(LoadingOutlined, {
+                    style: {
+                        fontSize: '22px',
+                        color: '#fff'
+                    },
+                    spin: true,
+                }),
+                loading: false,
                 email: null,
             }
         }
@@ -47,6 +61,7 @@ export default {
     methods: {
         async sendMail(data) {
             try {
+                this.data.loading = true;
 
                 const response = await axios.post('/user/send-mail', data);
 
@@ -55,6 +70,8 @@ export default {
                 this.$notification.notification(response.status, response.data.message);
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
+            } finally {
+                this.data.loading = false;
             }
         },
     },
