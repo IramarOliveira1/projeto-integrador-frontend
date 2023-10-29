@@ -61,9 +61,10 @@
 
                     <div class="detail-agency-start">
                         <h2>Dados da agencia de retirada</h2>
-                        <h3><strong>Data Retirada:</strong> {{ new
-                            Date(reserves.startDateRent).toLocaleDateString('pt-BR')
-                        }}
+                        <h3><strong>Data Retirada:</strong>
+                            {{
+                                `${reserves.startDateRent.split('-')[2]}/${reserves.startDateRent.split('-')[1]}/${reserves.startDateRent.split('-')[0]}`
+                            }}
                         </h3>
                         <h3><strong>Nome Agencia:</strong> {{ reserves.agencyRentInit.nome }} </h3>
                         <h3><strong>Endereco:</strong> {{ `${reserves.agencyRentInit.address.logradouro},
@@ -76,9 +77,10 @@
 
                     <div class="detail-agency-end">
                         <h2>Dados da agencia de devolucao</h2>
-                        <h3><strong>Data Devolucao:</strong> {{ new
-                            Date(reserves.endDateRent).toLocaleDateString('pt-BR')
-                        }}
+                        <h3><strong>Data Devolucao:</strong>
+                            {{
+                                `${reserves.endDateRent.split('-')[2]}/${reserves.endDateRent.split('-')[1]}/${reserves.endDateRent.split('-')[0]}`
+                            }}
                         </h3>
 
                         <h3><strong>Nome Agencia:</strong> {{ reserves.agencyRendEnd.nome }} </h3>
@@ -109,8 +111,10 @@
                             parseFloat(reserves.payment.preco
                             ).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}</h3>
                         <h3><strong>Tipo de pagamento:</strong> {{ reserves.payment.tipo_pagamento.nome }}</h3>
-                        <h3 v-if="reserves.dateDevolution"><strong>Data Devolucao: </strong>{{
-                            new Date(reserves.dateDevolution).toLocaleDateString('pt-BR') }}
+                        <h3 v-if="reserves.dateDevolution"><strong>Data Devolucao: </strong>
+                            {{
+                                `${reserves.dateDevolution.split('-')[2]}/${reserves.dateDevolution.split('-')[1]}/${reserves.dateDevolution.split('-')[0]}`
+                            }}
                         </h3>
                     </div>
                 </div>
@@ -203,7 +207,7 @@ export default {
             try {
 
                 if (!this.code) {
-                    return this.$notification.notification(400, 'Campo código é obrigatÃ³rio');
+                    return this.$notification.notification(400, 'Campo cï¿½digo ï¿½ obrigatÃ³rio');
                 }
 
                 await this.$store.dispatch('reserve/filterCode', { page: 0, code: this.code, idUser: this.$store.getters['user/getUser'].id });
