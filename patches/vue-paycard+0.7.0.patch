@@ -1,0 +1,343 @@
+diff --git a/node_modules/vue-paycard/src/components/VuePaycard.vue b/node_modules/vue-paycard/src/components/VuePaycard.vue
+index d340de8..b02de10 100644
+--- a/node_modules/vue-paycard/src/components/VuePaycard.vue
++++ b/node_modules/vue-paycard/src/components/VuePaycard.vue
+@@ -1,102 +1,51 @@
+ <template>
+-  <div
+-    class="card-item"
+-    :class="{ '-active': isCardFlipped }"
+-    v-if="labels && inputFields"
+-  >
++  <div class="card-item" :class="{ '-active': isCardFlipped }" v-if="labels && inputFields">
+     <div class="card-item__side -front">
+-      <div
+-        :class="{ '-active': focusElementStyle }"
+-        :style="focusElementStyle"
+-        class="card-item__focus"
+-        ref="focusElement"
+-      ></div>
++      <div :class="{ '-active': focusElementStyle }" :style="focusElementStyle" class="card-item__focus"
++        ref="focusElement"></div>
+       <div class="card-item__cover" :aria-label="imageCover">
+-        <img
+-          v-if="currentCardBackground"
+-          :src="currentCardBackground"
+-          class="card-item__bg"
+-          alt="Background image"
+-        />
++        <img v-if="currentCardBackground" :src="currentCardBackground" class="card-item__bg" alt="Background image" />
+       </div>
+       <div class="card-item__wrapper">
+         <div class="card-item__top">
+-          <img
+-            src="../assets/images/chip.png"
+-            class="card-item__chip"
+-            alt="Card chip image"
+-          />
++          <img src="../assets/images/chip.png" class="card-item__chip" alt="Card chip image" />
+           <div class="card-item__type">
+             <transition name="slide-fade-up">
+-              <img
+-                v-if="cardType"
+-                :src="getCreditCardImage"
+-                :key="cardType"
+-                :alt="`${cardType} brand image`"
+-                class="card-item__typeImg"
+-              />
++              <img v-if="cardType" :src="getCreditCardImage" :key="cardType" :alt="`${cardType} brand image`"
++                class="card-item__typeImg" />
+             </transition>
+           </div>
+         </div>
+-        <label
+-          :for="inputFields.cardNumber"
+-          :ref="inputFields.cardNumber"
+-          aria-label="Card number"
+-          class="card-item__number"
+-        >
++        <label :for="inputFields.cardNumber" :ref="inputFields.cardNumber" aria-label="Card number"
++          class="card-item__number">
+           <span v-for="(n, $index) in currentPlaceholder" :key="$index">
+             <transition name="slide-fade-up">
+-              <div
+-                v-if="getIsNumberMasked($index, n)"
+-                class="card-item__numberItem"
+-              >
++              <div v-if="getIsNumberMasked($index, n)" class="card-item__numberItem">
+                 *
+               </div>
+-              <div
+-                v-else-if="valueFields.cardNumber.length > $index"
+-                :class="{ '-active': n.trim() === '' }"
+-                :key="currentPlaceholder"
+-                class="card-item__numberItem"
+-              >
++              <div v-else-if="valueFields.cardNumber.length > $index" :class="{ '-active': n.trim() === '' }"
++                :key="currentPlaceholder" class="card-item__numberItem">
+                 {{ valueFields.cardNumber[$index] }}
+               </div>
+-              <div
+-                v-else
+-                :class="{ '-active': n.trim() === '' }"
+-                :key="currentPlaceholder + 1"
+-                class="card-item__numberItem"
+-              >
++              <div v-else :class="{ '-active': n.trim() === '' }" :key="currentPlaceholder + 1"
++                class="card-item__numberItem">
+                 {{ n }}
+               </div>
+             </transition>
+           </span>
+         </label>
+         <div class="card-item__content">
+-          <label
+-            :for="inputFields.cardName"
+-            :ref="inputFields.cardName"
+-            aria-label="Card name"
+-            class="card-item__info"
+-          >
++          <label :for="inputFields.cardName" :ref="inputFields.cardName" aria-label="Card name" class="card-item__info">
+             <div class="card-item__holder">
+               {{ labels.cardHolder || "Card Holder" }}
+             </div>
+             <transition name="slide-fade-up">
+-              <div
+-                v-if="valueFields.cardName.length"
+-                class="card-item__name"
+-                key="1"
+-              >
++              <div v-if="valueFields.cardName.length" class="card-item__name" key="1">
+                 <transition-group name="slide-fade-right">
+-                  <span
+-                    v-for="(n, key) in valueFields.cardName.replace(
+-                      /\s\s+/g,
+-                      ' '
+-                    )"
+-                    :key="key + 1"
+-                    class="card-item__nameItem"
+-                    >{{ n }}</span
+-                  >
++                  <span v-for="(n, key) in valueFields.cardName.replace(
++                    /\s\s+/g,
++                    ' '
++                  )" :key="key + 1" class="card-item__nameItem">{{ n }}</span>
+                 </transition-group>
+               </div>
+               <div class="card-item__name" v-else key="2">
+@@ -105,32 +54,16 @@
+             </transition>
+           </label>
+           <div class="card-item__date" ref="cardDate">
+-            <label
+-              :for="inputFields.cardMonth"
+-              class="card-item__dateTitle"
+-              aria-label="Expiration date"
+-              >{{ labels.cardExpires || "Expires" }}</label
+-            >
+-            <label
+-              :for="inputFields.cardMonth"
+-              class="card-item__dateItem"
+-              aria-label="Card month"
+-            >
++            <label :for="inputFields.cardMonth" class="card-item__dateTitle" aria-label="Expiration date">{{
++              labels.cardExpires || "Expires" }}</label>
++            <label :for="inputFields.cardMonth" class="card-item__dateItem" aria-label="Card month">
+               <transition name="slide-fade-up">
+-                <span
+-                  v-if="valueFields.cardMonth"
+-                  :key="valueFields.cardMonth"
+-                  >{{ valueFields.cardMonth }}</span
+-                >
++                <span v-if="valueFields.cardMonth" :key="valueFields.cardMonth">{{ valueFields.cardMonth }}</span>
+                 <span v-else key="2">{{ labels.cardMonth || "MM" }}</span>
+               </transition>
+             </label>
+             /
+-            <label
+-              :for="inputFields.cardYear"
+-              class="card-item__dateItem"
+-              aria-label="Card year"
+-            >
++            <label :for="inputFields.cardYear" class="card-item__dateItem" aria-label="Card year">
+               <transition name="slide-fade-up">
+                 <span v-if="valueFields.cardYear" :key="valueFields.cardYear">{{
+                   String(valueFields.cardYear).slice(2, 4)
+@@ -144,12 +77,7 @@
+     </div>
+     <div class="card-item__side -back">
+       <div class="card-item__cover" :aria-label="imageCover">
+-        <img
+-          v-if="currentCardBackground"
+-          :src="currentCardBackground"
+-          class="card-item__bg"
+-          alt="Background image"
+-        />
++        <img v-if="currentCardBackground" :src="currentCardBackground" class="card-item__bg" alt="Background image" />
+       </div>
+       <div class="card-item__band"></div>
+       <div class="card-item__cvv">
+@@ -160,12 +88,7 @@
+           </div>
+         </label>
+         <div class="card-item__type">
+-          <img
+-            v-if="cardType"
+-            :src="getCreditCardImage"
+-            class="card-item__typeImg"
+-            alt="Dark bar image"
+-          />
++          <img v-if="cardType" :src="getCreditCardImage" class="card-item__typeImg" alt="Dark bar image" />
+         </div>
+       </div>
+     </div>
+@@ -219,7 +142,7 @@ export default {
+     }
+   },
+   emits: ['get-type'],
+-  data () {
++  data() {
+     const defaultPlaceholder = '#### #### #### ####'
+ 
+     return {
+@@ -236,43 +159,43 @@ export default {
+     }
+   },
+   watch: {
+-    currentFocus () {
++    currentFocus() {
+       if (this.currentFocus) {
+         this.changeFocus()
+       } else {
+         this.focusElementStyle = null
+       }
+     },
+-    cardType (val) {
++    cardType(val) {
+       this.$emit('get-type', val)
+       this.changePlaceholder()
+     }
+   },
+-  mounted () {
++  mounted() {
+     this.init()
+   },
+-  beforeDestroy () {
++  beforeDestroy() {
+     this.destroy()
+   },
+   // * This can't be tested since the project runs in Vue 2
+   /* istanbul ignore next */
+-  beforeUnmount () {
++  beforeUnmount() {
+     /* istanbul ignore next */
+     this.destroy()
+   },
+   computed: {
+-    jcbCardPlaceholder () {
++    jcbCardPlaceholder() {
+       const number = this.valueFields.cardNumber.replace(/\s+/g, '')
+ 
+       return number.startsWith('2131') || number.startsWith('1800')
+         ? this.fifteenCardPlaceholder
+         : this.defaultPlaceholder
+     },
+-    getCreditCardImage () {
+-      const path = require(`../assets/images/${this.cardType}.png`)
++    getCreditCardImage() {
++      const path = import.meta.url = `/node_modules/vue-paycard/src/assets/images/${this.cardType}.png`;
+       return path.default || path
+     },
+-    cardType () {
++    cardType() {
+       const acceptedTypes = [
+         'visaelectron',
+         'visa',
+@@ -329,12 +252,12 @@ export default {
+ 
+       return ''
+     },
+-    imageCover () {
++    imageCover() {
+       return !this.hasRandomBackgrounds && parseInt(this.backgroundImage)
+         ? 'Image cover'
+         : ''
+     },
+-    isBackgroundImageFromAssets () {
++    isBackgroundImageFromAssets() {
+       const numberImage = parseInt(this.backgroundImage)
+ 
+       return (
+@@ -343,11 +266,11 @@ export default {
+         parseInt(numberImage) > 0
+       )
+     },
+-    currentCardBackground () {
++    currentCardBackground() {
+       const numberImage = parseInt(this.backgroundImage)
+ 
+       if (this.isBackgroundImageFromAssets) {
+-        const path = require(`../assets/images/${numberImage}.jpg`)
++        const path = import.meta.url = `/node_modules/vue-paycard/src/assets/images/${numberImage}.jpg`;
+         return path.default || path
+       }
+ 
+@@ -358,7 +281,7 @@ export default {
+       if (this.hasRandomBackgrounds) {
+         const random = Math.floor(Math.random() * 25 + 1)
+ 
+-        const path = require(`../assets/images/${random}.jpg`)
++        const path = import.meta.url = `/node_modules/vue-paycard/src/assets/images/${random}.jpg`;
+         return path.default || path
+       }
+ 
+@@ -366,7 +289,7 @@ export default {
+     }
+   },
+   methods: {
+-    addOrRemoveFieldListeners (event = 'addEventListener') {
++    addOrRemoveFieldListeners(event = 'addEventListener') {
+       const self = this
+       const fields = document.querySelectorAll('[data-card-field]')
+       fields.forEach((element) => {
+@@ -394,23 +317,23 @@ export default {
+         })
+       })
+     },
+-    init () {
++    init() {
+       this.addOrRemoveFieldListeners()
+     },
+-    destroy () {
++    destroy() {
+       this.addOrRemoveFieldListeners('removeEventListener')
+     },
+-    changeFocus () {
++    changeFocus() {
+       const target = this.$refs[this.currentFocus]
+       this.focusElementStyle = target
+         ? {
+-            width: `${target.offsetWidth}px`,
+-            height: `${target.offsetHeight}px`,
+-            transform: `translateX(${target.offsetLeft}px) translateY(${target.offsetTop}px)`
+-          }
++          width: `${target.offsetWidth}px`,
++          height: `${target.offsetHeight}px`,
++          transform: `translateX(${target.offsetLeft}px) translateY(${target.offsetTop}px)`
++        }
+         : null
+     },
+-    getIsNumberMasked (index, n) {
++    getIsNumberMasked(index, n) {
+       const numbers = this.cardType === 'amex' ? 13 : 14
+ 
+       return (
+@@ -420,7 +343,7 @@ export default {
+         this.isCardNumberMasked
+       )
+     },
+-    changePlaceholder () {
++    changePlaceholder() {
+       const cardsPlaceholder = {
+         amex: this.amexCardPlaceholder,
+         dinersclub: this.dinersCardPlaceholder,
