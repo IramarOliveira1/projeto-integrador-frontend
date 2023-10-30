@@ -46,6 +46,8 @@
                         <a-tag color="red" v-if="reserves.status === 'ENTREGUE FORA DO PRAZO'">{{ reserves.status
                         }}</a-tag>
                         <a-tag color="blue" v-if="reserves.status === 'RESERVADO'">{{ reserves.status }}</a-tag>
+                        <a-tag color="purple" v-if="reserves.status === 'ENTREGUE ANTES DO PRAZO'">{{ reserves.status
+                        }}</a-tag>
                     </div>
                 </template>
                 <div class="ellipsis">
@@ -157,6 +159,8 @@ export default {
                     'label': 'RESERVADO',
                 }, {
                     'label': 'EM ANDAMENTO',
+                }, {
+                    'label': 'ENTREGUE ANTES DO PRAZO',
                 }
             ],
         }
