@@ -35,7 +35,9 @@
             :pagination="{ pageSize: 9 }">
             <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'modelo'">
-                    {{ record.modelo.nome }}
+                    {{ record.modelo.nome }} -
+                    <a-tag color="green" v-if="record.status === 'DISPONÍVEL'">{{ record.status }}</a-tag>
+                    <a-tag color="red" v-if="record.status === 'ALUGADO'">{{ record.status }}</a-tag>
                 </template>
                 <template v-if="column.key === 'action'">
                     <a-button @click="index(record.id)">
