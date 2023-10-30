@@ -78,7 +78,7 @@
             </a-row>
 
             <a-divider style="height: 2px; background-color: #d6d6d6" />
-            
+
             <div class="selected-insurance">
                 <h3>SELECIONE UM SEGURO</h3>
                 <a-select placeholder="Selecione um seguro" :options="getInsurancies"
@@ -98,8 +98,7 @@
         </div>
     </div>
 
-    <modal :openModal="showModal" :calculateTotalValue="calculateTotalValue" :data="payment"
-        @close="showModal = false" />
+    <modal :openModal="showModal" :calculateTotalValue="calculateTotalValue" :data="payment" @close="showModal = false" />
 </template>
 
 <script>
@@ -168,12 +167,29 @@ export default {
             }
             this.showModal = true;
         },
-        back() {
-            this.$store.commit('home/setData', this.data);
+        async back() {
+            try {
 
-            this.$router.push('/listar-veiculos');
+                const response = await this.$store.dispatch('home/search', {
+                    startDate: this.data.startDate.format('YYYY-MM-DD'),
+                    endDate: this.data.endDate.format('YYYY-MM-DD'),
+                    agencia: {
+                        id: this.data.agencia.id.option.id
+                    },
+                });
 
-            this.payment.insurance.id = null;
+                this.$store.commit('home/setVehicles', response.data);
+
+                this.$store.commit('home/setData', this.data);
+
+                this.payment.insurance.id = null;
+
+                this.$router.push('/listar-veiculos');
+            } catch (error) {
+                if (error.response.data.error) {
+                    this.$router.push('/');
+                }
+            }
         }
     },
 }
