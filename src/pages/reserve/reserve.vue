@@ -64,6 +64,7 @@
                         <a-tag color="red" v-if="reserves.status === 'ENTREGUE FORA DO PRAZO'">{{ reserves.status
                         }}</a-tag>
                         <a-tag color="blue" v-if="reserves.status === 'RESERVADO'">{{ reserves.status }}</a-tag>
+                        <a-tag color="purple" v-if="reserves.status === 'ENTREGUE ANTES DO PRAZO'">{{ reserves.status }}</a-tag>
                     </div>
                 </template>
                 <div class="ellipsis">
@@ -175,6 +176,8 @@ export default {
                     'label': 'RESERVADO',
                 }, {
                     'label': 'EM ANDAMENTO',
+                }, {
+                    'label': 'ENTREGUE ANTES DO PRAZO',
                 }
             ],
         }
@@ -215,6 +218,10 @@ export default {
             try {
 
                 const response = await this.$store.dispatch('reserve/startRent', { idReserve: id, page: this.page });
+                
+                this.$store.commit('generic/setFilterExits', false);
+
+                this.code = null;
 
                 this.$notification.notification(response.status, response.data.message);
             } catch (error) {
@@ -225,6 +232,10 @@ export default {
             try {
 
                 const response = await this.$store.dispatch('reserve/endRent', { idReserve: id, page: this.page });
+                
+                this.$store.commit('generic/setFilterExits', false);
+
+                this.code = null;
 
                 this.$notification.notification(response.status, response.data.message);
             } catch (error) {
@@ -242,6 +253,11 @@ export default {
                 this.loading = false;
 
                 this.idLoding = null;
+
+                this.code = null;
+
+                this.$store.commit('generic/setFilterExits', false);
+
                 this.$notification.notification(response.status, response.data.message);
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
