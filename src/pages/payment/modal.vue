@@ -200,7 +200,11 @@ export default {
                         id: this.details.user
                     },
                     vehicle: {
-                        id: this.details.vehicle.id
+                        id: this.details.vehicle.id,
+                        modelo: {
+                            id: this.details.vehicle.model.id
+                        }
+
                     }
                 }
 
