@@ -186,6 +186,12 @@ export default {
         async index(page) {
             try {
 
+                alert(this.$store.getters['user/getUser'].id);
+
+                if (this.$store.getters['user/getUser'].id) {
+                    
+                }
+
                 if (page) {
                     this.page = page - 1;
                 }

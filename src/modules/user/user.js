@@ -105,8 +105,7 @@ const user = {
             commit('setUsers', response.data);
         },
 
-        async index({ commit }, id) {
-
+        async index({ commit, getters }, id) {
             const response = await axios.get(`user/${id}`);
 
             const data = {
