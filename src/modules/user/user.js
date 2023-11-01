@@ -72,6 +72,8 @@ const user = {
 
             const response = await axios.get('/user/me');
 
+            localStorage.setItem('user', JSON.stringify(response.data.id));
+
             commit('setUser', response.data);
 
             commit('setIsAuthenticated', true);

@@ -25,7 +25,7 @@
                         <router-link to="/" class="">
                             Voltar para home?
                         </router-link>
-                        <router-link to="/recuperar-senha">
+                        <router-link to="/esqueceu-senha">
                             esqueceu sua senha?
                         </router-link>
                     </div>
@@ -70,8 +70,10 @@ export default {
 
                 localStorage.setItem('token', response.data.token);
 
+                localStorage.setItem('user', response.data.id);
+
                 this.$store.commit('user/setUser', response.data);
-                
+
                 this.$store.commit('user/setIsAuthenticated', true);
 
                 this.$router.push('/dashboard');

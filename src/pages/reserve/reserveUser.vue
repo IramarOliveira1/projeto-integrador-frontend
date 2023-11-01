@@ -39,7 +39,19 @@
 
             <a-collapse-panel key="2" :header="reserves.codeReserve">
                 <template #extra>
+
                     <div class="extra">
+                        <a-popconfirm title="Deseja realmente cancelar essa reserva ?" ok-text="Sim" cancel-text="Não"
+                            @confirm="cancellationRent(reserves.id)">
+                            <a-button class="button-cancellation" size="small" style="margin-right: 10px;"
+                                v-if="reserves.status === 'RESERVADO'" danger :disabled="loading">
+                                <a-spin v-if="loading && reserves.id === idLoading" :indicator="indicator" />
+                                <div v-else>
+                                    Cancelar Reserva
+                                </div>
+                            </a-button>
+                        </a-popconfirm>
+
                         <a-tag color="green" v-if="reserves.status === 'FINALIZADO'">{{ reserves.status }}</a-tag>
                         <a-tag color="orange" v-if="reserves.status === 'CANCELADO'">{{ reserves.status }}</a-tag>
                         <a-tag color="cyan" v-if="reserves.status === 'EM ANDAMENTO'">{{ reserves.status }}</a-tag>
@@ -122,8 +134,8 @@
                 </div>
             </a-collapse-panel>
         </a-collapse>
-        <a-pagination v-model:current="current" v-model:pageSize="pageSize" :total="data[0]?.totalElements" @change="index"
-            class="pagination" v-if="data.length > 0" />
+        <a-pagination v-model:current="current" :disabled="loading" v-model:pageSize="pageSize"
+            :total="data[0]?.totalElements" @change="index" class="pagination" v-if="data.length > 0" />
     </div>
 </template>
 
@@ -147,7 +159,8 @@ export default {
             current: 1,
             code: null,
             loading: false,
-            idLoding: null,
+            idLoading: null,
+            userTest: [],
             status: [
                 {
                     'label': 'FINALIZADO',
@@ -186,16 +199,22 @@ export default {
         async index(page) {
             try {
 
-                alert(this.$store.getters['user/getUser'].id);
+                let id = this.$store.getters['user/getUser'].id;
 
-                if (this.$store.getters['user/getUser'].id) {
-                    
+                if (!id) {
+                    id = localStorage.getItem('user');
                 }
 
                 if (page) {
                     this.page = page - 1;
                 }
-                await this.$store.dispatch('reserve/index', { page: this.page ?? page, idUser: this.$store.getters['user/getUser'].id });
+
+                if (this.status.label) {
+                    this.filter(this.status.label)
+                    return false;
+                }
+
+                await this.$store.dispatch('reserve/index', { page: this.page ?? page, idUser: id });
 
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
@@ -204,10 +223,11 @@ export default {
 
         async filter(data) {
             try {
-                await this.$store.dispatch('reserve/filter', { page: 0, status: data, idUser: this.$store.getters['user/getUser'].id });
+                this.code = null;
+
+                await this.$store.dispatch('reserve/filter', { page: this.page, status: data, idUser: this.$store.getters['user/getUser'].id });
 
                 this.$store.commit('generic/setFilterExits', true);
-
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
@@ -220,6 +240,8 @@ export default {
                     return this.$notification.notification(400, 'Campo c�digo � obrigatório');
                 }
 
+                this.status.label = null;
+
                 await this.$store.dispatch('reserve/filterCode', { page: 0, code: this.code, idUser: this.$store.getters['user/getUser'].id });
 
                 this.$store.commit('generic/setFilterExits', true);
@@ -228,12 +250,39 @@ export default {
             }
         },
 
-        async clearFilter() {
-            await this.$store.dispatch('reserve/index', { page: this.page, idUser: this.$store.getters['user/getUser'].id });
+        async cancellationRent(id) {
+            try {
+                this.loading = true;
 
+                this.idLoading = id;
+
+                const response = await this.$store.dispatch('reserve/cancellationRent', { idReserve: id, page: this.page, idUser: this.$store.getters['user/getUser'].id });
+
+                this.loading = false;
+
+                this.idLoading = null;
+
+                this.code = null;
+
+                this.status.label = null
+
+                this.$store.commit('generic/setFilterExits', false);
+
+                this.$notification.notification(response.status, response.data.message);
+            } catch (error) {
+                this.$notification.notification(error.response.status, error.response.data.message);
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        async clearFilter() {
+            this.current = 1;
             this.$store.commit('generic/setFilterExits', false);
             this.status.label = null
             this.code = null;
+            this.page = 0;
+            this.index();
         },
     },
 }

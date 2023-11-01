@@ -185,7 +185,13 @@ export default {
         },
         async index() {
             try {
-                const response = await axios.get(`/dashboard/${this.$store.getters['user/getUser'].id}`);
+                let id = this.$store.getters['user/getUser'].id;
+
+                if (!id) {
+                    id = localStorage.getItem('user');
+                }
+
+                const response = await axios.get(`/dashboard/${id}`);
 
                 response.data.map(index => {
                     this.bar[0].data.push((index.amountTotal));

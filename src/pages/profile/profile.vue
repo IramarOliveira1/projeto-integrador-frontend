@@ -88,10 +88,14 @@
 
             <a-form-item>
                 <div class="div-button-update-profile">
-                    <a-button type="primary" danger class="button-update-profile" html-type="submit"
-                        v-if="this.$store.getters['user/getUser'].id !== 1">
-                        Excluir conta
-                    </a-button>
+                    <a-popconfirm title="Deseja realmente excluir essa conta ?" ok-text="Sim" cancel-text="Não"
+                        @confirm="deleteProfile(this.$store.getters['user/getUser'].id)">
+                        <a-button type="primary" danger class="button-update-profile"
+                            v-if="this.$store.getters['user/getUser'].id !== 1">
+                            Excluir conta
+                        </a-button>
+                    </a-popconfirm>
+
                     <a-button type="primary" class="button-update-profile" html-type="submit">Atualizar</a-button>
                 </div>
             </a-form-item>
@@ -107,7 +111,7 @@ import axios from '../../services/api.js';
 
 export default {
     components: {
-        VueTheMask
+        VueTheMask,
     },
     computed: {
         data: {
@@ -117,9 +121,23 @@ export default {
         },
     },
     mounted() {
-        this.$store.dispatch('user/index', this.$store.getters['user/getUser'].id);
+        this.index();
     },
     methods: {
+        async index() {
+            try {
+                let id = this.$store.getters['user/getUser'].id;
+
+                if (!id) {
+                    id = localStorage.getItem('user');
+                }
+
+                this.$store.dispatch('user/index', id);
+            } catch (error) {
+                this.$notification.notification(error.response.status, error.response.data.message);
+            }
+        },
+
         async update(data) {
             try {
 
@@ -131,14 +149,15 @@ export default {
             }
         },
 
-        async deleteProfile() {
+        async deleteProfile(id) {
             try {
+                await axios.delete(`user/${id}`);
 
-                await axios.delete(`user/${this.$store.getters.getUserLogin.id}`);
-
-                this.$router.push('/login');
+                this.$store.commit('user/setIsAuthenticated', false);
 
                 localStorage.clear();
+
+                this.$router.push('/login');
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
