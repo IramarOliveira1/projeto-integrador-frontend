@@ -21,10 +21,12 @@
                         <a-input-password v-model:value="data.password" size="large" />
                     </a-form-item>
 
-                    <router-link to="/login" class="link-forgot">
-                        voltar e fazer Login
-                    </router-link>
-
+                    <div  class="link-forgot-password">
+                        <router-link to="/login">
+                            voltar e fazer Login
+                        </router-link>
+                    </div>
+                        
                     <a-form-item>
                         <a-button type="primary" html-type="submit" class="button-init" size="large">
                             Continuar

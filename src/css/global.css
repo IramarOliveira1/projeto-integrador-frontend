@@ -26,11 +26,15 @@
     background-color: #F8F9FC;
 }
 
-.link-forgot {
+.link-forgot-password>a {
     color: #303D97;
     display: flex;
     justify-content: end;
     align-items: center;
+}
+
+.link-forgot-password>a:hover {
+    color: #8f95c2;
 }
 
 .button-init {

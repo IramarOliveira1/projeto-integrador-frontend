@@ -49,22 +49,28 @@
                             @click="endRent(reserves.id)">Finalizar
                             Reserva
                         </a-button>
-                        <a-button class="button-cancellation" size="small"
-                            v-if="reserves.status === 'RESERVADO' && this.$store.getters['user/getUser'].role === 'ADMIN'"
-                            danger @click="cancellationRent(reserves.id)" :disabled="loading">
-                            <a-spin v-if="loading && reserves.id === idLoding" :indicator="indicator" />
-                            <div v-else>
-                                Cancelar
-                                Reserva
-                            </div>
-                        </a-button>
+
+                        <a-popconfirm title="Deseja realmente cancelar essa reserva ?" ok-text="Sim" cancel-text="Não"
+                            @confirm="cancellationRent(reserves.id)">
+                            <a-button class="button-cancellation" size="small"
+                                v-if="reserves.status === 'RESERVADO' && this.$store.getters['user/getUser'].role === 'ADMIN'"
+                                danger :disabled="loading">
+                                <a-spin v-if="loading && reserves.id === idLoding" :indicator="indicator" />
+                                <div v-else>
+                                    Cancelar
+                                    Reserva
+                                </div>
+                            </a-button>
+                        </a-popconfirm>
+
                         <a-tag color="green" v-if="reserves.status === 'FINALIZADO'">{{ reserves.status }}</a-tag>
                         <a-tag color="orange" v-if="reserves.status === 'CANCELADO'">{{ reserves.status }}</a-tag>
                         <a-tag color="cyan" v-if="reserves.status === 'EM ANDAMENTO'">{{ reserves.status }}</a-tag>
                         <a-tag color="red" v-if="reserves.status === 'ENTREGUE FORA DO PRAZO'">{{ reserves.status
                         }}</a-tag>
                         <a-tag color="blue" v-if="reserves.status === 'RESERVADO'">{{ reserves.status }}</a-tag>
-                        <a-tag color="purple" v-if="reserves.status === 'ENTREGUE ANTES DO PRAZO'">{{ reserves.status }}</a-tag>
+                        <a-tag color="purple" v-if="reserves.status === 'ENTREGUE ANTES DO PRAZO'">{{ reserves.status
+                        }}</a-tag>
                     </div>
                 </template>
                 <div class="ellipsis">
@@ -139,8 +145,8 @@
                 </div>
             </a-collapse-panel>
         </a-collapse>
-        <a-pagination v-model:current="current" v-model:pageSize="pageSize" :total="data[0]?.totalElements" @change="all"
-            class="pagination" v-if="data.length > 0" />
+        <a-pagination v-model:current="current" :disabled="loading" v-model:pageSize="pageSize"
+            :total="data[0]?.totalElements" @change="all" class="pagination" v-if="data.length > 0" />
     </div>
 </template>
 
@@ -207,6 +213,11 @@ export default {
                     this.page = page - 1;
                 }
 
+                if (this.status.label) {
+                    this.filter(this.status.label)
+                    return false;
+                }
+
                 await this.$store.dispatch('reserve/all', { page: this.page ?? page });
 
             } catch (error) {
@@ -218,10 +229,12 @@ export default {
             try {
 
                 const response = await this.$store.dispatch('reserve/startRent', { idReserve: id, page: this.page });
-                
+
                 this.$store.commit('generic/setFilterExits', false);
 
                 this.code = null;
+
+                this.status.label = null
 
                 this.$notification.notification(response.status, response.data.message);
             } catch (error) {
@@ -232,10 +245,12 @@ export default {
             try {
 
                 const response = await this.$store.dispatch('reserve/endRent', { idReserve: id, page: this.page });
-                
+
                 this.$store.commit('generic/setFilterExits', false);
 
                 this.code = null;
+
+                this.status.label = null
 
                 this.$notification.notification(response.status, response.data.message);
             } catch (error) {
@@ -248,13 +263,15 @@ export default {
 
                 this.idLoding = id;
 
-                const response = await this.$store.dispatch('reserve/cancellationRent', { idReserve: id, page: this.page });
+                const response = await this.$store.dispatch('reserve/cancellationRent', { idReserve: id, page: this.page, });
 
                 this.loading = false;
 
                 this.idLoding = null;
 
                 this.code = null;
+
+                this.status.label = null
 
                 this.$store.commit('generic/setFilterExits', false);
 
@@ -266,10 +283,11 @@ export default {
 
         async filter(data) {
             try {
-                await this.$store.dispatch('reserve/filterStatusAll', { page: 0, status: data });
+                this.code = null;
+
+                await this.$store.dispatch('reserve/filterStatusAll', { page: this.page, status: data });
 
                 this.$store.commit('generic/setFilterExits', true);
-
             } catch (error) {
                 this.$notification.notification(error.response.status, error.response.data.message);
             }
@@ -277,10 +295,11 @@ export default {
 
         async filterCode() {
             try {
-
                 if (!this.code) {
                     return this.$notification.notification(400, 'Campo c�digo � obrigatório');
                 }
+
+                this.status.label = null;
 
                 await this.$store.dispatch('reserve/filterCodeAll', { page: 0, code: this.code });
 
@@ -291,11 +310,12 @@ export default {
         },
 
         async clearFilter() {
-            this.all();
             this.current = 1;
             this.$store.commit('generic/setFilterExits', false);
             this.status.label = null
             this.code = null;
+            this.page = 0;
+            this.all();
         },
     },
 }

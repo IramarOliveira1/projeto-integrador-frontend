@@ -7,13 +7,13 @@ const routes = [
         path: '/login', component: () => import('../pages/login/login.vue'), name: 'login'
     },
     {
-        path: '/recuperar-senha', component: () => import('../pages/forgot-password/forgot-password.vue'),
+        path: '/esqueceu-senha', component: () => import('../pages/forgot-password/forgot-password.vue'), name: 'retrieve-password',
     },
     {
-        path: '/esqueceu-senha', component: () => import('../pages/forgot-password/change-password.vue'),
+        path: '/recuperar-senha', component: () => import('../pages/forgot-password/change-password.vue'), name: 'forget-password',
     },
     {
-        path: '/cadastrar-cliente', component: () => import('../pages/register/user/user.vue'),
+        path: '/cadastrar-cliente', component: () => import('../pages/register/user/user.vue'), name: 'register-client',
     },
     {
         path: '/', component: () => import('../pages/home/home.vue'), meta: { admin: true, guest: true }, name: 'home',
@@ -64,56 +64,7 @@ const router = createRouter({
     routes,
 });
 
-// router.beforeEach(async (to, from, next) => {
-//     console.log(store.getters['user/getUser'].role);
-
-//     // return
-
-//     if (to.name === 'list-vehicle' && !store.getters['home/getData'].startDate) {
-//         next('/');
-//         return;
-//     }
-
-//     if (to.name === 'payment' && !store.getters['home/getData'].startDate) {
-//         next('/');
-//         return;
-//     }
-
-//     if (!store.getters['user/getUser'].isAuthenticated && to.name === 'home' || to.name === 'list-vehicle' || to.name == 'payment') {
-//         next();
-//         return;
-//     }
-
-//     if (store.getters['user/getUser'].isAuthenticated && to.meta.admin && !to.meta.guest && store.getters['user/getUser'].role === 'ADMIN') {
-//         next();
-//         return;
-//     }
-
-//     if (store.getters['user/getUser'].isAuthenticated && to.meta.admin && to.meta.guest && store.getters['user/getUser'].role === 'USER') {
-//         next();
-//         return;
-//     } else if (store.getters['user/getUser'].isAuthenticated && !to.meta.guest) {
-//         next('/dashboard');
-//         return;
-//     }
-
-//     if (to.matched.some(record => record.meta.admin)) {
-//         const token = localStorage.getItem('token');
-
-//         if (!token) {
-//             localStorage.clear();
-//             next('/login');
-//             return;
-//         }
-
-//         next()
-//     } else {
-//         next()
-//     }
-// })
-
 router.beforeResolve(async (to, from, next) => {
-
     if (to.name === 'list-vehicle' && !store.getters['home/getData'].startDate) {
         next('/');
         return;
@@ -137,8 +88,10 @@ router.beforeResolve(async (to, from, next) => {
         next();
         return;
     } else if (store.getters['user/getIsAuthenticated'] && !to.meta.guest) {
-        next('/dashboard');
-        return;
+        if (to.name === 'forget-password' || to.name === 'login' || to.name === 'retrieve-password' || to.name === 'register-client') {
+            return next('/dashboard');
+        }
+        return next('/notFound');
     }
 
     if (to.matched.some(record => record.meta.admin)) {

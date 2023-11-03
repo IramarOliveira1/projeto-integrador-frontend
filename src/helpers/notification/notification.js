@@ -1,9 +1,5 @@
 import { notification } from 'ant-design-vue';
 
-import router from '../../router/router.js';
-
-import store from '../../modules/index.js';
-
 export default function notifications(status, message) {
     switch (status) {
         case 200:
@@ -14,15 +10,17 @@ export default function notifications(status, message) {
             break;
 
         case 401:
-            notification['warning']({
-                description: message,
-            });
+            if (message) {
+                notification['warning']({
+                    description: message,
+                });
 
-            // if (router.currentRoute.value.path !== '/login') {
-            //     store.commit('isAuthenticated', false);
-            //     localStorage.clear();
-            //     router.push('/login')
-            // }
+            } else {
+                notification['warning']({
+                    description: "TOKEN INVÁLIDO!",
+                });
+            }
+
             break;
 
         case 400:
