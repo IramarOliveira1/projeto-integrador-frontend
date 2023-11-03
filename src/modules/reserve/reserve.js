@@ -64,10 +64,13 @@ const reserve = {
             return response;
         },
         async cancellationRent({ dispatch }, data) {
-
             const response = await axios.post(`reserve/cancellation/${data.idReserve}`);
 
-            dispatch('all', { page: data.page });
+            if (data.idUser) {
+                dispatch('index', { idUser: data.idUser, page: data.page });
+            } else {
+                dispatch('all', { page: data.page });
+            }
 
             return response;
         },

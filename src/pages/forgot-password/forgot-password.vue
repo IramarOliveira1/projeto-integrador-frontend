@@ -17,12 +17,16 @@
                         <a-input v-model:value="data.email" size="large" />
                     </a-form-item>
 
-                    <router-link to="/login" class="link-forgot">
-                        voltar e fazer Login
-                    </router-link>
+
+                    <div class="link-forgot-password">
+                        <router-link to="/login">
+                            voltar e fazer Login
+                        </router-link>
+                    </div>
 
                     <a-form-item>
-                        <a-button type="primary" html-type="submit" class="button-init" size="large" :disabled="loading">
+                        <a-button type="primary" html-type="submit" class="button-init" size="large"
+                            :disabled="data.loading">
                             <a-spin v-if="data.loading" :indicator="data.indicator" />
                             <div v-else>
                                 Continuar
@@ -44,7 +48,6 @@ import { h } from 'vue';
 export default {
     data() {
         return {
-
             data: {
                 indicator: h(LoadingOutlined, {
                     style: {
