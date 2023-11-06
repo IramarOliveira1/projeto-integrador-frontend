@@ -4,7 +4,7 @@
             <a-row :gutter="[8, 16]">
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                     <a-form-item label="Agência retirada" name="agencia">
-                        <a-select size="large" v-model:value="data.agencia.id" placeholder="Selecione uma ag�ncia"
+                        <a-select size="large" v-model:value="data.agencia.id" placeholder="Selecione uma agência"
                             :options="agencies" :field-names="{ label: 'nome', value: 'nome' }" labelInValue showSearch
                             @change="changeAgency" />
                     </a-form-item>
@@ -24,7 +24,7 @@
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                     <a-form-item label="Agência devolução" name="devolution">
 
-                        <a-select size="large" v-model:value="data.devolution.id" placeholder="Selecione uma ag�ncia"
+                        <a-select size="large" v-model:value="data.devolution.id" placeholder="Selecione uma agência"
                             :options="agencies" :field-names="{ label: 'nome', value: 'nome' }" :disabled="disabledGeneric"
                             labelInValue showSearch @change="changeButton" />
                     </a-form-item>

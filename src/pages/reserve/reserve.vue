@@ -32,7 +32,7 @@
         </a-form>
 
         <a-space direction="vertical" style="width: 100%" v-if="data.length === 0">
-            <a-alert description="Nenhuma reserva encontrada!" type="warning" closable />
+            <a-alert description="Nenhuma reserva encontrada!" type="warning" />
         </a-space>
 
         <a-collapse v-for="reserves in data" :key="reserves.id" style="margin-bottom: 20px;" collapsible="header">
@@ -296,7 +296,7 @@ export default {
         async filterCode() {
             try {
                 if (!this.code) {
-                    return this.$notification.notification(400, 'Campo c�digo � obrigatório');
+                    return this.$notification.notification(400, 'Campo código é obrigatório');
                 }
 
                 this.status.label = null;

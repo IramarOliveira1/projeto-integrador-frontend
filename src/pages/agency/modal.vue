@@ -181,12 +181,12 @@ export default {
                     const response = await this.$store.dispatch('agency/viaCep', this.data.address);
 
                     if (response.data.erro) {
-                        this.$notification.notification(400, "CEP inv�lido!");
+                        this.$notification.notification(400, "CEP inválido!");
                         this.clearForm();
                     }
                 }
             } catch (error) {
-                this.$notification.notification(400, "CEP inv�lido!");
+                this.$notification.notification(400, "CEP inválido!");
                 this.clearForm();
             }
         },

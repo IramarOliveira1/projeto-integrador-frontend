@@ -7,14 +7,14 @@
                 <a-row>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 24 }" :xl="{ span: 24 }">
                         <a-form-item label="Tipo de Cobertura" name="nome"
-                            :rules="[{ required: true, message: 'Campo tipo é obrigat�rio' }]">
+                            :rules="[{ required: true, message: 'Campo tipo é obrigatório' }]">
                             <a-input v-model:value="data.nome" />
                         </a-form-item>
                     </a-col>
 
                     <a-col :xs="{ span: 24 }" :sm="{ span: 24 }" :xl="{ span: 24 }">
                         <a-form-item label="Preço" name="preco"
-                            :rules="[{ required: true, message: 'Campo preço é obrigat�rio' }]">
+                            :rules="[{ required: true, message: 'Campo preço é obrigatório' }]">
                             <a-input v-model:value="data.preco" v-money="money" />
                         </a-form-item>
                     </a-col>

@@ -8,7 +8,9 @@
             </div>
 
             <div class="image-navbar-flex">
-                <img class="image-navbar" src="../../assets/images/logo_white.png" alt="Imagem navbar">
+                <router-link to="/">
+                    <img class="image-navbar" src="../../assets/images/logo_white.png" alt="Imagem navbar">
+                </router-link>
             </div>
 
             <div class="toggle-navbar">
@@ -53,7 +55,7 @@
                             <a-sub-menu key="sub2">
                                 <template #title>
                                     <span>
-                                        Usu�rios
+                                        Usuários
                                     </span>
                                 </template>
                                 <router-link to="/clientes">
@@ -70,7 +72,7 @@
                             <a-sub-menu key="sub3">
                                 <template #title>
                                     <span>
-                                        Ve�culos
+                                        Veículos
                                     </span>
                                 </template>
                                 <router-link to="/modelos">
@@ -153,7 +155,7 @@
                             <a-sub-menu key="sub2">
                                 <template #title>
                                     <span>
-                                        Usu�rios
+                                        Usuários
                                     </span>
                                 </template>
                                 <router-link to="/clientes">
@@ -170,7 +172,7 @@
                             <a-sub-menu key="sub3">
                                 <template #title>
                                     <span>
-                                        Ve�culos
+                                        Veículos
                                     </span>
                                 </template>
                                 <router-link to="/modelos">
