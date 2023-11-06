@@ -121,7 +121,7 @@ export default {
                 cardCvv: ''
             },
             labels: {
-                cardName: "AlgueAqui",
+                cardName: "AlugueAqui",
                 cardHolder: "Nome Completo",
                 cardMonth: "MM",
                 cardYear: "YY",

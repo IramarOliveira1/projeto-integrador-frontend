@@ -80,39 +80,38 @@
                         <h3><strong>Nome:</strong> {{ reserves.name }}</h3>
                         <h3><strong>CPF:</strong> {{ reserves.cpf }}</h3>
                         <h3><strong>E-mail:</strong> {{ reserves.email }}</h3>
-                        <h3><strong>Codigo:</strong> {{ reserves.codeReserve }}</h3>
+                        <h3><strong>Código:</strong> {{ reserves.codeReserve }}</h3>
                     </div>
                     <a-divider style="height: 2px; background-color: #d6d6d6" />
 
                     <div class="detail-agency-start">
-                        <h2>Dados da agencia de retirada</h2>
-                        <h3><strong>Data Retirada:</strong>
+                        <h2>Dados da agência de retirada</h2>
+
+                        <h3><strong>Nome agência:</strong> {{ reserves.agencyRentInit.nome }} </h3>
+                        <h3><strong>Endereço:</strong> {{ `${reserves.agencyRentInit.address.logradouro},
+                                                    ${reserves.agencyRentInit.address.numero} - ${reserves.agencyRentInit.address.bairro}`
+                        }}</h3>
+                        <h3><strong>CEP:</strong> {{ reserves.agencyRentInit.address.cep }} </h3>
+                        <h3><strong>Data retirada:</strong>
                             {{
                                 `${reserves.startDateRent.split('-')[2]}/${reserves.startDateRent.split('-')[1]}/${reserves.startDateRent.split('-')[0]}`
                             }}
                         </h3>
-                        <h3><strong>Nome Agencia:</strong> {{ reserves.agencyRentInit.nome }} </h3>
-                        <h3><strong>Endereco:</strong> {{ `${reserves.agencyRentInit.address.logradouro},
-                                                    ${reserves.agencyRentInit.address.numero} - ${reserves.agencyRentInit.address.bairro}`
-                        }}</h3>
-                        <h3><strong>CEP:</strong> {{ reserves.agencyRentInit.address.cep }} </h3>
-
                     </div>
                     <a-divider style="height: 2px; background-color: #d6d6d6" />
 
                     <div class="detail-agency-end">
-                        <h2>Dados da agencia de devolucao</h2>
-                        <h3><strong>Data Devolucao:</strong>
-                            {{
-                                `${reserves.endDateRent.split('-')[2]}/${reserves.endDateRent.split('-')[1]}/${reserves.endDateRent.split('-')[0]}`
-                            }}
-                        </h3>
-
-                        <h3><strong>Nome Agencia:</strong> {{ reserves.agencyRendEnd.nome }} </h3>
-                        <h3><strong>Endereco:</strong> {{ `${reserves.agencyRendEnd.address.logradouro},
+                        <h2>Dados da agência de devolução</h2>
+                        <h3><strong>Nome agência:</strong> {{ reserves.agencyRendEnd.nome }} </h3>
+                        <h3><strong>Endereço:</strong> {{ `${reserves.agencyRendEnd.address.logradouro},
                                                     ${reserves.agencyRendEnd.address.numero} - ${reserves.agencyRendEnd.address.bairro}`
                         }}</h3>
                         <h3><strong>CEP:</strong> {{ reserves.agencyRendEnd.address.cep }} </h3>
+                        <h3 v-if="reserves.dateDevolution"><strong>Data devolução: </strong>
+                            {{
+                                `${reserves.dateDevolution.split('-')[2]}/${reserves.dateDevolution.split('-')[1]}/${reserves.dateDevolution.split('-')[0]}`
+                            }}
+                        </h3>
                     </div>
                     <a-divider style="height: 2px; background-color: #d6d6d6" />
 
@@ -123,7 +122,7 @@
                         <h3><strong>Ano:</strong> {{ reserves.vehicle.ano }}</h3>
                         <h3><strong>Capacidade:</strong> {{ reserves.vehicle.capacidade }}</h3>
                         <h3><strong>Cor:</strong> {{ reserves.vehicle.cor }}</h3>
-                        <h3><strong>Valor da diaria:</strong> {{ parseFloat(reserves.vehicle.modelo.valor_diaria
+                        <h3><strong>Valor da diária:</strong> {{ parseFloat(reserves.vehicle.modelo.valor_diaria
                         ).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}</h3>
                         <h3><strong>Tipo do seguro:</strong> {{ reserves.insurance.nome }}</h3>
                     </div>
@@ -136,11 +135,6 @@
                             parseFloat(reserves.payment.preco
                             ).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}</h3>
                         <h3><strong>Tipo de pagamento:</strong> {{ reserves.payment.tipo_pagamento.nome }}</h3>
-                        <h3 v-if="reserves.dateDevolution"><strong>Data quando o veiculo foi devolvido: </strong>
-                            {{
-                                `${reserves.dateDevolution.split('-')[2]}/${reserves.dateDevolution.split('-')[1]}/${reserves.dateDevolution.split('-')[0]}`
-                            }}
-                        </h3>
                     </div>
                 </div>
             </a-collapse-panel>
