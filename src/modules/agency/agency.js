@@ -80,7 +80,22 @@ const agency = {
 
             const response = await axios.get(`agency/${id}`);
 
-            commit('setData', response.data);
+            const data = {
+                nome: response.data.nome,
+                quantidade_total: response.data.quantidade_total,
+                telefone: response.data.telefone,
+                address: {
+                    zipcode: response.data.address.cep,
+                    bairro: response.data.address.bairro,
+                    cidade: response.data.address.cidade,
+                    complemento: response.data.address.complemento,
+                    logradouro: response.data.address.logradouro,
+                    uf: response.data.address.uf,
+                    numero: response.data.address.numero,
+                }
+            };
+
+            commit('setData', data);
 
             return response;
         },
@@ -108,7 +123,7 @@ const agency = {
         },
 
         async viaCep({ }, data) {
-            const response = await axiosLib.get(`https://viacep.com.br/ws/${data.cep}/json/`);
+            const response = await axiosLib.get(`https://viacep.com.br/ws/${data.zipcode}/json/`);
             data.logradouro = response.data.logradouro;
             data.uf = response.data.uf;
             data.cidade = response.data.localidade;

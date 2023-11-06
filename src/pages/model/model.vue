@@ -188,6 +188,8 @@ export default {
         },
 
         async clearFilter() {
+            this.data.nome = null;
+
             this.$store.dispatch('model/all');
 
             this.$store.commit('generic/setFilterExits', false);
