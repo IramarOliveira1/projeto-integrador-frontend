@@ -5,7 +5,7 @@
 
                 <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 8 }">
                     <a-form-item label="FILTRAR POR NOME OU CPF" name="nameOrCpf"
-                        :rules="[{ required: true, message: 'Campo filtrar � obrigat�rio!' }]">
+                        :rules="[{ required: true, message: 'Campo filtrar é obrigatório!' }]">
                         <a-input v-model:value="data.nameOrCpf" size="large" />
                     </a-form-item>
                 </a-col>
@@ -94,7 +94,7 @@ export default {
                     responsive: ['sm'],
                 },
                 {
-                    title: 'Action',
+                    title: 'Ação',
                     dataIndex: 'action',
                     key: 'action',
                     width: '10%',

@@ -163,7 +163,7 @@ export default {
 
         finalizeReservation(id) {
             if (id === null) {
-                return this.$notification.notification(400, 'Campo seguro � obrigatório');
+                return this.$notification.notification(400, 'Campo seguro é obrigatório');
             }
             this.showModal = true;
         },

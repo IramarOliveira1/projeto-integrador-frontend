@@ -7,13 +7,13 @@
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="Nome" name="name"
-                            :rules="[{ required: true, message: 'Campo nome � obrigatório' }]">
+                            :rules="[{ required: true, message: 'Campo nome é obrigatório' }]">
                             <a-input v-model:value="data.name" />
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item label="CPF" name="cpf"
-                            :rules="[{ required: true, message: 'Campo cpf � obrigatório' }]">
+                            :rules="[{ required: true, message: 'Campo cpf é obrigatório' }]">
                             <a-input v-model:value="data.cpf" v-mask="'###.###.###-##'" />
                         </a-form-item>
                     </a-col>
@@ -21,18 +21,18 @@
 
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item name="email" :rules="[{ required: true, message: 'Campo e-mail � obrigatório' }]">
+                        <a-form-item name="email" :rules="[{ required: true, message: 'Campo e-mail é obrigatório' }]">
                             E-mail
                             <a-input v-model:value="data.email" />
                         </a-form-item>
                     </a-col>
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item name="password"
-                            :rules="[modalEdit ? { required: false } : { required: true, message: 'Campo senha � obrigatório' }]">
+                            :rules="[modalEdit ? { required: false } : { required: true, message: 'Campo senha é obrigatório' }]">
                             Senha
 
                             <a-tooltip v-if="modalEdit" class="tooltip-password"
-                                title="Administrador n�o pode alterar senha de clientes!">
+                                title="Administrador não pode alterar senha de clientes!">
                                 <InfoCircleTwoTone two-tone-color="#ea8b0e" />
                             </a-tooltip>
                             <a-input-password v-model:value="data.password" :disabled="modalEdit ? true : false" />
@@ -183,7 +183,7 @@ export default {
                     await this.$store.dispatch('user/viaCep', this.data.address);
                 }
             } catch (error) {
-                this.$notification.notification(400, "CEP inv�lido!");
+                this.$notification.notification(400, "CEP inválido!");
 
                 this.$store.commit('clearForm',
                     {

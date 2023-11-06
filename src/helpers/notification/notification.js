@@ -17,7 +17,7 @@ export default function notifications(status, message) {
 
             } else {
                 notification['warning']({
-                    description: "TOKEN INV�LIDO!",
+                    description: "TOKEN INVÁLIDO!",
                 });
             }
 
@@ -33,7 +33,7 @@ export default function notifications(status, message) {
 
         default:
             notification['error']({
-                description: 'N�o foi poss�vel executar essa a��o',
+                description: 'Não foi possível executar essa ação',
             });
             break;
     }

@@ -40,7 +40,7 @@
                     <a-button @click="index(record.id)">
                         <EditTwoTone />
                     </a-button>
-                    <a-popconfirm title="Deseja realmente excluir esse registro ?" ok-text="Sim" cancel-text="N�o"
+                    <a-popconfirm title="Deseja realmente excluir esse registro ?" ok-text="Sim" cancel-text="Não"
                         @confirm="destroy(record.id)">
                         <a-button>
                             <DeleteTwoTone two-tone-color="#ef3413" />
@@ -90,7 +90,7 @@ export default {
                     responsive: ['sm'],
                 },
                 {
-                    title: 'Action',
+                    title: 'Ação',
                     dataIndex: 'action',
                     key: 'action',
                     width: '10%',

@@ -11,12 +11,12 @@
                         <img class="image-login" src="../../assets/images/logo_blue.png" alt="">
                     </div>
                     <a-form-item label="E-mail" name="email"
-                        :rules="[{ required: true, message: 'Campo e-mail � obrigat�rio' }]">
+                        :rules="[{ required: true, message: 'Campo e-mail é obrigatório' }]">
                         <a-input v-model:value="data.email" size="large" />
                     </a-form-item>
 
                     <a-form-item label="Senha" name="password"
-                        :rules="[{ required: true, message: 'Campo senha � obrigat�rio!' }]">
+                        :rules="[{ required: true, message: 'Campo senha é obrigatório!' }]">
                         <a-input-password v-model:value="data.password" size="large" />
                     </a-form-item>
 
@@ -55,8 +55,8 @@ export default {
     data() {
         return {
             data: {
-                email: "iramar.oliveira@trc.sebraeba.com.br",
-                password: "123456"
+                email: "",
+                password: ""
             }
         }
     },

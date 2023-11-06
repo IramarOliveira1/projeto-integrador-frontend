@@ -155,7 +155,7 @@ export default {
                     await this.$store.dispatch('user/viaCep', this.data.address);
                 }
             } catch (error) {
-                this.$notification.notification(400, "CEP inv�lido!");
+                this.$notification.notification(400, "CEP inválido!");
 
                 this.$store.commit('clearForm',
                     {
