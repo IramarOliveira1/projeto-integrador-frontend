@@ -214,6 +214,8 @@ export default {
                     return false;
                 }
 
+                this.$store.commit('reserve/setPage', this.page ?? page);
+
                 await this.$store.dispatch('reserve/index', { page: this.page ?? page, idUser: id });
 
             } catch (error) {

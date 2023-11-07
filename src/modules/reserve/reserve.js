@@ -4,18 +4,25 @@ import axios from '../../services/api.js';
 const reserve = {
     namespaced: true,
     state: {
-        reserves: []
+        reserves: [],
+        page: 0,
     },
 
     getters: {
         getReserves(state) {
             return state.reserves;
         },
+        getPage(state) {
+            return state.page;
+        },
     },
 
     mutations: {
         setReserves(state, payload) {
             return state.reserves = payload;
+        },
+        setPage(state, payload) {
+            return state.page = payload;
         },
     },
 
