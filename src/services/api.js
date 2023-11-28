@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: 'http://ec2-18-212-187-130.compute-1.amazonaws.com:8080',
+    baseURL: 'https://api.dev.alugueaqui.xyz:8080',
+    // baseURL: 'http://ec2-18-212-187-130.compute-1.amazonaws.com:8080',
     // baseURL: 'http://localhost:8080',
 });
 
