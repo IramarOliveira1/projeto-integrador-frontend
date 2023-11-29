@@ -3,7 +3,7 @@
         <a-form layout="vertical" ref="form" name="basic" :model="data" @finish="filter" :hideRequiredMark="true"
             v-if="this.$store.getters['user/getUser'].role === 'ADMIN'">
             <a-form-item label="FILTRAR FATURAMENTO POR PERIODO" name="date"
-                :rules="[{ required: true, message: 'Campo filtrar � obrigat�rio!' }]">
+                :rules="[{ required: true, message: 'Campo filtrar é obrigatório!' }]">
                 <a-range-picker v-model:value="data.date" :disabled-date="disabledDate" @change="onChange"
                     @openChange="onOpenChange" @calendarChange="onCalendarChange" size="large" format="DD-MM-YYYY"
                     :locale="locale" />

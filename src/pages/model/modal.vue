@@ -6,7 +6,7 @@
 
                 <a-col :xs="{ span: 24 }" :sm="{ span: 24 }" :xl="{ span: 24 }">
                     <a-form-item label="Nome" name="nome"
-                        :rules="[{ required: true, message: 'Campo nome � obrigat�rio' }]">
+                        :rules="[{ required: true, message: 'Campo nome é obrigatório' }]">
                         <a-input v-model:value="data.nome" />
                     </a-form-item>
                 </a-col>
@@ -14,7 +14,7 @@
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item name="valor_diaria"
-                            :rules="[{ required: true, message: 'Campo valor da diaria � obrigat�rio' }]">
+                            :rules="[{ required: true, message: 'Campo valor da diaria é obrigatório' }]">
                             Valor da diaria
                             <a-input v-model:value="data.valor_diaria" v-money="money" />
                         </a-form-item>
@@ -24,7 +24,7 @@
                         <a-form-item name="quantidade">
                             Quantidade
                             <a-tooltip class="tooltip-password"
-                                title="Campo quantidade � alimentado de acordo com cadastro de veiculos!">
+                                title="Campo quantidade é alimentado de acordo com cadastro de veiculos!">
                                 <InfoCircleTwoTone two-tone-color="#ea8b0e" />
                             </a-tooltip>
                             <a-input v-model:value="data.quantidade" disabled />
@@ -35,14 +35,14 @@
                 <a-row :gutter="[8, 16]">
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                         <a-form-item name="categoria" label="Categoria"
-                            :rules="[{ required: true, message: 'Campo categoria � obrigat�rio' }]">
+                            :rules="[{ required: true, message: 'Campo categoria é obrigatório' }]">
                             <a-input v-model:value="data.categoria" />
                         </a-form-item>
                     </a-col>
                 </a-row>
 
                 <a-form-item label="Imagem" name="image"
-                    :rules="[{ required: true, message: 'Campo imagem � obrigat�rio' }]">
+                    :rules="[{ required: true, message: 'Campo imagem é obrigatório' }]">
                     <a-upload-dragger :before-upload="beforeUpload" list-type="picture" name="file" :max-count="1"
                         :multiple="false" v-model:fileList="fileList" @remove="removeImage"
                         :load="modalEdit ? getImage : null">
@@ -51,7 +51,7 @@
                             <InboxOutlined />
                         </p>
                         <p class="ant-upload-text">
-                            Clique ou arraste o arquivo para esta �rea para fazer upload</p>
+                            Clique ou arraste o arquivo para esta área para fazer upload</p>
                         <p class="ant-upload-hint">
                             Arquivos do tipo (PNG, JPEG, JPG)
                         </p>
@@ -134,7 +134,7 @@ export default {
             const sizeInMB = (image.size / (1024 * 1024)).toFixed(2);
 
             if (sizeInMB > 6.0) {
-                this.$notification.notification(400, 'Adicione uma imagem com tamanho at� 6MB ');
+                this.$notification.notification(400, 'Adicione uma imagem com tamanho até 6MB ');
                 return Upload.LIST_IGNORE;
             }
 
@@ -147,7 +147,7 @@ export default {
             const filter = types.filter(type => type === image.type);
 
             if (filter.length === 0) {
-                this.$notification.notification(400, `${image.name} n�o � um arquivo do tipo (PNG, JPEG OU JPG) `);
+                this.$notification.notification(400, `${image.name} não é um arquivo do tipo (PNG, JPEG OU JPG) `);
 
                 return Upload.LIST_IGNORE;
             }

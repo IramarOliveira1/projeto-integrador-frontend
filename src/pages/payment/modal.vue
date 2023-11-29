@@ -24,14 +24,14 @@
 
                         <a-row :gutter="[8, 16]">
                             <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                                <a-form-item label="N˙mero do cart„o" name="card_number">
+                                <a-form-item label="N√∫mero do cart√£o" name="card_number">
                                     <a-input type="tel" v-model:value="valueFields.cardNumber" :id="inputFields.cardNumber"
                                         v-cardformat:formatCardNumber />
                                 </a-form-item>
                             </a-col>
                             <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
                                 <a-form-item label="Nome do titular" name="cardName"
-                                    :rules="[{ required: true, message: 'Campo nome È obrigatÛrio' }]">
+                                    :rules="[{ required: true, message: 'Campo nome √© obrigat√≥rio' }]">
                                     <a-input v-model:value="valueFields.cardName" :id="inputFields.cardName" />
                                 </a-form-item>
                             </a-col>
@@ -39,8 +39,8 @@
 
                         <a-row :gutter="[8, 16]">
                             <a-col :xs="{ span: 24 }" :sm="{ span: 8 }" :xl="{ span: 8 }">
-                                <a-form-item label="MÍs" name="cardMonth">
-                                    <a-select placeholder="Selecione o mÍs do vencimento do cart„o"
+                                <a-form-item label="M√™s" name="cardMonth">
+                                    <a-select placeholder="Selecione o m√™s do vencimento do cart√£o"
                                         v-model:value="valueFields.cardMonth" :options="month" required
                                         :field-names="{ label: 'month', value: 'month' }">
                                     </a-select>
@@ -49,7 +49,7 @@
 
                             <a-col :xs="{ span: 24 }" :sm="{ span: 8 }" :xl="{ span: 8 }">
                                 <a-form-item label="Ano" name="cardYear">
-                                    <a-select placeholder="Selecione o ano do vencimento do cart„o"
+                                    <a-select placeholder="Selecione o ano do vencimento do cart√£o"
                                         v-model:value="valueFields.cardYear" :options="year"
                                         :field-names="{ label: 'year', value: 'year' }">
                                     </a-select>
@@ -58,7 +58,7 @@
 
                             <a-col :xs="{ span: 24 }" :sm="{ span: 8 }" :xl="{ span: 8 }">
                                 <a-form-item label="CVV" name="cardCvv"
-                                    :rules="[{ required: true, message: 'Campo CVV È obrigatÛrio' }]">
+                                    :rules="[{ required: true, message: 'Campo CVV √© obrigat√≥rio' }]">
                                     <a-input type="tel" v-model:value="valueFields.cardCvv" :id="inputFields.cardCvv"
                                         @focus="isCardFlipped = true" @blur="isCardFlipped = false"
                                         v-cardformat:formatCardCVC :maxlength="4" />
@@ -121,7 +121,7 @@ export default {
                 cardCvv: ''
             },
             labels: {
-                cardName: "AlgueAqui",
+                cardName: "AlugueAqui",
                 cardHolder: "Nome Completo",
                 cardMonth: "MM",
                 cardYear: "YY",
@@ -171,7 +171,7 @@ export default {
         async execute() {
             try {
                 if (this.data.payment.tipo_pagamento.id === null) {
-                    return this.$notification.notification(400, 'Campo tipo de pagamento È obrigat√≥rio');
+                    return this.$notification.notification(400, 'Campo tipo de pagamento √© obrigat√≥rio');
                 }
 
                 this.loading = true;

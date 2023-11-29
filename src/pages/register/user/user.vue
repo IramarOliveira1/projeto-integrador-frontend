@@ -99,7 +99,7 @@
                     </a-row>
 
                     <div class="link-forgot-password">
-                        <router-link to="/login" >
+                        <router-link to="/login">
                             voltar e fazer Login
                         </router-link>
                     </div>
@@ -129,6 +129,13 @@ export default {
             },
         }
     },
+    mounted() {
+        this.$store.commit('user/clearForm', {
+            name: null, email: null, password: null, cpf: null, phone: null, address: {
+                address: null, zipcode: '', uf: null, city: null, neighborhood: null,
+            }
+        });
+    },
     methods: {
         async save(data) {
             try {
@@ -155,7 +162,7 @@ export default {
                     await this.$store.dispatch('user/viaCep', this.data.address);
                 }
             } catch (error) {
-                this.$notification.notification(400, "CEP inv�lido!");
+                this.$notification.notification(400, "CEP inválido!");
 
                 this.$store.commit('clearForm',
                     {

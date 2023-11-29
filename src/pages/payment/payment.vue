@@ -13,7 +13,7 @@
             </div>
 
             <div class="vehicle-payment">
-                <h3>Veiculo escolhido</h3>
+                <h3>Veículo escolhido</h3>
                 <h4>Modelo - {{ data.vehicle.model.nome }}</h4>
                 <img :src="data.vehicle.model.url_imagem" alt="">
             </div>
@@ -29,7 +29,7 @@
             <a-divider style="height: 2px; background-color: #d6d6d6" />
 
             <div class="devolution">
-                <h3>Devolucao</h3>
+                <h3>Devolução</h3>
                 <h4>{{ endDateRent }}</h4>
                 <h4>{{ `${data.devolution.id.label} - ${data.devolution.id.option.address.uf}` }}</h4>
             </div>
@@ -37,8 +37,8 @@
             <a-divider style="height: 2px; background-color: #d6d6d6" />
 
             <div class="special-offer">
-                <h3>OFERTA ESPECIAL</h3>
-                <h4> {{ data.diffDay }} DIARIAS X
+                <h3>Oferta especial</h3>
+                <h4> {{ data.diffDay }} DIÁRIAS X
                     {{ parseFloat(valueDay).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }}
                     - TOTAL: {{ parseFloat(calculateDay).toLocaleString('pt-BR', {
                         style: 'currency',
@@ -50,8 +50,8 @@
             <a-divider style="height: 2px; background-color: #d6d6d6" />
 
             <div v-if="valueInsurance != 0">
-                <h3>PROTECAO</h3>
-                <h4> {{ data.diffDay }} DIARIAS X
+                <h3>Proteção</h3>
+                <h4> {{ data.diffDay }} DIÁRIAS X
                     {{
                         parseFloat(valueInsurance).toLocaleString('pt-BR', {
                             style: 'currency',
@@ -163,7 +163,7 @@ export default {
 
         finalizeReservation(id) {
             if (id === null) {
-                return this.$notification.notification(400, 'Campo seguro � obrigatório');
+                return this.$notification.notification(400, 'Campo seguro é obrigatório');
             }
             this.showModal = true;
         },

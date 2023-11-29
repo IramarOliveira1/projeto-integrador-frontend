@@ -33,9 +33,9 @@
                     </a-col>
 
                     <a-col :xs="{ span: 24 }" :sm="{ span: 12 }" :xl="{ span: 12 }">
-                        <a-form-item name="cep" :rules="[{ required: true, message: 'Campo cep é obrigatório' }]">
+                        <a-form-item name="zipcode" :rules="[{ required: true, message: 'Campo cep é obrigatório' }]">
                             CEP
-                            <a-input v-model:value="data.address.cep" v-mask="'#####-###'" @blur="viaCep" />
+                            <a-input v-model:value="data.address.zipcode" v-mask="'#####-###'" @blur="viaCep" />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -137,7 +137,7 @@ export default {
                         city: data.cidade,
                         neighborhood: data.bairro,
                         number: data.numero,
-                        zipcode: data.cep,
+                        zipcode: data.zipcode,
                         address: data.logradouro,
                     },
                 }
@@ -177,16 +177,16 @@ export default {
 
         async viaCep() {
             try {
-                if (this.data.address.cep.length >= 9) {
+                if (this.data.address.zipcode.length >= 9) {
                     const response = await this.$store.dispatch('agency/viaCep', this.data.address);
 
                     if (response.data.erro) {
-                        this.$notification.notification(400, "CEP inv�lido!");
+                        this.$notification.notification(400, "CEP inválido!");
                         this.clearForm();
                     }
                 }
             } catch (error) {
-                this.$notification.notification(400, "CEP inv�lido!");
+                this.$notification.notification(400, "CEP inválido!");
                 this.clearForm();
             }
         },
