@@ -260,7 +260,7 @@ export default {
         },
         logout() {
             this.$store.commit('user/setIsAuthenticated', false)
-            localStorage.removeItem('token');
+            localStorage.clear();
             this.$router.push('login');
         },
         openToggle() {
