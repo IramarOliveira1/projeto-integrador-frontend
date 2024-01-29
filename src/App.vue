@@ -14,5 +14,18 @@ export default {
   components: {
     navbar
   },
+  mounted() {
+    setInterval(() => {
+      if (this.$store.getters['user/getIsAuthenticated']) {
+        // this.teste()
+        
+      }
+    }, 3000);
+  },
+  methods: {
+    teste(){
+      alert('ola tudo bem')
+    }
+  },
 }
 </script>
